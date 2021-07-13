@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/images">
+    <file>mountain-lake-header.jpg</file>
+  </qresource>
+</RCC>
