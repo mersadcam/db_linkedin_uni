@@ -7,7 +7,7 @@ class SQLCore:
 
 class LinkeInDB:
 
-    def __init__(self):
+    def __init__(self, ):
         try:
             self.db_connection = sqlite3.connect(constants.DB_NAME)
             self.cursor_1 = self.db_connection.cursor()

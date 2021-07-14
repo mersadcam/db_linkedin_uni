@@ -6,8 +6,7 @@ DB_NAME = 'LinkeInDB.db'
 # create_table = f'CREATE TABLE IF NOT EXISTS {create_table_name}({create_table_fields})'
 
 CREATE_TABLE_USER = """CREATE TABLE IF NOT EXISTS user(
-                        user_email text NOT NULL UNIQUE, 
-                        user_phoneNumber text NOT NULL UNIQUE,
+                        user_email text PRIM UNIQUE, 
                         user_password text NOT NULL
 )"""
 INSERT_TABLE_USER = 'INSERT INTO user(user_email, user_phoneNumber, user_password) Values(?, ?, ?)'
