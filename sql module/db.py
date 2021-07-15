@@ -7,26 +7,49 @@ import secrets
 class SQLCore:
     pass
 
+# class Profile:
+#     def __init__(self):
+#         pass
+    
+    # def insert_profile(self, insert_table_values, db_connection):
+    #     try:
+    #         self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
+    #         db_connection.commit()
+    #         return True
+    #     except Error as e:
+    #         print(e)
+    #         # return (False, 'had problem adding your account! try again.')
+    #         return False 
+     
+
+
 class LinkeInDB:
 
-    def __init__(self, ):
+    def __init__(self):
         try:
             self.db_connection = sqlite3.connect(constants.DB_NAME)
-            self.cursor_1 = self.db_connection.cursor()
+            self.db_cursor = self.db_connection.cursor()
             self.initialTableCreation()
+            try:
+                self.db_cursor.execute(constants.ENABLE_FOREIGN_KEY)
+            except Error as e1:
+                print(e1)
         except Error as e:
             print(e)
+        
 
     def startUp():
         pass    
 
     def initialTableCreation(self):
-        self.cursor_1.execute(constants.CREATE_TABLE_USER)
+        self.db_cursor.execute(constants.CREATE_TABLE_USER)
+        self.db_cursor.execute(constants.CREATE_TABLE_PROFILE)
+        self.db_cursor.execute(constants.CREATE_TABLE_CONNECTIONS)
         self.db_connection.commit()
 
     def insert_user(self, insert_table_values):
         try:
-            self.cursor_1.execute(constants.INSERT_RECORD_USER, insert_table_values)
+            self.db_cursor.execute(constants.INSERT_RECORD_USER, insert_table_values)
             self.db_connection.commit()
             return True
         except Error as e:
@@ -40,7 +63,8 @@ class LinkeInDB:
         if rv.__len__() == 0:
             return (False, 'NO SUCH RECORD FOUND!')
 
-        self.cursor_1.execute(constants.DELETE_RECORD_USER, (user_email, password))
+        self.db_cursor.execute(constants.DELETE_RECORD_PROFILE, ('moouod@mail', ))
+        self.db_cursor.execute(constants.DELETE_RECORD_USER, (user_email, password))
         self.db_connection.commit()
 
         rv = self.select_user(user_email, password)
@@ -51,13 +75,13 @@ class LinkeInDB:
     
 
     def select_user(self, user_email, password): 
-        self.cursor_1.execute(constants.SELECT_RECORD_USER, (user_email, password))                                 
-        return(self.cursor_1.fetchall())
+        self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_email, password))                                 
+        return(self.db_cursor.fetchall())
 
 
     def update_user(self, user_email, updated_values_with_fileds):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
-        self.cursor_1.execute(f'UPDATE user SET {updated_values_with_fileds} WHERE user_email = \'{user_email}\'')
+        self.db_cursor.execute(f'UPDATE user SET {updated_values_with_fileds} WHERE user_email = \'{user_email}\'')
         self.db_connection.commit()
 
 
@@ -88,15 +112,51 @@ class LinkeInDB:
         return secrets.token_urlsafe()
 
 
+    def insert_profile(self, insert_table_values):
+        try:
+            self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
+            self.db_connection.commit()
+            return True
+        except Error as e:
+            print(e)
+            # return (False, 'had problem adding your account! try again.')
+            return False
+
+    def select_profile(self, user_id): 
+        self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_id, user_id))                                 
+        return(self.db_cursor.fetchall())
+    
+    def numberOfConnections_profile(self, user_id):
+        noc = self.db_cursor.execute(constants.SELECT_NOC_CONNECTIONS, (user_id, user_id))
+        return noc.fetchall()
+
 db = LinkeInDB()
 
 # db.update_user('"moouod@mail"', "user_password = '456', user_token = '', user_email = 'mersad@email'")
-# a = db.signUp("mersad@mail", "1234")
+# a = db.signUp("moouod@mail", "123")
 # a = db.select_user('mersad@mail', '1234')
-# a = db.delete_user('mersad@mail', '1234')
-a = db.login('mersad@email', '456')
+# a = db.delete_user('moouod@mail', '123')
+# a = db.login('mersad@email', '456')
 
+#profile test case
+# profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, 'moouod@mail', '6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
+# print(db.insert_profile(profile_value))
+# a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
+a = db.numberOfConnections_profile('moouod@mail')
 
 print(a)
 
 db.db_connection.close()
+
+# if __name__ == '__main__':
+#     db = LinkeInDB()
+#     try:
+#         db_connection = sqlite3.connect(constants.DB_NAME)
+#         db_cursor = db_connection.cursor()
+#         initialTableCreation()
+#         try:
+#             db_cursor.execute(constants.ENABLE_FOREIGN_KEY)
+#         except Error as e1:
+#             print(e1)
+#     except Error as e:
+#         print(e)
