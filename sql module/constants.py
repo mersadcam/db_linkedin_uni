@@ -6,11 +6,16 @@ DB_NAME = 'LinkeInDB.db'
 # create_table = f'CREATE TABLE IF NOT EXISTS {create_table_name}({create_table_fields})'
 
 CREATE_TABLE_USER = """CREATE TABLE IF NOT EXISTS user(
-                        user_email text PRIM UNIQUE, 
-                        user_password text NOT NULL
+                        user_uuid text PRIMARY KEY,
+                        user_email text NOT NULL UNIQUE, 
+                        user_password text NOT NULL,
+                        user_token text UNIQUE
 )"""
-INSERT_TABLE_USER = 'INSERT INTO user(user_email, user_phoneNumber, user_password) Values(?, ?, ?)'
-DELETE_RECORD_USER = 'DELETE FROM user WHERE (user_email = (?) OR user_phoneNumber = (?) ) AND user_password = (?)'
+INSERT_RECORD_USER = 'INSERT INTO user(user_uuid, user_email, user_password, user_token) Values(?, ?, ?, ?)'
+DELETE_RECORD_USER = 'DELETE FROM user WHERE user_email = (?) AND user_password = (?)'
+SELECT_RECORD_USER = 'SELECT * FROM user WHERE  user_email = (?) AND user_password = (?)'
+UPDATE_RECORD_USER = 'UPDATE user SET user_password = (?) WHERE user_email = (?)'
+UPDATE_RECORD_USER2 = 'UPDATE user SET (?) WHERE user_email = (?)'
 
 
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
