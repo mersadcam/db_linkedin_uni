@@ -2,5 +2,6 @@ text.o
 ~/.idea/*
 ~/profile/.idea/*
 ~/profile/__pycache__/*
-
+~/__pycache__/*
+~/LinkeInDB.db
 
