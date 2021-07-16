@@ -1,0 +1,6 @@
+text.o
+~/.idea/*
+~/profile/.idea/*
+~/profile/__pycache__/*
+
+
