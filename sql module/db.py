@@ -8,47 +8,7 @@ import secrets
 class SQLCore:
     pass
 
-class Connection:
-    def __init__(self, db_connection):
-        self.db_connection = db_connection
-        self.db_cursor = self.db_connection.cursor()
-        self.db_cursor.execute(constants.CREATE_TABLE_CONNECTIONS)
-        self.db_connection.commit()
 
-    def numberOfConnections_profile(self, user_id):
-        noc = self.db_cursor.execute(constants.SELECT_NOC_CONNECTIONS, (user_id, user_id))
-        return noc.fetchall()
-
-
-class Profile:
-    def __init__(self, db_connection):
-        self.db_connection = db_connection
-        self.db_cursor = self.db_connection.cursor()
-        self.db_cursor.execute(constants.CREATE_TABLE_PROFILE)
-        self.db_connection.commit()
-
-    def insert_profile(self, insert_table_values):
-        try:
-            self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
-            self.db_connection.commit()
-            return True
-        except Error as e:
-            print(e)
-            # return (False, 'had problem adding your account! try again.')
-            return False
-        
-    def select_profile(self, user_id): 
-        self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_id, user_id))                                 
-        return(self.db_cursor.fetchall())
-
-    def update_profile(self, user_uuid, updated_values_with_fileds):
-        # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
-        try:
-            self.db_cursor.execute(f'UPDATE profile SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
-            self.db_connection.commit()
-            return (True)
-        except Error as e:
-            return (False)
 
 class User:
 
@@ -56,8 +16,7 @@ class User:
         try:
             self.db_connection = db_connection
             self.db_cursor = self.db_connection.cursor()
-            self.db_cursor.execute(constants.CREATE_TABLE_USER)
-            self.db_connection.commit()
+            self.initialise_User()
             try:
                 self.db_cursor.execute(constants.ENABLE_FOREIGN_KEY)
             except Error as e1:
@@ -66,8 +25,19 @@ class User:
         except Error as e:
             print(e)
 
+    #table creation
+    def initialise_User(self):
+        try:
+            self.db_cursor.execute(constants.CREATE_TABLE_USER)
+            self.db_cursor.execute(constants.CREATE_TABLE_PROFILE)
+            self.db_cursor.execute(constants.CREATE_TABLE_CONNECTIONS)
 
-    def insert_user(self, insert_table_values):
+            self.db_connection.commit()
+        except Error as e:
+            print(e)
+
+
+    def user_insert(self, insert_table_values):
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_USER, insert_table_values)
             self.db_connection.commit()
@@ -78,8 +48,8 @@ class User:
             return False
 
     # user_id can be email or phoneNumber
-    def delete_user(self, user_email, password):
-        rv = self.select_user(user_email, password)
+    def user_delete(self, user_email, password):
+        rv = self.user_select(user_email, password)
         if rv.__len__() == 0:
             return (False, 'NO SUCH RECORD FOUND!')
 
@@ -94,19 +64,19 @@ class User:
         except Error as e:
             print(e)
 
-        rv = self.select_user(user_email, password)
+        rv = self.user_select(user_email, password)
         if rv.__len__() == 0:
             return (True, 'record was deleted successfully')
         else:
             return (False, 'we had a problem deleting your record, Try again!')
     
 
-    def select_user(self, user_email, password): 
+    def user_select(self, user_email, password): 
         self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_email, password))                                 
         return(self.db_cursor.fetchall())
 
 
-    def update_user(self, user_email, updated_values_with_fileds):
+    def user_update(self, user_email, updated_values_with_fileds):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
         try:
             self.db_cursor.execute(f'UPDATE user SET {updated_values_with_fileds} WHERE user_email = \'{user_email}\'')
@@ -116,12 +86,12 @@ class User:
             return (False)
 
 
-    def signUp(self, user_email, user_password):
+    def user_signUp(self, user_email, user_password):
         user_uuid = str(uuid.uuid4())
         user_token = self.tokenGenarator()
 
         user_values = (user_uuid, user_email, user_password, user_token)
-        signup_flag = self.insert_user(user_values)
+        signup_flag = self.user_insert(user_values)
 
         if signup_flag:
             return (True, user_token)
@@ -129,11 +99,11 @@ class User:
             return (False, None)
         
 
-    def login(self, user_email, user_password):
-        selectedUser = self.select_user(user_email, user_password)
+    def user_login(self, user_email, user_password):
+        selectedUser = self.user_select(user_email, user_password)
         if selectedUser.__len__() > 0:
             user_token = self.tokenGenarator()
-            self.update_user(user_email, f"user_token = \'{user_token}\'")
+            self.user_update(user_email, f"user_token = \'{user_token}\'")
             # print(user_email, f"user_token = \'{user_token}\'")
             return (True, user_token)
         else:
@@ -144,14 +114,43 @@ class User:
 
 
     
+    #PROFILE METHODS
+    def profile_insert(self, insert_table_values):
+        try:
+            self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
+            self.db_connection.commit()
+            return True
+        except Error as e:
+            print(e)
+            # return (False, 'had problem adding your account! try again.')
+            return False
+        
+    def profile_select(self, user_id): 
+        self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_id, user_id))                                 
+        return(self.db_cursor.fetchall())
+
+    def profile_update(self, user_uuid, updated_values_with_fileds):
+        # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
+        updated_values_with_fileds
+        try:
+            self.db_cursor.execute(f'UPDATE profile SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
+            self.db_connection.commit()
+            return (True)
+        except Error as e:
+            return (False)
 
 
+
+    #CONNECTION METHODS
+    def connection_numberOfConnections(self, user_uuid):
+        noc = self.db_cursor.execute(constants.SELECT_NOC_CONNECTIONS, (user_uuid, user_uuid))
+        return noc.fetchall()
 
 
 #profile test case
 # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, 'moouod@mail', '6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
 # print(db.insert_profile(profile_value))
-# a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
+
 # a = db.numberOfConnections_profile('moouod@mail')
 
 
@@ -162,14 +161,12 @@ if __name__ == '__main__':
     try:
         db_connection = sqlite3.connect(constants.DB_NAME)
         user = User(db_connection)
-        profile = Profile(db_connection)
-        connection = Connection(db_connection)
 
-        # a = user.signUp("moouod@mail", "123")
-        # a = user.login('moouod@mail', '456')
-        # a = user.select_user('moouod@mail', '123')
-        # a = user.update_user('moouod@mail', "user_password = '456', user_token = '', user_email = 'moouod@mail'")
-        # a = user.delete_user('moouod@mail', '456')
+        # a = user.user_signUp("mad@mail", "123")
+        # a = user.user_login("mad@mail", "123")
+        # a = user.user_select("mad@mail", "123")
+        # a = user.user_update('mad@mail', "user_password = '123456', user_token = '' ")
+        # a = user.user_delete('madd@mail', '123')
 
         
         #profile test case
@@ -177,6 +174,7 @@ if __name__ == '__main__':
         # print(profile.insert_profile(profile_value))
         # a = profile.select_profile('be49687e-be68-4f31-8feb-aac66fb2479b')
         # a = profile.update_profile('be49687e-be68-4f31-8feb-aac66fb2479b', 'profile_first_name = "amir"')
+        # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
         
         # print(a)
         
