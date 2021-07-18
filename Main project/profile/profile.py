@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QWidget
-from PySide2.QtCore import QObject, Signal, Slot
+from PySide6.QtCore import QObject, Signal, Slot
 from ui_profile import Ui_Profile
 from editInfo import EditInfo, Country
 from contactInfo import ContactInfo
+from editAbout import EditAbout_Dialog
 import sys
 import datetime
 
@@ -15,7 +16,8 @@ data = {
 
 
 class Profile(QMainWindow):
-    editInfo = edit_saved = Signal(str, str, str, int, str, datetime.datetime, str, str)
+    editInfo = Signal(str, str, str, int, str, datetime.datetime, str, str)
+    change_about = Signal(str)
 
     def __init__(self):
         super(Profile, self).__init__()
@@ -24,6 +26,7 @@ class Profile(QMainWindow):
 
         self.editInfo_dialog = EditInfo()
         self.contactInfo_dialog = ContactInfo()
+        self.editAbout_dialog = EditAbout_Dialog()
 
         self.contact_info_email = None
         self.contact_info_addr = None
@@ -33,7 +36,9 @@ class Profile(QMainWindow):
         # Connections:
         self.ui.editInfo_pushButton.clicked.connect(self.editInfo_pushButton_onClicked)
         self.ui.contactInfo_pushButton.clicked.connect(self.contactInfo_pushButton_onClicked)
+        self.ui.editAbout_pushButton.clicked.connect(self.editAbout_pushButton_onClicked)
         self.editInfo_dialog.edit_saved.connect(self.info_edited)
+        self.editAbout_dialog.about_changed.connect(self.about_changed)
 
     # public method
     def set_contact_info(self, email, addr, birthday, link):
@@ -69,7 +74,17 @@ class Profile(QMainWindow):
                            birthday, addr, birthday, email_addr, link)
         # If data changed successfully, changes will be showed by center class
 
+    @Slot(str)
+    def about_changed(self, about):
+        self.change_about.emit(about)
+
     # Private slots:
+    @Slot()
+    def editAbout_pushButton_onClicked(self):
+        self.editAbout_dialog.fill_field(self.ui.firstName_label.text(),
+                                         self.ui.lastName_label.text(),self.ui.aboutContent_label.text())
+        self.editAbout_dialog.show()
+
     @Slot()
     def editInfo_pushButton_onClicked(self):
         ui = self.ui

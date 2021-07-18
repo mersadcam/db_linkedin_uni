@@ -18,7 +18,7 @@ class Ui_contactInfoDialog(object):
         if not contactInfoDialog.objectName():
             contactInfoDialog.setObjectName(u"contactInfoDialog")
         contactInfoDialog.resize(526, 528)
-        contactInfoDialog.setStyleSheet(u"background:rgba(248, 253, 255, 206);\n"
+        contactInfoDialog.setStyleSheet(u"background:rgb(247, 252, 255);\n"
 "color:rgb(1, 31, 54);\\n")
         self.gridLayout = QGridLayout(contactInfoDialog)
         self.gridLayout.setObjectName(u"gridLayout")

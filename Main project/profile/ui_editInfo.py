@@ -18,7 +18,7 @@ class Ui_EditInfoDialog(object):
         if not EditInfoDialog.objectName():
             EditInfoDialog.setObjectName(u"EditInfoDialog")
         EditInfoDialog.resize(526, 528)
-        EditInfoDialog.setStyleSheet(u"background:rgba(248, 253, 255, 206);\n"
+        EditInfoDialog.setStyleSheet(u"background:rgb(247, 252, 255);\n"
 "color:rgb(1, 31, 54);\\n")
         self.gridLayout = QGridLayout(EditInfoDialog)
         self.gridLayout.setObjectName(u"gridLayout")

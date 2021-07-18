@@ -6,132 +6,141 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>571</height>
+    <width>531</width>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background:rgba(248, 253, 255, 206);
+   <string notr="true">background:rgb(247, 252, 255);
 color:rgb(1, 31, 54);\n</string>
   </property>
-  <widget class="QLabel" name="label_login">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>40</y>
-     <width>401</width>
-     <height>91</height>
-    </rect>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="3,2,0,1,1,1">
+   <property name="spacing">
+    <number>3</number>
    </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(52,52,52);font-size:28pt</string>
+   <property name="leftMargin">
+    <number>20</number>
    </property>
-   <property name="text">
-    <string>Login to Linkedin</string>
+   <property name="topMargin">
+    <number>20</number>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_email">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>190</y>
-     <width>71</width>
-     <height>20</height>
-    </rect>
+   <property name="rightMargin">
+    <number>20</number>
    </property>
-   <property name="styleSheet">
-    <string notr="true">font-size:15pt ;color:rgb(52, 52, 52)</string>
+   <property name="bottomMargin">
+    <number>20</number>
    </property>
-   <property name="text">
-    <string>Email</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="email">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>180</y>
-     <width>331</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font-size:14pt;color:rgb(52,52 , 52)</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_password">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>270</y>
-     <width>121</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font-size:15pt ;color:rgb(52, 52, 52
+   <item>
+    <widget class="QLabel" name="label_login">
+     <property name="font">
+      <font>
+       <family>Fira Sans</family>
+       <pointsize>28</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font-size:28pt;
+background:rgba(248, 253, 255, 206);
+color:rgb(1, 31, 54);</string>
+     </property>
+     <property name="text">
+      <string>Login to Linkedin</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>15</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_email">
+       <property name="styleSheet">
+        <string notr="true">font-size:15pt ;color:rgb(52, 52, 52)</string>
+       </property>
+       <property name="text">
+        <string>Email</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QLabel" name="label_password">
+       <property name="styleSheet">
+        <string notr="true">font-size:15pt ;color:rgb(52, 52, 52
 )</string>
-   </property>
-   <property name="text">
-    <string>password</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="password">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>260</y>
-     <width>331</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">font-size:14pt;color:rgb(52,52 , 52)</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="loginbutton">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>320</y>
-     <width>331</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton{
-color:white;
-background:rgb(186, 189, 182);
-border:1px solid white;
-border-radius:5px;
-padding:5px;
-}
-QPushButton:hover
-{
-	border:1px solid rgb(32, 74, 135);
-	border-radius:5px;
-	background:rgb(186, 189, 182);
-}
-</string>
-   </property>
-   <property name="text">
-    <string>login</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="signup_button">
-   <property name="geometry">
-    <rect>
-     <x>390</x>
-     <y>470</y>
-     <width>101</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton{
+       </property>
+       <property name="text">
+        <string>password</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="password_lineEdit">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>38</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-size:14pt;color:rgb(52,52 , 52)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="email_lineEdit">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>38</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font-size:14pt;color:rgb(52,52 , 52)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QPushButton" name="login_pushButton">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
 color:white;
 border:1px solid white;
 border-radius:5px;
@@ -144,27 +153,84 @@ QPushButton:hover
 	border-radius:5px;
 	background:rgb(48, 162, 249);
 }</string>
-   </property>
-   <property name="text">
-    <string>Sign up</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_dont_have_acc">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>480</y>
-     <width>141</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(52, 52, 52);</string>
-   </property>
-   <property name="text">
-    <string>Don't have an account?</string>
-   </property>
-  </widget>
+     </property>
+     <property name="text">
+      <string>login</string>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>53</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_dont_have_acc">
+       <property name="styleSheet">
+        <string notr="true">color: rgb(52, 52, 52);</string>
+       </property>
+       <property name="text">
+        <string>Don't have an account?</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="signup_pushButton">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+color:white;
+border:1px solid white;
+border-radius:5px;
+padding:5px;
+background:rgb(68, 170, 248)
+}
+QPushButton:hover
+{
+	border:1px solid rgb(32, 74, 135);
+	border-radius:5px;
+	background:rgb(48, 162, 249);
+}</string>
+       </property>
+       <property name="text">
+        <string>Sign up</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

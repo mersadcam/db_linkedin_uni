@@ -7,13 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>1114</width>
-    <height>827</height>
+    <height>850</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1111</width>
-    <height>0</height>
+    <height>850</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1602</width>
+    <height>850</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -67,7 +73,7 @@ color:rgb(1, 31, 54);\n</string>
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resources.qrc">:/images/mountain-lake-header.jpg</pixmap>
+       <pixmap resource="../resources/resources.qrc">:/images/mountain-lake-header.jpg</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -289,7 +295,7 @@ background:rgba(221, 242, 255, 231)
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="resources.qrc">
+             <iconset resource="../resources/resources.qrc">
               <normaloff>:/images/edit_icon2.png</normaloff>:/images/edit_icon2.png</iconset>
             </property>
             <property name="iconSize">
@@ -349,6 +355,9 @@ background:rgba(221, 242, 255, 231)
                  <height>35</height>
                 </size>
                </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton:hover
 {
@@ -361,7 +370,7 @@ background:rgba(221, 242, 255, 231)
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset resource="../resources/resources.qrc">
                  <normaloff>:/images/edit_icon2.png</normaloff>:/images/edit_icon2.png</iconset>
                </property>
                <property name="iconSize">
@@ -555,7 +564,7 @@ padding-left: 10px
              <x>0</x>
              <y>0</y>
              <width>197</width>
-             <height>491</height>
+             <height>500</height>
             </rect>
            </property>
           </widget>
@@ -580,8 +589,9 @@ padding-left: 10px
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
-  <include location="resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -13,13 +13,16 @@ from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
 import resources_rc
+import resources_rc
+import resources_rc
 
 class Ui_Profile(object):
     def setupUi(self, Profile):
         if not Profile.objectName():
             Profile.setObjectName(u"Profile")
-        Profile.resize(1114, 827)
-        Profile.setMinimumSize(QSize(1111, 0))
+        Profile.resize(1114, 850)
+        Profile.setMinimumSize(QSize(1111, 850))
+        Profile.setMaximumSize(QSize(1602, 850))
         Profile.setStyleSheet(u"background:rgba(248, 253, 255, 206);\n"
 "color:rgb(1, 31, 54);\\n")
         self.centralwidget = QWidget(Profile)
@@ -183,6 +186,8 @@ class Ui_Profile(object):
 
         self.verticalLayout.addWidget(self.line)
 
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.label_7 = QLabel(self.widget)
         self.label_7.setObjectName(u"label_7")
         font7 = QFont()
@@ -190,7 +195,27 @@ class Ui_Profile(object):
         self.label_7.setFont(font7)
         self.label_7.setStyleSheet(u"")
 
-        self.verticalLayout.addWidget(self.label_7)
+        self.horizontalLayout_3.addWidget(self.label_7)
+
+        self.editAbout_pushButton = QPushButton(self.widget)
+        self.editAbout_pushButton.setObjectName(u"editAbout_pushButton")
+        self.editAbout_pushButton.setMinimumSize(QSize(35, 35))
+        self.editAbout_pushButton.setMaximumSize(QSize(35, 35))
+        self.editAbout_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.editAbout_pushButton.setStyleSheet(u"QPushButton:hover\n"
+"{\n"
+"	border:1px solid grey;\n"
+"	border-radius:5px;\n"
+"	background:rgba(214, 239, 255, 231);\n"
+"}")
+        self.editAbout_pushButton.setIcon(icon)
+        self.editAbout_pushButton.setIconSize(QSize(25, 25))
+        self.editAbout_pushButton.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.editAbout_pushButton)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         self.aboutContent_label = QLabel(self.widget)
         self.aboutContent_label.setObjectName(u"aboutContent_label")
@@ -287,7 +312,7 @@ class Ui_Profile(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 197, 491))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 197, 500))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout_2.addWidget(self.scrollArea)
@@ -326,6 +351,7 @@ class Ui_Profile(object):
         self.country_label.setText(QCoreApplication.translate("Profile", u"Country", None))
         self.editInfo_pushButton.setText("")
         self.label_7.setText(QCoreApplication.translate("Profile", u"About", None))
+        self.editAbout_pushButton.setText("")
         self.aboutContent_label.setText(QCoreApplication.translate("Profile", u"TextLabel", None))
         self.skills_pushButton.setText(QCoreApplication.translate("Profile", u"Skills and endorsments", None))
         self.background_pushButton.setText(QCoreApplication.translate("Profile", u"Background", None))

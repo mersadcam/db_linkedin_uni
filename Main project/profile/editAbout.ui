@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EditInfoDialog</class>
- <widget class="QDialog" name="EditInfoDialog">
+ <class>EditAboutDialog</class>
+ <widget class="QDialog" name="EditAboutDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,7 +14,7 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background:rgba(248, 253, 255, 206);
+   <string notr="true">background:rgb(247, 252, 255);
 color:rgb(1, 31, 54);\n</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -30,21 +30,21 @@ color:rgb(1, 31, 54);\n</string>
       <widget class="QLabel" name="label">
        <property name="minimumSize">
         <size>
-         <width>35</width>
-         <height>50</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>65</width>
-         <height>50</height>
+         <width>55</width>
+         <height>55</height>
         </size>
        </property>
        <property name="text">
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="resources.qrc">:/images/User-Profile-PNG-Image.png</pixmap>
+        <pixmap resource="../resources/resources.qrc">:/images/User-Profile-PNG-Image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -127,17 +127,11 @@ color:rgb(1, 31, 54);\n</string>
       <number>10</number>
      </property>
      <item>
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>About</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <widget class="QPlainTextEdit" name="about_plainTextEdit">
+       <property name="placeholderText">
+        <string>Write about yourself ...</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QPlainTextEdit" name="about_plainTextEdit"/>
      </item>
     </layout>
    </item>
@@ -151,8 +145,8 @@ color:rgb(1, 31, 54);\n</string>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
-       <height>40</height>
+       <width>17</width>
+       <height>37</height>
       </size>
      </property>
     </spacer>
@@ -243,7 +237,7 @@ QPushButton:hover
   </layout>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
