@@ -1,3 +1,4 @@
+from _typeshed import Self
 from os import error
 import sqlite3
 from sqlite3.dbapi2 import Cursor, Error
@@ -7,6 +8,24 @@ import secrets
 
 class SQLCore:
     pass
+
+class Content:
+    def __init__(self, db_connection):
+        try:
+            self.db_connection = db_connection
+            self.db_cursor = self.db_connection.cursor()
+            # self.
+        except Error as e:
+            print(e)
+
+    def initialise_Content(self):
+        try:
+            self.db_cursor.execute(constants.CREATE_TABLE_CONTENT)
+        
+            self.db_connection.commit()
+            
+        except Error as e:
+            print(e)
 
 
 

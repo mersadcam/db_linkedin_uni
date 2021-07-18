@@ -23,6 +23,7 @@ UPDATE_CLEAR_TOKEN_USER = 'UPDATE user SET user_token = '' WHERE user_uuid = (?)
 # UPDATE_RECORD_USER = 'UPDATE user SET user_password = (?) WHERE user_email = (?)'
 # UPDATE_RECORD_USER2 = 'UPDATE user SET (?) WHERE user_email = (?)'
 
+
 #**************************
 # profile table constants
 CREATE_TABLE_PROFILE = """CREATE TABLE IF NOT EXISTS profile(
@@ -56,6 +57,23 @@ CREATE_TABLE_CONNECTIONS = """CREATE TABLE IF NOT EXISTS connections(
 )"""
 
 SELECT_NOC_CONNECTIONS = 'SELECT COUNT(*) FROM connections WHERE user1_uuid = (?) OR user2_uuid = (?)'
+
+
+
+
+#**************************
+# profile table constants
+#SHOULD WE ADD CONTENT TEXT OR NOT?
+CREATE_TABLE_CONTENT = """CREATE TABLE IF NOT EXISTS profile(
+                        content_id text PRIMARY KEY,
+                        content_date text,
+                        content_time text,                    
+                        content_number_of_likes integer,
+                        content_number_of_comments integer,
+                        user_uuid text NOT NULL UNIQUE,
+                        FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
+)"""
+
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
 #                         profile_id integer PRIMARY KEY,
 #                         FOREIGN KEY (user_id) REFERENCES user (user_id)
