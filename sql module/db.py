@@ -71,8 +71,20 @@ class User:
     
 
     def user_select(self, user_uuid, password): 
-        self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_uuid, password))                                 
-        return(self.db_cursor.fetchall())
+        try:
+            user = self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_uuid, password))                                 
+            # return(self.db_cursor.fetchall())
+            user = user.fetchall()
+            user_dict = {
+                "user_uuid": user[0][0],
+                "user_email": user[0][1],
+                "user_password": user[0][2],
+                "user_token": user[0][3],
+            }
+            return user_dict
+        except Error as e:
+            print(e)
+            return None
 
 
     def user_update(self, user_uuid, user_email=None, user_password=None, user_token=None):
@@ -112,10 +124,12 @@ class User:
         
 
     def user_login(self, user_email, user_password):
-        selectedUser = self.user_select(user_email, user_password)
-        if selectedUser.__len__() > 0:
+        selectedUser = self.db_cursor.execute(constants.SELECT_RECORD_LOGIN_USER, (user_email, user_password))
+        selectedUser = selectedUser.fetchall()
+        
+        if len(selectedUser) > 0:
             user_token = self.tokenGenarator()
-            self.user_update(user_email, f"user_token = \'{user_token}\'")
+            self.user_update(selectedUser[0][0], user_token=user_token)
             # print(user_email, f"user_token = \'{user_token}\'")
             return (True, user_token)
         else:
@@ -137,9 +151,22 @@ class User:
             # return (False, 'had problem adding your account! try again.')
             return False
         
-    def profile_select(self, user_id): 
-        self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_id))                                 
-        return(self.db_cursor.fetchall())
+    def profile_select(self, user_uuid): 
+        profile = self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_uuid,))
+        profile = profile.fetchall()
+        profile_dict = {
+            "profile_first_name": profile[0][0],
+            "profile_last_name": profile[0][1],
+            "profile_headline": profile[0][2],
+            "profile_country": profile[0][3],
+            "profile_birthday": profile[0][4],
+            "profile_address": profile[0][5],
+            "profile_about": profile[0][6],
+            "profile_number_of_connections": profile[0][7],
+            
+        }
+        return profile_dict
+
 
     def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
@@ -193,8 +220,8 @@ if __name__ == '__main__':
         user = User(db_connection)
 
         # a = user.user_signUp("mad@mail", "123")
-        # a = user.user_login("mad@mail", "123")
-        # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123")
+        a = user.user_login("mad@mail", "123")
+        # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
         # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
         # a = user.user_delete('be49687e-be68-4f31-8feb-aac66fb2479b', '456')
 
@@ -202,12 +229,12 @@ if __name__ == '__main__':
         #profile test case
         # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, '0e6b6077-0928-4439-b61a-393616bbd2e6')
         # print(user.profile_insert(profile_value))
-        # a = profile.select_profile('be49687e-be68-4f31-8feb-aac66fb2479b')
+        # a = user.profile_select('0e6b6077-0928-4439-b61a-393616bbd2e6')
         # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
         # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
         
         #connection test cases
-        a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+        # a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
         print(a)
         
         db_connection.close()
