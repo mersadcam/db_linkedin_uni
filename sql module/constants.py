@@ -18,9 +18,11 @@ CREATE_TABLE_USER = """CREATE TABLE IF NOT EXISTS user(
 INSERT_RECORD_USER = 'INSERT INTO user(user_uuid, user_email, user_password, user_token) Values(?, ?, ?, ?)'
 DELETE_RECORD_USER = 'DELETE FROM user WHERE user_email = (?) AND user_password = (?)'
 SELECT_RECORD_USER = 'SELECT * FROM user WHERE  user_email = (?) AND user_password = (?)'
-UPDATE_RECORD_USER = 'UPDATE user SET user_password = (?) WHERE user_email = (?)'
+UPDATE_CLEAR_TOKEN_USER = 'UPDATE user SET user_token = '' WHERE user_email = (?)'
+# UPDATE_RECORD_USER = 'UPDATE user SET user_password = (?) WHERE user_email = (?)'
 # UPDATE_RECORD_USER2 = 'UPDATE user SET (?) WHERE user_email = (?)'
 
+#**************************
 # profile table constants
 CREATE_TABLE_PROFILE = """CREATE TABLE IF NOT EXISTS profile(
                         profile_first_name text,
@@ -43,6 +45,8 @@ INSERT_RECORD_PROFILE = """INSERT INTO profile(profile_first_name, profile_last_
 SELECT_RECORD_PROFILE = 'SELECT * FROM profile WHERE  user_email = (?) OR user_uuid = (?)'
 DELETE_RECORD_PROFILE = 'DELETE FROM profile WHERE user_email = (?)' # OR user_uuid = (?) => probbably would be needed
 
+
+#**************************
 #connection table constants
 CREATE_TABLE_CONNECTIONS = """CREATE TABLE IF NOT EXISTS connections(
                         user1_email text NOT NULL UNIQUE,
