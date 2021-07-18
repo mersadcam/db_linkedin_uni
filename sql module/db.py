@@ -8,20 +8,6 @@ import secrets
 class SQLCore:
     pass
 
-# class Profile:
-#     def __init__(self):
-#         pass
-    
-    # def insert_profile(self, insert_table_values, db_connection):
-    #     try:
-    #         self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
-    #         db_connection.commit()
-    #         return True
-    #     except Error as e:
-    #         print(e)
-    #         # return (False, 'had problem adding your account! try again.')
-    #         return False 
-
 class Connection:
     def __init__(self, db_connection):
         self.db_connection = db_connection
@@ -55,6 +41,14 @@ class Profile:
         self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_id, user_id))                                 
         return(self.db_cursor.fetchall())
 
+    def update_profile(self, user_uuid, updated_values_with_fileds):
+        # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
+        try:
+            self.db_cursor.execute(f'UPDATE profile SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
+            self.db_connection.commit()
+            return (True)
+        except Error as e:
+            return (False)
 
 class User:
 
@@ -168,20 +162,23 @@ if __name__ == '__main__':
     try:
         db_connection = sqlite3.connect(constants.DB_NAME)
         user = User(db_connection)
-        # profile = Profile(db_connection)
-        # connection = Connection(db_connection)
+        profile = Profile(db_connection)
+        connection = Connection(db_connection)
 
         # a = user.signUp("moouod@mail", "123")
         # a = user.login('moouod@mail', '456')
         # a = user.select_user('moouod@mail', '123')
-        # a = user.update_user('moouodd@mail', "user_password = '456', user_token = '', user_email = 'moouod@mail'")
-        a = user.delete_user('moouod@mail', '456')
+        # a = user.update_user('moouod@mail', "user_password = '456', user_token = '', user_email = 'moouod@mail'")
+        # a = user.delete_user('moouod@mail', '456')
 
+        
+        #profile test case
+        # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, 'moouod@mail', 'be49687e-be68-4f31-8feb-aac66fb2479b')
+        # print(profile.insert_profile(profile_value))
+        # a = profile.select_profile('be49687e-be68-4f31-8feb-aac66fb2479b')
+        # a = profile.update_profile('be49687e-be68-4f31-8feb-aac66fb2479b', 'profile_first_name = "amir"')
+        
         print(a)
-        
-        # curosr = db_connection.cursor()
-        # curosr.execute('UPDATE user set user_password = "123" where user_email = "moouod@mail"')
-        
         
         db_connection.close()
         
