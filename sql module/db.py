@@ -44,42 +44,54 @@ class User:
             return True
         except Error as e:
             print(e)
-            # return (False, 'had problem adding your account! try again.')
             return False
 
-    # user_id can be email or phoneNumber
-    def user_delete(self, user_email, password):
-        rv = self.user_select(user_email, password)
+
+    def user_delete(self, user_uuid, password):
+        rv = self.user_select(user_uuid, password)
         if rv.__len__() == 0:
             return (False, 'NO SUCH RECORD FOUND!')
 
         try:
-            self.db_cursor.execute(constants.DELETE_RECORD_PROFILE, ('moouod@mail', ))
+            self.db_cursor.execute(constants.DELETE_RECORD_PROFILE, (user_uuid, ))
             self.db_connection.commit()
         except Error as e:
             print(e)
         try:
-            self.db_cursor.execute(constants.DELETE_RECORD_USER, (user_email, password))
+            self.db_cursor.execute(constants.DELETE_RECORD_USER, (user_uuid, password))
             self.db_connection.commit()
         except Error as e:
             print(e)
 
-        rv = self.user_select(user_email, password)
+        rv = self.user_select(user_uuid, password)
         if rv.__len__() == 0:
             return (True, 'record was deleted successfully')
         else:
             return (False, 'we had a problem deleting your record, Try again!')
     
 
-    def user_select(self, user_email, password): 
-        self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_email, password))                                 
+    def user_select(self, user_uuid, password): 
+        self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_uuid, password))                                 
         return(self.db_cursor.fetchall())
 
 
-    def user_update(self, user_email, updated_values_with_fileds):
+    def user_update(self, user_uuid, user_email=None, user_password=None, user_token=None):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
+        updated_values_with_fileds = ''
+        if user_email != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'user_email = \'{user_email}\','
+        if user_password != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'user_password = \'{user_password}\','
+        if user_token != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'user_token = \'{user_token}\''
+
+        #to remoev the last probbable ','
+        u_len = len(updated_values_with_fileds)
+        if updated_values_with_fileds[-1] == ',':
+            updated_values_with_fileds = updated_values_with_fileds[0:u_len-1]
+
         try:
-            self.db_cursor.execute(f'UPDATE user SET {updated_values_with_fileds} WHERE user_email = \'{user_email}\'')
+            self.db_cursor.execute(f'UPDATE user SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
             self.db_connection.commit()
             return (True)
         except Error as e:
@@ -126,12 +138,35 @@ class User:
             return False
         
     def profile_select(self, user_id): 
-        self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_id, user_id))                                 
+        self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_id))                                 
         return(self.db_cursor.fetchall())
 
-    def profile_update(self, user_uuid, updated_values_with_fileds):
+    def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
-        updated_values_with_fileds
+        updated_values_with_fileds = ''
+        
+        if profile_first_name != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_first_name = \'{profile_first_name}\','
+        if profile_last_name != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_last_name = \'{profile_last_name}\','
+        if profile_headline != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_headline = \'{profile_headline}\','
+        if profile_country != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_country = \'{profile_country}\','
+        if profile_birthday != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_birthday = \'{profile_birthday}\','
+        if profile_address != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_address = \'{profile_address}\','
+        if profile_about != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_about = \'{profile_about}\','
+        if profile_number_of_connections != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_number_of_connections = {profile_number_of_connections}'
+        
+        #to remoev the last probbable ','
+        u_len = len(updated_values_with_fileds)
+        if updated_values_with_fileds[-1] == ',':
+            updated_values_with_fileds = updated_values_with_fileds[0:u_len-1]
+
         try:
             self.db_cursor.execute(f'UPDATE profile SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
             self.db_connection.commit()
@@ -164,19 +199,19 @@ if __name__ == '__main__':
 
         # a = user.user_signUp("mad@mail", "123")
         # a = user.user_login("mad@mail", "123")
-        # a = user.user_select("mad@mail", "123")
-        # a = user.user_update('mad@mail', "user_password = '123456', user_token = '' ")
-        # a = user.user_delete('madd@mail', '123')
+        # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123")
+        # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
+        # a = user.user_delete('be49687e-be68-4f31-8feb-aac66fb2479b', '456')
 
         
         #profile test case
-        # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, 'moouod@mail', 'be49687e-be68-4f31-8feb-aac66fb2479b')
-        # print(profile.insert_profile(profile_value))
+        # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, '0e6b6077-0928-4439-b61a-393616bbd2e6')
+        # print(user.profile_insert(profile_value))
         # a = profile.select_profile('be49687e-be68-4f31-8feb-aac66fb2479b')
-        # a = profile.update_profile('be49687e-be68-4f31-8feb-aac66fb2479b', 'profile_first_name = "amir"')
+        # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
         # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
         
-        # print(a)
+        print(a)
         
         db_connection.close()
         

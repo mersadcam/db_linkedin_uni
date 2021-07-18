@@ -16,9 +16,9 @@ CREATE_TABLE_USER = """CREATE TABLE IF NOT EXISTS user(
                         user_token text UNIQUE
 )"""
 INSERT_RECORD_USER = 'INSERT INTO user(user_uuid, user_email, user_password, user_token) Values(?, ?, ?, ?)'
-DELETE_RECORD_USER = 'DELETE FROM user WHERE user_email = (?) AND user_password = (?)'
-SELECT_RECORD_USER = 'SELECT * FROM user WHERE  user_email = (?) AND user_password = (?)'
-UPDATE_CLEAR_TOKEN_USER = 'UPDATE user SET user_token = '' WHERE user_email = (?)'
+DELETE_RECORD_USER = 'DELETE FROM user WHERE user_uuid = (?) AND user_password = (?)'
+SELECT_RECORD_USER = 'SELECT * FROM user WHERE  user_uuid = (?) AND user_password = (?)'
+UPDATE_CLEAR_TOKEN_USER = 'UPDATE user SET user_token = '' WHERE user_uuid = (?)'
 # UPDATE_RECORD_USER = 'UPDATE user SET user_password = (?) WHERE user_email = (?)'
 # UPDATE_RECORD_USER2 = 'UPDATE user SET (?) WHERE user_email = (?)'
 
@@ -33,30 +33,28 @@ CREATE_TABLE_PROFILE = """CREATE TABLE IF NOT EXISTS profile(
                         profile_address text,
                         profile_about text,
                         profile_number_of_connections integer,
-                        user_email text NOT NULL UNIQUE,
                         user_uuid text NOT NULL UNIQUE,
                         FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
-                        FOREIGN KEY (user_email) REFERENCES user (user_email)
 )"""
 INSERT_RECORD_PROFILE = """INSERT INTO profile(profile_first_name, profile_last_name, profile_headline,
                                         profile_country, profile_birthday, profile_address, profile_about,
-                                        profile_number_of_connections, user_email, user_uuid) 
-                                        Values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-SELECT_RECORD_PROFILE = 'SELECT * FROM profile WHERE  user_email = (?) OR user_uuid = (?)'
-DELETE_RECORD_PROFILE = 'DELETE FROM profile WHERE user_email = (?)' # OR user_uuid = (?) => probbably would be needed
+                                        profile_number_of_connections, user_uuid) 
+                                        Values(?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+SELECT_RECORD_PROFILE = 'SELECT * FROM profile WHERE  user_uuid = (?)'
+DELETE_RECORD_PROFILE = 'DELETE FROM profile WHERE user_uuid = (?)' # OR user_uuid = (?) => probbably would be needed
 
 
 #**************************
 #connection table constants
 CREATE_TABLE_CONNECTIONS = """CREATE TABLE IF NOT EXISTS connections(
-                        user1_email text NOT NULL UNIQUE,
-                        user2_email text NOT NULL UNIQUE,
-                        FOREIGN KEY (user1_email) REFERENCES user (user_email),
-                        FOREIGN KEY (user2_email) REFERENCES user (user_email)
+                        user1_uuid text NOT NULL UNIQUE,
+                        user2_uuid text NOT NULL UNIQUE,
+                        FOREIGN KEY (user1_uuid) REFERENCES user (user_uuid),
+                        FOREIGN KEY (user2_uuid) REFERENCES user (user_uuid)
                         
 )"""
 
-SELECT_NOC_CONNECTIONS = 'SELECT COUNT(*) FROM connections WHERE user1_email = (?) OR user2_email = (?)'
+SELECT_NOC_CONNECTIONS = 'SELECT COUNT(*) FROM connections WHERE user1_uuid = (?) OR user2_uuid = (?)'
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
 #                         profile_id integer PRIMARY KEY,
 #                         FOREIGN KEY (user_id) REFERENCES user (user_id)
