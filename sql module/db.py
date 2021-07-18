@@ -178,7 +178,7 @@ if __name__ == '__main__':
         # a = profile.select_profile('be49687e-be68-4f31-8feb-aac66fb2479b')
         # a = profile.update_profile('be49687e-be68-4f31-8feb-aac66fb2479b', 'profile_first_name = "amir"')
         
-        print(a)
+        # print(a)
         
         db_connection.close()
         
