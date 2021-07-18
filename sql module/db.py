@@ -179,14 +179,9 @@ class User:
     #CONNECTION METHODS
     def connection_numberOfConnections(self, user_uuid):
         noc = self.db_cursor.execute(constants.SELECT_NOC_CONNECTIONS, (user_uuid, user_uuid))
-        return noc.fetchall()
+        return noc.fetchall()[0][0]
 
 
-#profile test case
-# profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, 'moouod@mail', '6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
-# print(db.insert_profile(profile_value))
-
-# a = db.numberOfConnections_profile('moouod@mail')
 
 
 
@@ -211,10 +206,10 @@ if __name__ == '__main__':
         # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
         # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
         
+        #connection test cases
+        a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
         print(a)
         
         db_connection.close()
-        
-
     except Error as e:
         print(e)
