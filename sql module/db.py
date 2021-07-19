@@ -312,7 +312,8 @@ class User:
 
     
     #PROFILE METHODS
-    def profile_insert(self, insert_table_values):
+    def profile_insert(self, profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_number_of_connections, user_uuid):
+        insert_table_values = (profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_number_of_connections, user_uuid)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
             self.db_connection.commit()
@@ -381,7 +382,17 @@ class User:
 
 
 
-
+class DB:
+    
+    def __init__(self, db_name):
+        try:
+            db_connection = sqlite3.connect(constants.DB_NAME)
+            user = User(db_connection)
+            content = Content(db_connection)
+        
+            db_connection.close()
+        except Error as e:
+            print(e)
 
 
 
@@ -419,9 +430,9 @@ if __name__ == '__main__':
         # a = content.like_delete('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
         # a = content.like_numberOfLikes('0001')
         # a = content.comment_numberOfComments('0001')
-        a = content.content_select_content_comments('0001')
+        # a = content.content_select_content_comments('0001')
 
-        print(a)
+        # print(a)
         
         db_connection.close()
     except Error as e:
