@@ -64,15 +64,46 @@ SELECT_NOC_CONNECTIONS = 'SELECT COUNT(*) FROM connections WHERE user1_uuid = (?
 #**************************
 # profile table constants
 #SHOULD WE ADD CONTENT TEXT OR NOT?
-CREATE_TABLE_CONTENT = """CREATE TABLE IF NOT EXISTS profile(
+CREATE_TABLE_CONTENT = """CREATE TABLE IF NOT EXISTS content(
                         content_id text PRIMARY KEY,
                         content_date text,
                         content_time text,                    
                         content_number_of_likes integer,
                         content_number_of_comments integer,
-                        user_uuid text NOT NULL UNIQUE,
+                        user_uuid text NOT NULL,
                         FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
 )"""
+
+SELECT_RECORD_CONTENT = """SELECT * FROM content WHERE content_id = (?)"""
+
+CREATE_TABLE_POST = """CREATE TABLE IF NOT EXISTS post(
+                        post_content text NOT NULL,
+                        post_isFeatured integer NOT NULL,                    
+                        content_id text NOT NULL UNIQUE,
+                        FOREIGN KEY (content_id) REFERENCES user (content_id)
+)"""
+
+#comment_reply_id is the id of the content which this comment is refering to
+#comment_id belongs to this comment
+CREATE_TABLE_COMMENT = """CREATE TABLE IF NOT EXISTS comment(
+                        comment_content text NOT NULL,
+                        comment_reply_id text NOT NULL,
+                        content_id text NOT NULL UNIQUE,
+                        FOREIGN KEY (content_id) REFERENCES content (content_id)
+                        FOREIGN KEY (comment_reply_id) REFERENCES content (content_id)
+)"""
+
+INSERT_RECORD_CONTENT = """INSERT INTO content
+                            (content_id, content_date, content_time, content_number_of_likes, content_number_of_comments, user_uuid)
+                            Values(?, ?, ?, ?, ?, ?)"""
+
+INSERT_RECORD_POST = """INSERT INTO post(post_content, post_isFeatured, content_id) Values(?, ?, ?)"""
+
+INSERT_RECORD_COMMENT = """INSERT INTO comment(comment_content, comment_reply_id, content_id) Values(?, ?, ?)"""
+
+SELECT_RECORD_POST = """SELECT * FROM post WHERE content_id = (?)"""
+SELECT_RECORD_COMMENT = """SELECT * FROM comment WHERE content_id = (?)"""
+
 
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
 #                         profile_id integer PRIMARY KEY,
