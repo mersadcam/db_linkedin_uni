@@ -103,6 +103,7 @@ SELECT_RECORD_POST = """SELECT * FROM post WHERE content_id = (?)"""
 SELECT_ALL_RECORD_POST = """SELECT * FROM post WHERE content_id IN (SELECT content_id FROM content WHERE user_uuid = (?))"""
 SELECT_RECORD_COMMENT = """SELECT * FROM comment WHERE content_id = (?)"""
 SELECT_ALL_COMMENT = """SELECT * FROM comment WHERE comment_reply_id = (?)"""
+SELECT_NUMBER_OF_COMMENTSS_COMMENT = 'SELECT COUNT(*) FROM comment WHERE comment_reply_id = (?)'
 
 DELETE_RECORD_CONTENT = 'DELETE FROM content WHERE content_id = (?)'
 DELETE_RECORD_POST = 'DELETE FROM post WHERE content_id = (?)'
@@ -121,6 +122,7 @@ CREATE_TABLE_LIKE = """CREATE TABLE IF NOT EXISTS like(
 INSERT_RECORD_LIKE = """INSERT INTO like(content_id, user_uuid) VALUES(?, ?)"""
 DELETE_RECORD_LIKE = 'DELETE FROM like WHERE content_id = (?) AND user_uuid = (?)'
 SELECT_NUMBER_OF_LIKES_LIKE = 'SELECT COUNT(*) FROM like WHERE content_id = (?)'
+
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
 #                         profile_id integer PRIMARY KEY,
 #                         FOREIGN KEY (user_id) REFERENCES user (user_id)

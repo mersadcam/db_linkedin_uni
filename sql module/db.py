@@ -68,6 +68,15 @@ class Content:
             print(e)
             return False
 
+    def comment_numberOfComments(self, content_id):
+        try:
+            noc = self.db_cursor.execute(constants.SELECT_NUMBER_OF_COMMENTSS_COMMENT, (content_id, ))
+            return noc.fetchall()[0][0]
+        except Error as e:
+            print(e)
+            return None
+
+
     def check_id_in_content_table(self, content_id):
         selected_content = self.db_cursor.execute(constants.SELECT_RECORD_CONTENT, (content_id, ))
         selected_content = selected_content.fetchall()
@@ -128,6 +137,22 @@ class Content:
                     'content_id': post[2]
                 })
             return dict_post_list
+                
+        except Error as e:
+            print(e)
+            return None
+    def content_select_content_comments(self, content_id):
+        try:
+            comments = self.db_cursor.execute(constants.SELECT_ALL_COMMENT, (content_id, ))
+            comments = comments.fetchall()
+            dict_comment_list = []
+            for comment in comments:
+                dict_comment_list.append({
+                    'comment_content': comment[0],
+                    'comment_reply_id': comment[1],
+                    'content_id': comment[2]
+                })
+            return dict_comment_list
                 
         except Error as e:
             print(e)
@@ -393,6 +418,8 @@ if __name__ == '__main__':
         # a = content.like_insert('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
         # a = content.like_delete('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
         # a = content.like_numberOfLikes('0001')
+        # a = content.comment_numberOfComments('0001')
+        a = content.content_select_content_comments('0001')
 
         print(a)
         
