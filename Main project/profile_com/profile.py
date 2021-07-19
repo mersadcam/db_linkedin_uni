@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import QMainWindow, QApplication, QVBoxLayout, QWidget
 from PySide6.QtCore import QObject, Signal, Slot
-from ui_profile import Ui_Profile
-from editInfo import EditInfo, Country
-from contactInfo import ContactInfo
-from editAbout import EditAbout_Dialog
+from profile_com.ui_profile import Ui_Profile
+from profile_com.editInfo import EditInfo, Country
+from profile_com.contactInfo import ContactInfo
+from profile_com.editAbout import EditAbout_Dialog
 import sys
 import datetime
 
@@ -76,6 +76,7 @@ class Profile(QMainWindow):
 
     @Slot(str)
     def about_changed(self, about):
+        print("S")
         self.change_about.emit(about)
 
     # Private slots:

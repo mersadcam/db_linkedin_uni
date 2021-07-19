@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QDialog
 from PySide6.QtCore import Slot
 import datetime
-from editInfo import Country
-from ui_contactInfo import Ui_contactInfoDialog
+from profile_com.editInfo import Country
+from profile_com.ui_contactInfo import Ui_contactInfoDialog
 
 
 class ContactInfo(QDialog):

@@ -1,4 +1,4 @@
-from ui_editAbout import Ui_EditAboutDialog
+from profile_com.ui_editAbout import Ui_EditAboutDialog
 from PySide6.QtWidgets import QDialog
 from PySide6.QtCore import Signal, Slot
 

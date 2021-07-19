@@ -1,4 +1,4 @@
-from ui_editInfo import Ui_EditInfoDialog
+from profile_com.ui_editInfo import Ui_EditInfoDialog
 from PySide6.QtWidgets import QDialog
 from PySide2.QtCore import QObject, Signal, Slot
 import enum

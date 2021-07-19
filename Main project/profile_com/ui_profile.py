@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'profile.ui'
+## Form generated from reading UI file 'profile_com.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -12,9 +12,7 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-import resources_rc
-import resources_rc
-import resources_rc
+import resources
 
 class Ui_Profile(object):
     def setupUi(self, Profile):
@@ -356,7 +354,7 @@ class Ui_Profile(object):
         self.skills_pushButton.setText(QCoreApplication.translate("Profile", u"Skills and endorsments", None))
         self.background_pushButton.setText(QCoreApplication.translate("Profile", u"Background", None))
         self.accomp_pushButton.setText(QCoreApplication.translate("Profile", u"Accomplishments\u202c\u202c", None))
-        self.pushButton_4.setText(QCoreApplication.translate("Profile", u"Edit profile", None))
+        self.pushButton_4.setText(QCoreApplication.translate("Profile", u"Edit profile_com", None))
         self.label.setText(QCoreApplication.translate("Profile", u"Select language", None))
     # retranslateUi
 
