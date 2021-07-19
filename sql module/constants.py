@@ -15,7 +15,7 @@ CREATE_TABLE_USER = """CREATE TABLE IF NOT EXISTS user(
                         user_password text NOT NULL,
                         user_token text UNIQUE
 )"""
-INSERT_RECORD_USER = 'INSERT INTO user(user_uuid, user_email, user_password, user_token) Values(?, ?, ?, ?)'
+INSERT_RECORD_USER = 'INSERT INTO user(user_uuid, user_email, user_password, user_token) VALUES(?, ?, ?, ?)'
 DELETE_RECORD_USER = 'DELETE FROM user WHERE user_uuid = (?) AND user_password = (?)'
 SELECT_RECORD_USER = 'SELECT * FROM user WHERE  user_uuid = (?) AND user_password = (?)'
 SELECT_RECORD_LOGIN_USER = 'SELECT * FROM user WHERE  user_email = (?) AND user_password = (?)'
@@ -41,7 +41,7 @@ CREATE_TABLE_PROFILE = """CREATE TABLE IF NOT EXISTS profile(
 INSERT_RECORD_PROFILE = """INSERT INTO profile(profile_first_name, profile_last_name, profile_headline,
                                         profile_country, profile_birthday, profile_address, profile_about,
                                         profile_number_of_connections, user_uuid) 
-                                        Values(?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+                                        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)"""
 SELECT_RECORD_PROFILE = 'SELECT * FROM profile WHERE user_uuid = (?)'
 DELETE_RECORD_PROFILE = 'DELETE FROM profile WHERE user_uuid = (?)' # OR user_uuid = (?) => probbably would be needed
 
@@ -87,7 +87,7 @@ CREATE_TABLE_COMMENT = """CREATE TABLE IF NOT EXISTS comment(
                         comment_content text NOT NULL,
                         comment_reply_id text NOT NULL,
                         content_id text NOT NULL UNIQUE,
-                        FOREIGN KEY (content_id) REFERENCES content (content_id)
+                        FOREIGN KEY (content_id) REFERENCES content (content_id),
                         FOREIGN KEY (comment_reply_id) REFERENCES content (content_id)
 )"""
 
@@ -95,20 +95,32 @@ INSERT_RECORD_CONTENT = """INSERT INTO content
                             (content_id, content_date, content_time, content_number_of_likes, content_number_of_comments, user_uuid)
                             Values(?, ?, ?, ?, ?, ?)"""
 
-INSERT_RECORD_POST = """INSERT INTO post(post_content, post_isFeatured, content_id) Values(?, ?, ?)"""
-INSERT_RECORD_COMMENT = """INSERT INTO comment(comment_content, comment_reply_id, content_id) Values(?, ?, ?)"""
+INSERT_RECORD_POST = """INSERT INTO post(post_content, post_isFeatured, content_id) VALUES(?, ?, ?)"""
+INSERT_RECORD_COMMENT = """INSERT INTO comment(comment_content, comment_reply_id, content_id) VALUES(?, ?, ?)"""
 
 SELECT_RECORD_CONTENT = """SELECT * FROM content WHERE content_id = (?)"""
 SELECT_RECORD_POST = """SELECT * FROM post WHERE content_id = (?)"""
 SELECT_ALL_RECORD_POST = """SELECT * FROM post WHERE content_id IN (SELECT content_id FROM content WHERE user_uuid = (?))"""
 SELECT_RECORD_COMMENT = """SELECT * FROM comment WHERE content_id = (?)"""
+SELECT_ALL_COMMENT = """SELECT * FROM comment WHERE comment_reply_id = (?)"""
 
 DELETE_RECORD_CONTENT = 'DELETE FROM content WHERE content_id = (?)'
 DELETE_RECORD_POST = 'DELETE FROM post WHERE content_id = (?)'
 DELETE_RECORD_COMMENT = 'DELETE FROM comment WHERE content_id = (?)'
 
 
+#LIKE TABLE
+CREATE_TABLE_LIKE = """CREATE TABLE IF NOT EXISTS like(                    
+                        content_id text NOT NULL,
+                        user_uuid text NOT NULL,
+                        FOREIGN KEY (content_id) REFERENCES content (content_id),
+                        FOREIGN KEY (user_uuid) REFERENCES user (user_uuid),
+                        PRIMARY KEY (user_uuid, content_id)
+)"""
 
+INSERT_RECORD_LIKE = """INSERT INTO like(content_id, user_uuid) VALUES(?, ?)"""
+DELETE_RECORD_LIKE = 'DELETE FROM like WHERE content_id = (?) AND user_uuid = (?)'
+SELECT_NUMBER_OF_LIKES_LIKE = 'SELECT COUNT(*) FROM like WHERE content_id = (?)'
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
 #                         profile_id integer PRIMARY KEY,
 #                         FOREIGN KEY (user_id) REFERENCES user (user_id)

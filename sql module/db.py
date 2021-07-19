@@ -21,6 +21,7 @@ class Content:
             self.db_cursor.execute(constants.CREATE_TABLE_CONTENT)
             self.db_cursor.execute(constants.CREATE_TABLE_POST)
             self.db_cursor.execute(constants.CREATE_TABLE_COMMENT)
+            self.db_cursor.execute(constants.CREATE_TABLE_LIKE)
             self.db_connection.commit()
             
         except Error as e:
@@ -115,9 +116,9 @@ class Content:
             return False
 
     #returns all users posts
-    def post_select_userPosts(self, user_id):
+    def post_select_userPosts(self, user_uuid):
         try:
-            posts = self.db_cursor.execute(constants.SELECT_ALL_RECORD_POST, (user_id, ))
+            posts = self.db_cursor.execute(constants.SELECT_ALL_RECORD_POST, (user_uuid, ))
             posts = posts.fetchall()
             dict_post_list = []
             for post in posts:
@@ -128,6 +129,32 @@ class Content:
                 })
             return dict_post_list
                 
+        except Error as e:
+            print(e)
+            return None
+
+    def like_insert(self, content_id, user_uuid):
+        try:
+            self.db_cursor.execute(constants.INSERT_RECORD_LIKE, (content_id, user_uuid))
+            self.db_connection.commit()
+            return True
+        except Error as e:
+            print(e)
+            return False
+
+    def like_delete(self, content_id, user_uuid):
+        try:
+            self.db_cursor.execute(constants.DELETE_RECORD_LIKE, (content_id, user_uuid))
+            self.db_connection.commit()
+            return True
+        except Error as e:
+            print(e)
+            return False
+
+    def like_numberOfLikes(self, content_id):
+        try:
+            nol = self.db_cursor.execute(constants.SELECT_NUMBER_OF_LIKES_LIKE, (content_id, ))
+            return nol.fetchall()[0][0]
         except Error as e:
             print(e)
             return None
@@ -362,8 +389,10 @@ if __name__ == '__main__':
         # a = content.comment_insert('my first comment', '0002', '0001')
         # a = content.post_delete('cf66524d09c74d5b83dfe00386e29ba8')
         # a = content.comment_delete('0001')
-        a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-
+        # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+        # a = content.like_insert('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+        # a = content.like_delete('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+        # a = content.like_numberOfLikes('0001')
 
         print(a)
         
