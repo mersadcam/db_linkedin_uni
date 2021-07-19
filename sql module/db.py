@@ -53,7 +53,6 @@ class Content:
             return False
 
     def comment_insert(self, comment_content, comment_reply_id, content_id):
-
         check_id = self.check_content_id(content_id)
         check_reply_id = self.check_id_in_content_table(comment_reply_id)
         if not(check_id and check_reply_id):
@@ -94,6 +93,44 @@ class Content:
         
         return True
 
+
+    def post_delete(self, content_id):
+        try:
+            self.db_cursor.execute(constants.DELETE_RECORD_POST, (content_id, ))
+            self.db_cursor.execute(constants.DELETE_RECORD_CONTENT, (content_id, ))
+            self.db_connection.commit()
+            return True
+        except Error as e:
+            print(e)
+            return False
+
+    
+    def comment_delete(self, content_id):
+        try:
+            self.db_cursor.execute(constants.DELETE_RECORD_COMMENT, (content_id, ))
+            self.db_cursor.execute(constants.DELETE_RECORD_CONTENT, (content_id, ))
+            self.db_connection.commit()
+        except Error as e:
+            print(e)
+            return False
+
+    #returns all users posts
+    def post_select_userPosts(self, user_id):
+        try:
+            posts = self.db_cursor.execute(constants.SELECT_ALL_RECORD_POST, (user_id, ))
+            posts = posts.fetchall()
+            dict_post_list = []
+            for post in posts:
+                dict_post_list.append({
+                    'post_content': post[0],
+                    'post_isFeatured': post[1],
+                    'content_id': post[2]
+                })
+            return dict_post_list
+                
+        except Error as e:
+            print(e)
+            return None
 
 class User:
 
@@ -323,8 +360,12 @@ if __name__ == '__main__':
         # a = content.content_insert('2021', '12:00', 0, 0, '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
         # a = content.post_insert('my first post', 0, 'cf66524d09c74d5b83dfe00386e29ba7')
         # a = content.comment_insert('my first comment', '0002', '0001')
+        # a = content.post_delete('cf66524d09c74d5b83dfe00386e29ba8')
+        # a = content.comment_delete('0001')
+        a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
 
-        # print(a)
+
+        print(a)
         
         db_connection.close()
     except Error as e:

@@ -74,8 +74,6 @@ CREATE_TABLE_CONTENT = """CREATE TABLE IF NOT EXISTS content(
                         FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
 )"""
 
-SELECT_RECORD_CONTENT = """SELECT * FROM content WHERE content_id = (?)"""
-
 CREATE_TABLE_POST = """CREATE TABLE IF NOT EXISTS post(
                         post_content text NOT NULL,
                         post_isFeatured integer NOT NULL,                    
@@ -98,11 +96,17 @@ INSERT_RECORD_CONTENT = """INSERT INTO content
                             Values(?, ?, ?, ?, ?, ?)"""
 
 INSERT_RECORD_POST = """INSERT INTO post(post_content, post_isFeatured, content_id) Values(?, ?, ?)"""
-
 INSERT_RECORD_COMMENT = """INSERT INTO comment(comment_content, comment_reply_id, content_id) Values(?, ?, ?)"""
 
+SELECT_RECORD_CONTENT = """SELECT * FROM content WHERE content_id = (?)"""
 SELECT_RECORD_POST = """SELECT * FROM post WHERE content_id = (?)"""
+SELECT_ALL_RECORD_POST = """SELECT * FROM post WHERE content_id IN (SELECT content_id FROM content WHERE user_uuid = (?))"""
 SELECT_RECORD_COMMENT = """SELECT * FROM comment WHERE content_id = (?)"""
+
+DELETE_RECORD_CONTENT = 'DELETE FROM content WHERE content_id = (?)'
+DELETE_RECORD_POST = 'DELETE FROM post WHERE content_id = (?)'
+DELETE_RECORD_COMMENT = 'DELETE FROM comment WHERE content_id = (?)'
+
 
 
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
