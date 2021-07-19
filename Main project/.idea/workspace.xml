@@ -2,39 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3aa23f4e-7312-4004-9fd6-79c9d1296f28" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/login_com/login.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login_com/login.ui" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login_com/ui_login.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Mainwindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login/login.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/login/login.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/login/ui_login.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/post/post.ui" beforeDir="false" afterPath="$PROJECT_DIR$/post/post.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/.idea/profile.iml" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/.idea/profile.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/contactInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/contactInfo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/contactInfo.ui" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/contactInfo.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/editAbout.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/editAbout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/editAbout.ui" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/editAbout.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/editInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/editInfo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/editInfo.ui" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/editInfo.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/profile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/profile.ui" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/profile.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/resources_rc.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/resources_rc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/ui_Mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/ui_Mainwindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/ui_contactInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/ui_contactInfo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/ui_editAbout.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/ui_editAbout.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/ui_editInfo.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/ui_editInfo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profile/ui_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/profile_com/ui_profile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/signup/signup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/signup/signup.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/signup/ui_signup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui_Mainwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_Mainwindow.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +23,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../../../ForFun/pyQt/test" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -166,6 +137,7 @@
       <workItem from="1626635774294" duration="52000" />
       <workItem from="1626668277302" duration="658000" />
       <workItem from="1626707181122" duration="10973000" />
+      <workItem from="1626721937831" duration="1388000" />
     </task>
     <servers />
   </component>
@@ -182,6 +154,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

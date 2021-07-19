@@ -22,7 +22,7 @@ class Content:
             self.db_cursor.execute(constants.CREATE_TABLE_POST)
             self.db_cursor.execute(constants.CREATE_TABLE_COMMENT)
             self.db_connection.commit()
-            
+
         except Error as e:
             print(e)
     # noc = number of comment & nol = number of likes
@@ -40,7 +40,7 @@ class Content:
 
     def post_insert(self, post_content, post_isFeatured, content_id):
         check_id = self.check_content_id(content_id)
-        if not check_id:          
+        if not check_id:
             return False
 
         values_tuple = (post_content, post_isFeatured, content_id)
@@ -78,7 +78,7 @@ class Content:
     def check_content_id(self, content_id):
         if not(self.check_id_in_content_table(content_id)):
             return False
-        
+
         selected_post = self.db_cursor.execute(constants.SELECT_RECORD_POST, (content_id, ))
         selected_post = selected_post.fetchall()
         if len(selected_post) > 0:
@@ -90,7 +90,7 @@ class Content:
         if len(selected_comment) > 0:
             print('this content id is used before.')
             return False
-        
+
         return True
 
 
@@ -104,7 +104,7 @@ class Content:
             print(e)
             return False
 
-    
+
     def comment_delete(self, content_id):
         try:
             self.db_cursor.execute(constants.DELETE_RECORD_COMMENT, (content_id, ))
@@ -127,7 +127,7 @@ class Content:
                     'content_id': post[2]
                 })
             return dict_post_list
-                
+
         except Error as e:
             print(e)
             return None
@@ -187,11 +187,11 @@ class User:
             return (True, 'record was deleted successfully')
         else:
             return (False, 'we had a problem deleting your record, Try again!')
-    
 
-    def user_select(self, user_uuid, password): 
+
+    def user_select(self, user_uuid, password):
         try:
-            user = self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_uuid, password))                                 
+            user = self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_uuid, password))
             # return(self.db_cursor.fetchall())
             user = user.fetchall()
             user_dict = {
@@ -240,12 +240,12 @@ class User:
             return (True, user_token)
         else:
             return (False, None)
-        
+
 
     def user_login(self, user_email, user_password):
         selectedUser = self.db_cursor.execute(constants.SELECT_RECORD_LOGIN_USER, (user_email, user_password))
         selectedUser = selectedUser.fetchall()
-        
+
         if len(selectedUser) > 0:
             user_token = self.tokenGenarator()
             self.user_update(selectedUser[0][0], user_token=user_token)
@@ -258,7 +258,7 @@ class User:
         return secrets.token_urlsafe()
 
 
-    
+
     #PROFILE METHODS
     def profile_insert(self, insert_table_values):
         try:
@@ -269,8 +269,8 @@ class User:
             print(e)
             # return (False, 'had problem adding your account! try again.')
             return False
-        
-    def profile_select(self, user_uuid): 
+
+    def profile_select(self, user_uuid):
         profile = self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_uuid,))
         profile = profile.fetchall()
         profile_dict = {
@@ -282,7 +282,7 @@ class User:
             "profile_address": profile[0][5],
             "profile_about": profile[0][6],
             "profile_number_of_connections": profile[0][7],
-            
+
         }
         return profile_dict
 
@@ -290,7 +290,7 @@ class User:
     def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
         updated_values_with_fileds = ''
-        
+
         if profile_first_name != None:
             updated_values_with_fileds = updated_values_with_fileds + f'profile_first_name = \'{profile_first_name}\','
         if profile_last_name != None:
@@ -307,7 +307,7 @@ class User:
             updated_values_with_fileds = updated_values_with_fileds + f'profile_about = \'{profile_about}\','
         if profile_number_of_connections != None:
             updated_values_with_fileds = updated_values_with_fileds + f'profile_number_of_connections = {profile_number_of_connections}'
-        
+
         #to remoev the last probbable ','
         u_len = len(updated_values_with_fileds)
         if updated_values_with_fileds[-1] == ',':
@@ -344,14 +344,14 @@ if __name__ == '__main__':
         # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
         # a = user.user_delete('be49687e-be68-4f31-8feb-aac66fb2479b', '456')
 
-        
+
         #profile test case
         # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, '0e6b6077-0928-4439-b61a-393616bbd2e6')
         # print(user.profile_insert(profile_value))
         # a = user.profile_select('0e6b6077-0928-4439-b61a-393616bbd2e6')
         # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
         # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
-        
+
         #connection test cases
         # a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
 
@@ -366,7 +366,7 @@ if __name__ == '__main__':
 
 
         print(a)
-        
+
         db_connection.close()
     except Error as e:
         print(e)

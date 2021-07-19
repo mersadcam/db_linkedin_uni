@@ -6,7 +6,7 @@ from PySide6 import QtGui
 from login_com.login import Login
 from login_com.signup import Signup
 from profile_com.profile import Profile
-from DB_pkg.db import LinkeInDB
+from DB_pkg import db
 
 
 class Mainwindow(QMainWindow):
@@ -21,7 +21,7 @@ class Mainwindow(QMainWindow):
         self.profile = Profile()
 
         # Setup DB:
-        db = LinkeInDB()
+
 
         # Widget handler:
         self.login_widget = self.login.centralWidget()
