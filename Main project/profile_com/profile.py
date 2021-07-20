@@ -18,6 +18,7 @@ data = {
 class Profile(QMainWindow):
     editInfo = Signal(str, str, str, int, str, datetime.datetime, str, str)
     change_about = Signal(str)
+    profile_back_to_home = Signal()
 
     def __init__(self):
         super(Profile, self).__init__()
@@ -39,6 +40,7 @@ class Profile(QMainWindow):
         self.ui.editAbout_pushButton.clicked.connect(self.editAbout_pushButton_onClicked)
         self.editInfo_dialog.edit_saved.connect(self.info_edited)
         self.editAbout_dialog.about_changed.connect(self.about_changed)
+
 
     # public method
     def set_contact_info(self, email, addr, birthday, link):

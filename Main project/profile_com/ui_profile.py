@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'profile_com.ui'
+## Form generated from reading UI file 'profile.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -12,7 +12,9 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-import resources
+import resources_rc
+import resources_rc
+import resources_rc
 
 class Ui_Profile(object):
     def setupUi(self, Profile):
@@ -27,17 +29,38 @@ class Ui_Profile(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_4 = QVBoxLayout(self.centralwidget)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.backup_pushButton = QPushButton(self.centralwidget)
+        self.backup_pushButton.setObjectName(u"backup_pushButton")
+        self.backup_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.backup_pushButton.setStyleSheet(u"")
+        icon = QIcon()
+        icon.addFile(u":/images/back.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.backup_pushButton.setIcon(icon)
+        self.backup_pushButton.setIconSize(QSize(28, 28))
+        self.backup_pushButton.setFlat(True)
+
+        self.horizontalLayout_4.addWidget(self.backup_pushButton)
+
         self.label_4 = QLabel(self.centralwidget)
         self.label_4.setObjectName(u"label_4")
         font = QFont()
         font.setFamilies([u"Nimbus Roman"])
-        font.setPointSize(15)
+        font.setPointSize(20)
         font.setBold(True)
         font.setItalic(True)
         self.label_4.setFont(font)
         self.label_4.setTextFormat(Qt.AutoText)
 
-        self.verticalLayout_4.addWidget(self.label_4)
+        self.horizontalLayout_4.addWidget(self.label_4)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer_3)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_4)
 
         self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
@@ -161,9 +184,9 @@ class Ui_Profile(object):
 "	border-radius:5px;\n"
 "	background:rgba(214, 239, 255, 231);\n"
 "}")
-        icon = QIcon()
-        icon.addFile(u":/images/edit_icon2.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.editInfo_pushButton.setIcon(icon)
+        icon1 = QIcon()
+        icon1.addFile(u":/images/edit_icon2.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.editInfo_pushButton.setIcon(icon1)
         self.editInfo_pushButton.setIconSize(QSize(25, 25))
         self.editInfo_pushButton.setFlat(True)
 
@@ -206,7 +229,7 @@ class Ui_Profile(object):
 "	border-radius:5px;\n"
 "	background:rgba(214, 239, 255, 231);\n"
 "}")
-        self.editAbout_pushButton.setIcon(icon)
+        self.editAbout_pushButton.setIcon(icon1)
         self.editAbout_pushButton.setIconSize(QSize(25, 25))
         self.editAbout_pushButton.setFlat(True)
 
@@ -338,6 +361,7 @@ class Ui_Profile(object):
 
     def retranslateUi(self, Profile):
         Profile.setWindowTitle(QCoreApplication.translate("Profile", u"MainWindow", None))
+        self.backup_pushButton.setText("")
         self.label_4.setText(QCoreApplication.translate("Profile", u"Profile", None))
         self.label_3.setText("")
         self.lastName_label.setText(QCoreApplication.translate("Profile", u"Khalafi", None))
@@ -354,7 +378,7 @@ class Ui_Profile(object):
         self.skills_pushButton.setText(QCoreApplication.translate("Profile", u"Skills and endorsments", None))
         self.background_pushButton.setText(QCoreApplication.translate("Profile", u"Background", None))
         self.accomp_pushButton.setText(QCoreApplication.translate("Profile", u"Accomplishments\u202c\u202c", None))
-        self.pushButton_4.setText(QCoreApplication.translate("Profile", u"Edit profile_com", None))
+        self.pushButton_4.setText(QCoreApplication.translate("Profile", u"Edit profile", None))
         self.label.setText(QCoreApplication.translate("Profile", u"Select language", None))
     # retranslateUi
 

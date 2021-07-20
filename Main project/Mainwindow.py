@@ -6,7 +6,8 @@ from PySide6 import QtGui
 from login_com.login import Login
 from login_com.signup import Signup
 from profile_com.profile import Profile
-from DB_pkg import db
+from DB_pkg.db import DB
+import consts
 
 
 class Mainwindow(QMainWindow):
@@ -21,6 +22,7 @@ class Mainwindow(QMainWindow):
         self.profile = Profile()
 
         # Setup DB:
+        # self.db = DB(consts.DB_NAME)
 
 
         # Widget handler:
@@ -41,6 +43,7 @@ class Mainwindow(QMainWindow):
         self.login.switch_to_signup.connect(self.login_to_signup)
         self.signup.switch_to_login.connect(self.signup_to_login)
         self.signup.on_signup.connect(self.on_signup)
+        self.ui.profile_widget.clicked.connect(self.switch_to_own_profile)
 
     # Public slots:
     @Slot(str, str)
@@ -60,6 +63,10 @@ class Mainwindow(QMainWindow):
     @Slot()
     def signup_to_login(self):
         self.central_widget.setCurrentWidget(self.login_widget)
+
+    @Slot()
+    def switch_to_own_profile(self):
+        self.central_widget.setCurrentWidget(self.profile_widget)
 
 
 if __name__ == "__main__":
