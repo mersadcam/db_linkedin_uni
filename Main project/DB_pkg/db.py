@@ -5,6 +5,7 @@ from sqlite3.dbapi2 import Connection, Cursor, Error
 import constants
 import uuid
 import secrets
+import re
 
 
 class Content:
@@ -281,18 +282,31 @@ class User:
             return (False)
 
 
-    def user_signUp(self, user_email, user_password):
+    def user_signUp(self, user_first_name, user_last_name, user_email, user_password):
+        
+        if not (self.check_email(user_email)):
+            print('invalid email!')
+            return (False, None)
+        
         user_uuid = str(uuid.uuid4())
         user_token = self.tokenGenarator()
 
         user_values = (user_uuid, user_email, user_password, user_token)
         signup_flag = self.user_insert(user_values)
 
+        self.profile_insert(profile_first_name=user_first_name, profile_last_name=user_last_name, user_uuid=user_uuid)
+
         if signup_flag:
             return (True, user_token)
         else:
             return (False, None)
 
+    def check_email(self, user_eamil):
+        email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+        if(re.match(email_regex, user_eamil)):
+            return True
+        else:
+            return False
 
     def user_login(self, user_email, user_password):
         selectedUser = self.db_cursor.execute(constants.SELECT_RECORD_LOGIN_USER, (user_email, user_password))
@@ -312,7 +326,7 @@ class User:
 
 
     #PROFILE METHODS
-    def profile_insert(self, profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_number_of_connections, user_uuid):
+    def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
         insert_table_values = (profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_number_of_connections, user_uuid)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
@@ -386,9 +400,9 @@ class DB:
     
     def __init__(self, db_name):
         try:
-            db_connection = sqlite3.connect(constants.DB_NAME)
-            user = User(db_connection)
-            content = Content(db_connection)
+            self.db_connection = sqlite3.connect(db_name)
+            self.user = User(self.db_connection)
+            self.content = Content(self.db_connection)
         
             db_connection.close()
         except Error as e:
@@ -401,7 +415,7 @@ if __name__ == '__main__':
         db_connection = sqlite3.connect(constants.DB_NAME)
         user = User(db_connection)
         content = Content(db_connection)
-        # a = user.user_signUp("mad@mail", "123")
+        a = user.user_signUp('moouod', 'sh',"moouodd@mail.com", "123")
         # a = user.user_login("mad@mail", "123")
         # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
         # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
@@ -434,7 +448,7 @@ if __name__ == '__main__':
 
         # print(a)
         
-        a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+        # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
 
 
         print(a)
