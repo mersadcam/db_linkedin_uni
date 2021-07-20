@@ -400,59 +400,62 @@ class DB:
     
     def __init__(self, db_name):
         try:
-            self.db_connection = sqlite3.connect(db_name)
+            self.db_connection = sqlite3.connect(constants.DB_NAME)
             self.user = User(self.db_connection)
             self.content = Content(self.db_connection)
         
-            db_connection.close()
         except Error as e:
             print(e)
 
+    def close_connection(self):
+        self.db_connection.close()
 
 
 if __name__ == '__main__':
-    try:
-        db_connection = sqlite3.connect(constants.DB_NAME)
-        user = User(db_connection)
-        content = Content(db_connection)
-        a = user.user_signUp('moouod', 'sh',"moouodd@mail.com", "123")
-        # a = user.user_login("mad@mail", "123")
-        # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
-        # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
-        # a = user.user_delete('be49687e-be68-4f31-8feb-aac66fb2479b', '456')
+    # try:
+    #     db_connection = sqlite3.connect(constants.DB_NAME)
+    #     user = User(db_connection)
+    #     content = Content(db_connection)
+    #     a = user.user_signUp('moouod', 'sh',"moouodd@mail.com", "123")
+    #     # a = user.user_login("mad@mail", "123")
+    #     # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
+    #     # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
+    #     # a = user.user_delete('be49687e-be68-4f31-8feb-aac66fb2479b', '456')
 
 
-        #profile test case
-        # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, '0e6b6077-0928-4439-b61a-393616bbd2e6')
-        # print(user.profile_insert(profile_value))
-        # a = user.profile_select('0e6b6077-0928-4439-b61a-393616bbd2e6')
-        # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
-        # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
+    #     #profile test case
+    #     # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, '0e6b6077-0928-4439-b61a-393616bbd2e6')
+    #     # print(user.profile_insert(profile_value))
+    #     # a = user.profile_select('0e6b6077-0928-4439-b61a-393616bbd2e6')
+    #     # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
+    #     # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
 
-        #connection test cases
-        # a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     #connection test cases
+    #     # a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
 
-        #content & post & comment test cases
-        # (content_id, content_date, content_time, content_nol, content_noc, user_uuid)
-        # a = content.content_insert('2021', '12:00', 0, 0, '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.post_insert('my first post', 0, 'cf66524d09c74d5b83dfe00386e29ba7')
-        # a = content.comment_insert('my first comment', '0002', '0001')
-        # a = content.post_delete('cf66524d09c74d5b83dfe00386e29ba8')
-        # a = content.comment_delete('0001')
-        # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.like_insert('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.like_delete('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.like_numberOfLikes('0001')
-        # a = content.comment_numberOfComments('0001')
-        # a = content.content_select_content_comments('0001')
+    #     #content & post & comment test cases
+    #     # (content_id, content_date, content_time, content_nol, content_noc, user_uuid)
+    #     # a = content.content_insert('2021', '12:00', 0, 0, '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.post_insert('my first post', 0, 'cf66524d09c74d5b83dfe00386e29ba7')
+    #     # a = content.comment_insert('my first comment', '0002', '0001')
+    #     # a = content.post_delete('cf66524d09c74d5b83dfe00386e29ba8')
+    #     # a = content.comment_delete('0001')
+    #     # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.like_insert('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.like_delete('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.like_numberOfLikes('0001')
+    #     # a = content.comment_numberOfComments('0001')
+    #     # a = content.content_select_content_comments('0001')
 
-        # print(a)
+    #     # print(a)
         
-        # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
 
 
-        print(a)
+    #     print(a)
 
-        db_connection.close()
-    except Error as e:
-        print(e)
+    #     db_connection.close()
+    # except Error as e:
+    #     print(e)
+    db = DB(constants.DB_NAME)
+    db.user.user_signUp('moouod', 'sh',"moouod@mail.com", "123")
