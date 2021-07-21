@@ -29,9 +29,9 @@ class Content:
         except Error as e:
             print(e)
     # noc = number of comment & nol = number of likes
-    def content_insert(self, content_date, content_time, content_nol, content_noc, user_uuid):
+    def content_insert(self, content_date, content_time, user_uuid):
         content_id = str(uuid.uuid4().hex)
-        values_tuple = (content_id, content_date, content_time, content_nol, content_noc, user_uuid)
+        values_tuple = (content_id, content_date, content_time, user_uuid)
 
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_CONTENT, values_tuple)
@@ -359,8 +359,8 @@ class User:
     #         return (False)
 
     #PROFILE METHODS
-    def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
-        insert_table_values = (profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_number_of_connections, user_uuid)
+    def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_link=None):
+        insert_table_values = (profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_link, user_uuid)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
             self.db_connection.commit()
@@ -387,7 +387,7 @@ class User:
         return profile_dict
 
 
-    def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
+    def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_link=None):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
         updated_values_with_fileds = ''
 
@@ -405,8 +405,8 @@ class User:
             updated_values_with_fileds = updated_values_with_fileds + f'profile_address = \'{profile_address}\','
         if profile_about != None:
             updated_values_with_fileds = updated_values_with_fileds + f'profile_about = \'{profile_about}\','
-        if profile_number_of_connections != None:
-            updated_values_with_fileds = updated_values_with_fileds + f'profile_number_of_connections = {profile_number_of_connections}'
+        if profile_link != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_number_of_connections = {profile_link}'
 
         #to remoev the last probbable ','
         u_len = len(updated_values_with_fileds)
@@ -483,9 +483,11 @@ if __name__ == '__main__':
         # print(a)
         
         # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = user.user_get_uuid_by_token('efyRrAG4ZjlK5Fr6RP6Mbw1WhCNqt3k1UpjWpF3ZzcM')
+        a = user.user_get_uuid_by_token('efyRrAG4ZjlK5Fr6RP6Mbw1WhCNqt3k1UpjWpF3ZzcM')
+        b = user.profile_select(a[1])
 
-        # print(a)
+        print(a)
+        print(b)
 
         db_connection.close()
     except Error as e:
