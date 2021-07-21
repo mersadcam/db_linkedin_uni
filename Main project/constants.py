@@ -1,6 +1,7 @@
 DB_NAME = 'LinkeInDB.db'
 
-
+EMAIL_EXISTANCE_ERROR = 'this email is used before!'
+EMAIL_FORMAT_ERROR = 'invalid email!'
 # create_table_name = ''
 # create_table_fields = ''
 # create_table = f'CREATE TABLE IF NOT EXISTS {create_table_name}({create_table_fields})'
@@ -16,12 +17,14 @@ CREATE_TABLE_USER = """CREATE TABLE IF NOT EXISTS user(
                         user_token text UNIQUE
 )"""
 INSERT_RECORD_USER = 'INSERT INTO user(user_uuid, user_email, user_password, user_token) VALUES(?, ?, ?, ?)'
-DELETE_RECORD_USER = 'DELETE FROM user WHERE user_uuid = (?) AND user_password = (?)'
-SELECT_RECORD_USER = 'SELECT * FROM user WHERE  user_uuid = (?) AND user_password = (?)'
+DELETE_RECORD_USER = 'DELETE FROM user WHERE user_uuid = (?)'
+SELECT_RECORD_USER = 'SELECT * FROM user WHERE  user_uuid = (?)'
+SELECT_RECORD_BY_TOKEN_USER = 'SELECT user_uuid FROM user WHERE user_token = (?)'
 SELECT_RECORD_LOGIN_USER = 'SELECT * FROM user WHERE  user_email = (?) AND user_password = (?)'
-UPDATE_CLEAR_TOKEN_USER = 'UPDATE user SET user_token = '' WHERE user_uuid = (?)'
+UPDATE_CLEAR_TOKEN_USER = 'UPDATE user SET user_token = "" WHERE user_uuid = (?)'
 # UPDATE_RECORD_USER = 'UPDATE user SET user_password = (?) WHERE user_email = (?)'
 # UPDATE_RECORD_USER2 = 'UPDATE user SET (?) WHERE user_email = (?)'
+SELECT_ANY_FIELD_USER = ''
 
 
 #**************************

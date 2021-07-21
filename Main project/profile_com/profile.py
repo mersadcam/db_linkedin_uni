@@ -6,6 +6,7 @@ from profile_com.contactInfo import ContactInfo
 from profile_com.editAbout import EditAbout_Dialog
 import sys
 import datetime
+from consts import Messages
 
 data = {
     "about-content": '''
@@ -51,13 +52,18 @@ class Profile(QMainWindow):
 
     # Ui set Methods:
     def set_connection_numbers(self, connection_numbers):
+
         text = self.ui.connections_pushButton.text()
+        if connection_numbers is None:
+            connection_numbers = 0
         self.ui.connections_pushButton.setText(f"{connection_numbers} {text}")
 
     def set_country(self, country):
         self.ui.country_label.setText(country)
 
-    def set_name(self, first_name, last_name):
+    def set_name(self, first_name: str, last_name: str):
+        first_name = first_name[0].upper() + first_name[1:]
+        last_name = last_name[0].upper() + last_name[1:]
         self.ui.firstName_label.setText(first_name)
         self.ui.lastName_label.setText(last_name)
 
@@ -65,6 +71,8 @@ class Profile(QMainWindow):
         self.ui.aboutContent_label.setText(about_content)
 
     def set_headline_label(self, headline):
+        if headline is None:
+            headline = Messages.DEFAULT_HEAD_LINE
         self.ui.headline_label.setText(headline)
 
     # Public slots:
