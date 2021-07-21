@@ -22,18 +22,20 @@ class Mainwindow(QMainWindow):
         self.profile = Profile()
 
         # Setup DB:
-        # self.db = DB(consts.DB_NAME)
+        self.db = DB(consts.DB_NAME)
 
 
         # Widget handler:
         self.login_widget = self.login.centralWidget()
         self.signup_widget = self.signup.centralWidget()
         self.profile_widget = self.profile.centralWidget()
+        self.home_widget = self.centralWidget()
 
         self.central_widget = QStackedWidget()
         self.central_widget.addWidget(self.login_widget)
         self.central_widget.addWidget(self.signup_widget)
         self.central_widget.addWidget(self.profile_widget)
+        self.central_widget.addWidget(self.home_widget)
 
         self.setCentralWidget(self.central_widget)
         self.central_widget.setCurrentWidget(self.login_widget)
@@ -43,18 +45,23 @@ class Mainwindow(QMainWindow):
         self.login.switch_to_signup.connect(self.login_to_signup)
         self.signup.switch_to_login.connect(self.signup_to_login)
         self.signup.on_signup.connect(self.on_signup)
-        self.ui.profile_widget.clicked.connect(self.switch_to_own_profile)
+        self.profile.profile_back_to_home.connect(self.profile_back_to_home)
+        self.ui.profile_widget.mouseReleaseEvent = self.switch_to_own_profile
 
     # Public slots:
     @Slot(str, str)
     def on_login(self, email: str, password: str):
         print("Login:")
         print(f"Email: {email}\nPassword: {password}")
+        res = self.db.user.user_login(email, password)
+        print(f'Result: {res}')
 
     @Slot(str, str, str, str)
     def on_signup(self, firstname, lastname, email, password):
         print("Signup\n")
         print(f"Firstname:{firstname}\nLastname: {lastname}\nEmail: {email}\nPassword: {password}")
+        res = self.db.user.user_signUp(firstname, lastname, email, password)
+        print(f'Result: {res}')
 
     @Slot()
     def login_to_signup(self):
@@ -68,6 +75,9 @@ class Mainwindow(QMainWindow):
     def switch_to_own_profile(self):
         self.central_widget.setCurrentWidget(self.profile_widget)
 
+    @Slot()
+    def profile_back_to_home(self):
+        self.central_widget.setCurrentWidget(self.home_widget)
 
 if __name__ == "__main__":
     app = QApplication([])

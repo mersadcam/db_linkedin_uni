@@ -125,6 +125,10 @@ class Profile(QMainWindow):
         self.contactInfo_dialog.show()
 
     @Slot()
+    def back_pushButton_onClicked(self):
+        self.profile_back_to_home.emit()
+
+    @Slot()
     def connections_pushButton_onClicked(self):
         pass
 
