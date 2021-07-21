@@ -15,6 +15,7 @@ class Login(QMainWindow):
 
         self.ui.login_pushButton.clicked.connect(self.login_pushButton_onClicked)
         self.ui.signup_pushButton.clicked.connect(self.signup_pushButton_onClicked)
+        self.ui.msg_label.setVisible(False)
 
     # Private slots:
     def login_pushButton_onClicked(self):
@@ -25,6 +26,9 @@ class Login(QMainWindow):
     def signup_pushButton_onClicked(self):
         self.switch_to_signup.emit()
 
+    def set_err_msg(self, msg):
+        self.ui.msg_label.setVisible(True)
+        self.ui.msg_label.setText(msg)
 
 if __name__ == "__main__":
     app = QApplication([])

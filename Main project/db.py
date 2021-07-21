@@ -27,6 +27,7 @@ class Content:
 
         except Error as e:
             print(e)
+
     # noc = number of comment & nol = number of likes
     def content_insert(self, content_date, content_time, content_nol, content_noc, user_uuid):
         content_id = str(uuid.uuid4().hex)
@@ -57,7 +58,7 @@ class Content:
     def comment_insert(self, comment_content, comment_reply_id, content_id):
         check_id = self.check_content_id(content_id)
         check_reply_id = self.check_id_in_content_table(comment_reply_id)
-        if not(check_id and check_reply_id):
+        if not (check_id and check_reply_id):
             return False
 
         values_tuple = (comment_content, comment_reply_id, content_id)
@@ -71,15 +72,14 @@ class Content:
 
     def comment_numberOfComments(self, content_id):
         try:
-            noc = self.db_cursor.execute(constants.SELECT_NUMBER_OF_COMMENTSS_COMMENT, (content_id, ))
+            noc = self.db_cursor.execute(constants.SELECT_NUMBER_OF_COMMENTSS_COMMENT, (content_id,))
             return noc.fetchall()[0][0]
         except Error as e:
             print(e)
             return None
 
-
     def check_id_in_content_table(self, content_id):
-        selected_content = self.db_cursor.execute(constants.SELECT_RECORD_CONTENT, (content_id, ))
+        selected_content = self.db_cursor.execute(constants.SELECT_RECORD_CONTENT, (content_id,))
         selected_content = selected_content.fetchall()
         if len(selected_content) == 0:
             print('this content id does not exits.')
@@ -87,16 +87,16 @@ class Content:
         return True
 
     def check_content_id(self, content_id):
-        if not(self.check_id_in_content_table(content_id)):
+        if not (self.check_id_in_content_table(content_id)):
             return False
 
-        selected_post = self.db_cursor.execute(constants.SELECT_RECORD_POST, (content_id, ))
+        selected_post = self.db_cursor.execute(constants.SELECT_RECORD_POST, (content_id,))
         selected_post = selected_post.fetchall()
         if len(selected_post) > 0:
             print('this content id is used before.')
             return False
 
-        selected_comment = self.db_cursor.execute(constants.SELECT_RECORD_POST, (content_id, ))
+        selected_comment = self.db_cursor.execute(constants.SELECT_RECORD_POST, (content_id,))
         selected_comment = selected_comment.fetchall()
         if len(selected_comment) > 0:
             print('this content id is used before.')
@@ -104,31 +104,29 @@ class Content:
 
         return True
 
-
     def post_delete(self, content_id):
         try:
-            self.db_cursor.execute(constants.DELETE_RECORD_POST, (content_id, ))
-            self.db_cursor.execute(constants.DELETE_RECORD_CONTENT, (content_id, ))
+            self.db_cursor.execute(constants.DELETE_RECORD_POST, (content_id,))
+            self.db_cursor.execute(constants.DELETE_RECORD_CONTENT, (content_id,))
             self.db_connection.commit()
             return True
         except Error as e:
             print(e)
             return False
 
-
     def comment_delete(self, content_id):
         try:
-            self.db_cursor.execute(constants.DELETE_RECORD_COMMENT, (content_id, ))
-            self.db_cursor.execute(constants.DELETE_RECORD_CONTENT, (content_id, ))
+            self.db_cursor.execute(constants.DELETE_RECORD_COMMENT, (content_id,))
+            self.db_cursor.execute(constants.DELETE_RECORD_CONTENT, (content_id,))
             self.db_connection.commit()
         except Error as e:
             print(e)
             return False
 
-    #returns all users posts
+    # returns all users posts
     def post_select_userPosts(self, user_uuid):
         try:
-            posts = self.db_cursor.execute(constants.SELECT_ALL_RECORD_POST, (user_uuid, ))
+            posts = self.db_cursor.execute(constants.SELECT_ALL_RECORD_POST, (user_uuid,))
             posts = posts.fetchall()
             dict_post_list = []
             for post in posts:
@@ -142,9 +140,10 @@ class Content:
         except Error as e:
             print(e)
             return None
+
     def content_select_content_comments(self, content_id):
         try:
-            comments = self.db_cursor.execute(constants.SELECT_ALL_COMMENT, (content_id, ))
+            comments = self.db_cursor.execute(constants.SELECT_ALL_COMMENT, (content_id,))
             comments = comments.fetchall()
             dict_comment_list = []
             for comment in comments:
@@ -154,7 +153,7 @@ class Content:
                     'content_id': comment[2]
                 })
             return dict_comment_list
-                
+
         except Error as e:
             print(e)
             return None
@@ -179,11 +178,12 @@ class Content:
 
     def like_numberOfLikes(self, content_id):
         try:
-            nol = self.db_cursor.execute(constants.SELECT_NUMBER_OF_LIKES_LIKE, (content_id, ))
+            nol = self.db_cursor.execute(constants.SELECT_NUMBER_OF_LIKES_LIKE, (content_id,))
             return nol.fetchall()[0][0]
         except Error as e:
             print(e)
             return None
+
 
 class User:
 
@@ -197,7 +197,7 @@ class User:
         except Error as e:
             print(e)
 
-    #table creation
+    # table creation
     def initialise_User(self):
         try:
             self.db_cursor.execute(constants.CREATE_TABLE_USER)
@@ -208,7 +208,6 @@ class User:
         except Error as e:
             print(e)
 
-
     def user_insert(self, insert_table_values):
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_USER, insert_table_values)
@@ -218,14 +217,13 @@ class User:
             print(e)
             return False
 
-
     def user_delete(self, user_uuid, password):
         rv = self.user_select(user_uuid, password)
         if rv.__len__() == 0:
             return (False, 'NO SUCH RECORD FOUND!')
 
         try:
-            self.db_cursor.execute(constants.DELETE_RECORD_PROFILE, (user_uuid, ))
+            self.db_cursor.execute(constants.DELETE_RECORD_PROFILE, (user_uuid,))
             self.db_connection.commit()
         except Error as e:
             print(e)
@@ -240,7 +238,6 @@ class User:
             return (True, 'record was deleted successfully')
         else:
             return (False, 'we had a problem deleting your record, Try again!')
-
 
     def user_select(self, user_uuid, password):
         try:
@@ -258,7 +255,6 @@ class User:
             print(e)
             return None
 
-
     def user_update(self, user_uuid, user_email=None, user_password=None, user_token=None):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
         updated_values_with_fileds = ''
@@ -269,10 +265,10 @@ class User:
         if user_token != None:
             updated_values_with_fileds = updated_values_with_fileds + f'user_token = \'{user_token}\''
 
-        #to remoev the last probbable ','
+        # to remoev the last probbable ','
         u_len = len(updated_values_with_fileds)
         if updated_values_with_fileds[-1] == ',':
-            updated_values_with_fileds = updated_values_with_fileds[0:u_len-1]
+            updated_values_with_fileds = updated_values_with_fileds[0:u_len - 1]
 
         try:
             self.db_cursor.execute(f'UPDATE user SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
@@ -281,13 +277,12 @@ class User:
         except Error as e:
             return (False)
 
-
     def user_signUp(self, user_first_name, user_last_name, user_email, user_password):
-        
+
         if not (self.check_email(user_email)):
             print('invalid email!')
             return (False, None)
-        
+
         user_uuid = str(uuid.uuid4())
         user_token = self.tokenGenarator()
 
@@ -303,7 +298,7 @@ class User:
 
     def check_email(self, user_eamil):
         email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-        if(re.match(email_regex, user_eamil)):
+        if (re.match(email_regex, user_eamil)):
             return True
         else:
             return False
@@ -323,11 +318,13 @@ class User:
     def tokenGenarator(self):
         return secrets.token_urlsafe()
 
-
-
-    #PROFILE METHODS
-    def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
-        insert_table_values = (profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_number_of_connections, user_uuid)
+    # PROFILE METHODS
+    def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None,
+                       profile_country=None, profile_birthday=None, profile_address=None, profile_about=None,
+                       profile_number_of_connections=None):
+        insert_table_values = (
+        profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address,
+        profile_about, profile_number_of_connections, user_uuid)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
             self.db_connection.commit()
@@ -353,8 +350,9 @@ class User:
         }
         return profile_dict
 
-
-    def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_number_of_connections=None):
+    def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None,
+                       profile_country=None, profile_birthday=None, profile_address=None, profile_about=None,
+                       profile_number_of_connections=None):
         # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
         updated_values_with_fileds = ''
 
@@ -375,10 +373,10 @@ class User:
         if profile_number_of_connections != None:
             updated_values_with_fileds = updated_values_with_fileds + f'profile_number_of_connections = {profile_number_of_connections}'
 
-        #to remoev the last probbable ','
+        # to remoev the last probbable ','
         u_len = len(updated_values_with_fileds)
         if updated_values_with_fileds[-1] == ',':
-            updated_values_with_fileds = updated_values_with_fileds[0:u_len-1]
+            updated_values_with_fileds = updated_values_with_fileds[0:u_len - 1]
 
         try:
             self.db_cursor.execute(f'UPDATE profile SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
@@ -387,72 +385,69 @@ class User:
         except Error as e:
             return (False)
 
-
-
-    #CONNECTION METHODS
+    # CONNECTION METHODS
     def connection_numberOfConnections(self, user_uuid):
         noc = self.db_cursor.execute(constants.SELECT_NOC_CONNECTIONS, (user_uuid, user_uuid))
         return noc.fetchall()[0][0]
 
 
-
 class DB:
-    
+
     def __init__(self, db_name):
         try:
-            self.db_connection = sqlite3.connect(db_name)
+            self.db_connection = sqlite3.connect(constants.DB_NAME)
             self.user = User(self.db_connection)
             self.content = Content(self.db_connection)
-        
-            db_connection.close()
         except Error as e:
             print(e)
 
+    def close_connection(self):
+        self.db_connection.close()
 
 
 if __name__ == '__main__':
-    try:
-        db_connection = sqlite3.connect(constants.DB_NAME)
-        user = User(db_connection)
-        content = Content(db_connection)
-        a = user.user_signUp('moouod', 'sh',"moouodd@mail.com", "123")
-        # a = user.user_login("mad@mail", "123")
-        # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
-        # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
-        # a = user.user_delete('be49687e-be68-4f31-8feb-aac66fb2479b', '456')
+    # try:
+    #     db_connection = sqlite3.connect(constants.DB_NAME)
+    #     user = User(db_connection)
+    #     content = Content(db_connection)
+    #     a = user.user_signUp('moouod', 'sh',"moouodd@mail.com", "123")
+    #     # a = user.user_login("mad@mail", "123")
+    #     # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
+    #     # a = user.user_update(user_uuid='0e6b6077-0928-4439-b61a-393616bbd2e6', user_password='123456', user_token='wh')
+    #     # a = user.user_delete('be49687e-be68-4f31-8feb-aac66fb2479b', '456')
 
+    #     #profile test case
+    #     # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, '0e6b6077-0928-4439-b61a-393616bbd2e6')
+    #     # print(user.profile_insert(profile_value))
+    #     # a = user.profile_select('0e6b6077-0928-4439-b61a-393616bbd2e6')
+    #     # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
+    #     # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
 
-        #profile test case
-        # profile_value = ('moouod', 'shahrizi', 'ce student', 'iran', '2000/00/00', 'shiraz', 'nothing about me', 0, '0e6b6077-0928-4439-b61a-393616bbd2e6')
-        # print(user.profile_insert(profile_value))
-        # a = user.profile_select('0e6b6077-0928-4439-b61a-393616bbd2e6')
-        # a = user.profile_update('0e6b6077-0928-4439-b61a-393616bbd2e6', profile_first_name='moouod', profile_number_of_connections=8)
-        # a = db.select_profile('6c2dad19-134e-483a-ba3b-5b6262cfc9bc')
+    #     #connection test cases
+    #     # a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
 
-        #connection test cases
-        # a = user.connection_numberOfConnections('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     #content & post & comment test cases
+    #     # (content_id, content_date, content_time, content_nol, content_noc, user_uuid)
+    #     # a = content.content_insert('2021', '12:00', 0, 0, '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.post_insert('my first post', 0, 'cf66524d09c74d5b83dfe00386e29ba7')
+    #     # a = content.comment_insert('my first comment', '0002', '0001')
+    #     # a = content.post_delete('cf66524d09c74d5b83dfe00386e29ba8')
+    #     # a = content.comment_delete('0001')
+    #     # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.like_insert('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.like_delete('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.like_numberOfLikes('0001')
+    #     # a = content.comment_numberOfComments('0001')
+    #     # a = content.content_select_content_comments('0001')
 
-        #content & post & comment test cases
-        # (content_id, content_date, content_time, content_nol, content_noc, user_uuid)
-        # a = content.content_insert('2021', '12:00', 0, 0, '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.post_insert('my first post', 0, 'cf66524d09c74d5b83dfe00386e29ba7')
-        # a = content.comment_insert('my first comment', '0002', '0001')
-        # a = content.post_delete('cf66524d09c74d5b83dfe00386e29ba8')
-        # a = content.comment_delete('0001')
-        # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.like_insert('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.like_delete('0001', '5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        # a = content.like_numberOfLikes('0001')
-        # a = content.comment_numberOfComments('0001')
-        # a = content.content_select_content_comments('0001')
+    #     # print(a)
 
-        # print(a)
-        
-        # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
+    #     # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
 
+    #     print(a)
 
-        print(a)
-
-        db_connection.close()
-    except Error as e:
-        print(e)
+    #     db_connection.close()
+    # except Error as e:
+    #     print(e)
+    db = DB(constants.DB_NAME)
+    db.user.user_signUp('moouod', 'sh', "moouod@mail.com", "123")

@@ -1,7 +1,8 @@
 text.o
-.idea/*
-profile/.idea/*
-profile/__pycache__/*
-__pycache__/*
-LinkeInDB.db
-
+Main project/.idea/workspace.xml
+Main project/__pycache__/consts.cpython-38.pyc
+Main project/__pycache__/ui_Mainwindow.cpython-38.pyc
+Main project/login_com/__pycache__/login.cpython-38.pyc
+Main project/login_com/__pycache__/signup.cpython-38.pyc
+Main project/login_com/__pycache__/ui_login.cpython-38.pyc
+Main project/login_com/__pycache__/ui_signup.cpython-38.pyc

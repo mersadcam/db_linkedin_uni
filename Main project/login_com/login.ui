@@ -30,7 +30,7 @@
 color:rgb(1, 31, 54);\n</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="3,2,1,1,1,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="3,2,0,1,1,1,1">
     <property name="leftMargin">
      <number>25</number>
     </property>
@@ -127,6 +127,21 @@ color:rgb(1, 31, 54);</string>
        </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="msg_label">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red</string>
+      </property>
+      <property name="text">
+       <string>Invalid email or password.</string>
+      </property>
+     </widget>
     </item>
     <item>
      <spacer name="verticalSpacer_2">
