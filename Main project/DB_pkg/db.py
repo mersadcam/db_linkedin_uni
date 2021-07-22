@@ -145,6 +145,7 @@ class Content:
         except Error as e:
             print(e)
             return None
+    
     def content_select_content_comments(self, content_id):
         try:
             comments = self.db_cursor.execute(constants.SELECT_ALL_COMMENT, (content_id, ))
@@ -189,8 +190,20 @@ class Content:
             return None
 
     def post_get_user_connection_posts(self, user_uuid):
-
-        pass
+        try:
+            posts = self.db_cursor.execute(constants.SELECT_ALL_USER_CONNECTIONS_POSTS, (user_uuid, user_uuid))
+            posts = posts.fetchall()
+            dict_post_list = []
+            for post in posts:
+                dict_post_list.append({
+                    'post_content': post[0],
+                    'post_isFeatured': post[1],
+                    'content_id': post[2]
+                })
+            return dict_post_list
+        except Error as e:
+            print(e)
+            return e
 
 class User:
 
@@ -430,7 +443,25 @@ class User:
         noc = self.db_cursor.execute(constants.SELECT_NOC_CONNECTIONS, (user_uuid, user_uuid))
         return noc.fetchall()[0][0]
 
+    def connection_get_user_connections_uuid(self, user_uuid):
 
+        try:
+            uuid1_list = self.db_cursor.execute(constants.SELECT_UUID1_CONNECTIONS, (user_uuid, ))
+            uuid1_list = uuid1_list.fetchall()
+            uuid2_list = self.db_cursor.execute(constants.SELECT_UUID2_CONNECTIONS, (user_uuid, ))
+            uuid2_list = uuid2_list.fetchall()
+
+            final_uuid_list = []
+            for u in uuid1_list:
+                final_uuid_list.append(u[0])
+            for u in uuid2_list:
+                final_uuid_list.append(u[0])
+            
+            return final_uuid_list
+
+        except Error as e:
+            print(e)
+            return None
 
 class DB:
     
@@ -500,7 +531,11 @@ if __name__ == '__main__':
         # print(datetime.datetime.strptime('2000-01-01', '%Y-%m-%d').date())
 
         # a = user.profile_search('m')
-        # print(a)
+        # a = content.content_insert('2')
+        # a = user.connection_get_user_connections_uuid('0')
+        a = content.post_get_user_connection_posts('0')
+
+        print(a)
 
         db_connection.close()
     except Error as e:

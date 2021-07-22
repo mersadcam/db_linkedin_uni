@@ -91,14 +91,17 @@ SELECT_RECORD_SEARCH_PROFILE = """SELECT user_uuid, profile_first_name, profile_
 #**************************
 #connection table constants
 CREATE_TABLE_CONNECTIONS = """CREATE TABLE IF NOT EXISTS connections(
-                        user1_uuid text NOT NULL UNIQUE,
-                        user2_uuid text NOT NULL UNIQUE,
+                        user1_uuid text NOT NULL,
+                        user2_uuid text NOT NULL,
                         FOREIGN KEY (user1_uuid) REFERENCES user (user_uuid),
                         FOREIGN KEY (user2_uuid) REFERENCES user (user_uuid)
                         
 )"""
 
 SELECT_NOC_CONNECTIONS = 'SELECT COUNT(*) FROM connections WHERE user1_uuid = (?) OR user2_uuid = (?)'
+
+SELECT_UUID1_CONNECTIONS = 'SELECT user2_uuid FROM connections WHERE user1_uuid = (?)'
+SELECT_UUID2_CONNECTIONS = 'SELECT user1_uuid FROM connections WHERE user2_uuid = (?)'
 
 
 
@@ -129,9 +132,7 @@ CREATE_TABLE_COMMENT = """CREATE TABLE IF NOT EXISTS comment(
                         FOREIGN KEY (comment_reply_id) REFERENCES content (content_id)
 )"""
 
-INSERT_RECORD_CONTENT = """INSERT INTO content
-                            (content_id, content_date, content_time, user_uuid)
-                            Values(?, ?, ?, ?)"""
+INSERT_RECORD_CONTENT = """INSERT INTO content (content_id, content_date_time, user_uuid) Values(?, ?, ?)"""
 
 INSERT_RECORD_POST = """INSERT INTO post(post_content, post_isFeatured, content_id) VALUES(?, ?, ?)"""
 INSERT_RECORD_COMMENT = """INSERT INTO comment(comment_content, comment_reply_id, content_id) VALUES(?, ?, ?)"""
@@ -142,6 +143,11 @@ SELECT_ALL_RECORD_POST = """SELECT * FROM post WHERE content_id IN (SELECT conte
 SELECT_RECORD_COMMENT = """SELECT * FROM comment WHERE content_id = (?)"""
 SELECT_ALL_COMMENT = """SELECT * FROM comment WHERE comment_reply_id = (?)"""
 SELECT_NUMBER_OF_COMMENTSS_COMMENT = 'SELECT COUNT(*) FROM comment WHERE comment_reply_id = (?)'
+
+SELECT_ALL_USER_CONNECTIONS_POSTS = """SELECT * FROM post WHERE content_id IN 
+                            (SELECT content_id FROM content WHERE user_uuid IN 
+                            (SELECT user2_uuid FROM connections WHERE user1_uuid = (?)) OR
+                            user_uuid IN (SELECT user1_uuid FROM connections WHERE user2_uuid = (?)) ORDER BY content_date_time)"""
 
 DELETE_RECORD_CONTENT = 'DELETE FROM content WHERE content_id = (?)'
 DELETE_RECORD_POST = 'DELETE FROM post WHERE content_id = (?)'
