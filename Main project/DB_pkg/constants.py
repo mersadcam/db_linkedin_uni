@@ -58,7 +58,7 @@ SELECT_RECORD_LOGIN_USER = 'SELECT * FROM user WHERE  user_email = (?) AND user_
 UPDATE_CLEAR_TOKEN_USER = 'UPDATE user SET user_token = "" WHERE user_uuid = (?)'
 # UPDATE_RECORD_USER = 'UPDATE user SET user_password = (?) WHERE user_email = (?)'
 # UPDATE_RECORD_USER2 = 'UPDATE user SET (?) WHERE user_email = (?)'
-SELECT_ANY_FIELD_USER = ''
+
 
 
 
@@ -85,6 +85,8 @@ INSERT_RECORD_PROFILE = """INSERT INTO profile(profile_first_name, profile_last_
                                         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)"""
 SELECT_RECORD_PROFILE = 'SELECT * FROM profile WHERE user_uuid = (?)'
 DELETE_RECORD_PROFILE = 'DELETE FROM profile WHERE user_uuid = (?)'
+SELECT_RECORD_SEARCH_PROFILE = """SELECT user_uuid, profile_first_name, profile_last_name FROM profile WHERE
+                                 profile_first_name LIKE (?) OR profile.profile_last_name LIKE (?) LIMIT 5"""
 
 #**************************
 #connection table constants

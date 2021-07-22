@@ -410,6 +410,19 @@ class User:
         except Error as e:
             return (False)
 
+    def profile_search(self, serach_str):
+        search_phrase = f'{serach_str}%'
+        users_list = self.db_cursor.execute(constants.SELECT_RECORD_SEARCH_PROFILE, (search_phrase, search_phrase))
+        users_list = users_list.fetchall()
+        users_dict_list = []
+        for u in users_list:
+            users_dict_list.append({
+                'user_uuid': u[0],
+                'profile_first_name': u[1],
+                'profile_last_name': u[2]
+            })
+        return users_dict_list
+            
 
 
     #CONNECTION METHODS
@@ -485,6 +498,9 @@ if __name__ == '__main__':
         # print(b)
         # print(datetime.date(2000, 1, 1))
         # print(datetime.datetime.strptime('2000-01-01', '%Y-%m-%d').date())
+
+        # a = user.profile_search('m')
+        # print(a)
 
         db_connection.close()
     except Error as e:
