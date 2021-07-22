@@ -7,6 +7,7 @@ import constants
 import uuid
 import secrets
 import re
+import datetime
 
 
 class Content:
@@ -29,9 +30,10 @@ class Content:
         except Error as e:
             print(e)
     # noc = number of comment & nol = number of likes
-    def content_insert(self, content_date, content_time, user_uuid):
+    def content_insert(self, user_uuid):
+        content_date_time = datetime.datetime.now()
         content_id = str(uuid.uuid4().hex)
-        values_tuple = (content_id, content_date, content_time, user_uuid)
+        values_tuple = (content_id, content_date_time, user_uuid)
 
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_CONTENT, values_tuple)
@@ -186,6 +188,10 @@ class Content:
             print(e)
             return None
 
+    def post_get_user_connection_posts(self, user_uuid):
+
+        pass
+
 class User:
 
     def __init__(self, db_connection):
@@ -248,6 +254,10 @@ class User:
             user = self.db_cursor.execute(constants.SELECT_RECORD_USER, (user_uuid,))
             # return(self.db_cursor.fetchall())
             user = user.fetchall()
+
+            if len(user) == 0:
+                return None
+            
             user_dict = {
                 "user_uuid": user[0][0],
                 "user_email": user[0][1],
@@ -294,9 +304,10 @@ class User:
         user_values = (user_uuid, user_email, user_password, user_token)
         signup_flag = self.user_insert(user_values)
 
-        self.profile_insert(profile_first_name=user_first_name, profile_last_name=user_last_name, user_uuid=user_uuid)
+        
 
         if signup_flag:
+            self.profile_insert(profile_first_name=user_first_name, profile_last_name=user_last_name, user_uuid=user_uuid)
             return (True, user_token)
         else:
             return (False, constants.EMAIL_EXISTANCE_ERROR)
@@ -334,30 +345,7 @@ class User:
             # return (False, 'had problem adding your account! try again.')
             return (False, None)
 
-    # def user_select_any_field(self, user_uuid, user_email=False, user_password=False, user_token=False, select_all=False):
-    #     # self.cursor_1.execute(constants.UPDATE_RECORD_USER, (updated_values_with_fileds, user_email))
-    #     if select_all:
-    #         pass
-    #     updated_values_with_fileds = ''
-    #     if user_email != None:
-    #         updated_values_with_fileds = updated_values_with_fileds + f'user_email = \'{user_email}\','
-    #     if user_password != None:
-    #         updated_values_with_fileds = updated_values_with_fileds + f'user_password = \'{user_password}\','
-    #     if user_token != None:
-    #         updated_values_with_fileds = updated_values_with_fileds + f'user_token = \'{user_token}\''
-
-    #     #to remoev the last probbable ','
-    #     u_len = len(updated_values_with_fileds)
-    #     if updated_values_with_fileds[-1] == ',':
-    #         updated_values_with_fileds = updated_values_with_fileds[0:u_len-1]
-
-    #     try:
-    #         self.db_cursor.execute(f'UPDATE user SET {updated_values_with_fileds} WHERE user_uuid = \'{user_uuid}\'')
-    #         self.db_connection.commit()
-    #         return (True)
-    #     except Error as e:
-    #         return (False)
-
+   
     #PROFILE METHODS
     def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_link=None):
         insert_table_values = (profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_link, user_uuid)
@@ -373,15 +361,17 @@ class User:
     def profile_select(self, user_uuid):
         profile = self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_uuid,))
         profile = profile.fetchall()
+        profile_birthday_date_format = datetime.datetime.strptime(profile[0][4], '%Y-%m-%d').date()
+        # print(profile_birthday_date_format)
         profile_dict = {
             "profile_first_name": profile[0][0],
             "profile_last_name": profile[0][1],
             "profile_headline": profile[0][2],
             "profile_country": profile[0][3],
-            "profile_birthday": profile[0][4],
+            "profile_birthday": profile_birthday_date_format,
             "profile_address": profile[0][5],
             "profile_about": profile[0][6],
-            "profile_number_of_connections": profile[0][7],
+            "profile_link": profile[0][7],
 
         }
         return profile_dict
@@ -483,11 +473,18 @@ if __name__ == '__main__':
         # print(a)
         
         # a = content.post_select_userPosts('5b4deaa2-b056-44fb-97f2-f40ab3af9b54')
-        a = user.user_get_uuid_by_token('efyRrAG4ZjlK5Fr6RP6Mbw1WhCNqt3k1UpjWpF3ZzcM')
-        b = user.profile_select(a[1])
-
-        print(a)
-        print(b)
+        # a = user.user_get_uuid_by_token('efyRrAG4ZjlK5Fr6RP6Mbw1WhCNqt3k1UpjWpF3ZzcM')
+        # b = user.profile_select(a[1])
+        # user.profile_update(user_uuid='c28fcf46-ce52-43e7-827f-0b12d3fcab6a', profile_country='iran')
+        # a = user.user_signUp('moouod', 'sh', 'tree@gmail.com', '123')
+        # b = user.user_get_uuid_by_token(a)
+        # user.profile_update(user_uuid='4c881c40-33b6-4cab-93b3-0d2e51163a30', profile_birthday=datetime.date(2000, 1, 1))
+        # c = user.profile_select('4c881c40-33b6-4cab-93b3-0d2e51163a30')
+        
+        # print(c['profile_birthday'])
+        # print(b)
+        # print(datetime.date(2000, 1, 1))
+        # print(datetime.datetime.strptime('2000-01-01', '%Y-%m-%d').date())
 
         db_connection.close()
     except Error as e:

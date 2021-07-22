@@ -105,8 +105,7 @@ SELECT_NOC_CONNECTIONS = 'SELECT COUNT(*) FROM connections WHERE user1_uuid = (?
 #SHOULD WE ADD CONTENT TEXT OR NOT?
 CREATE_TABLE_CONTENT = """CREATE TABLE IF NOT EXISTS content(
                         content_id text PRIMARY KEY,
-                        content_date text,
-                        content_time text,                                    
+                        content_date_time text,
                         user_uuid text NOT NULL,
                         FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
 )"""
@@ -152,7 +151,7 @@ CREATE_TABLE_LIKE = """CREATE TABLE IF NOT EXISTS like(
                         content_id text NOT NULL,
                         user_uuid text NOT NULL,
                         FOREIGN KEY (content_id) REFERENCES content (content_id),
-                        FOREIGN KEY (user_uuid) REFERENCES user (user_uuid),
+                        FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
 )"""
 # PRIMARY KEY (user_uuid, content_id)
 
