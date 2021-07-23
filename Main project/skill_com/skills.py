@@ -1,8 +1,8 @@
-from ui_skills import Ui_Skills
+from skill_com.ui_skills import Ui_Skills
 from PySide6.QtGui import QFont
 from PySide6.QtCore import Signal, Slot, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QHBoxLayout
-from editSkills import EditSkills
+from skill_com.editSkills import EditSkills
 import sys
 
 # ('SKILL_NAME', 'SKILL_ID', SKILL_ENDORSEMENTS_NUMBER)
@@ -31,7 +31,7 @@ label_style_sheet = \
 
 class Skills(QMainWindow):
     switch_to_profile = Signal(str)
-    skill_edited = Signal(list, list)
+    skill_edited = Signal(str, list, list)
 
     def __init__(self, user_id=None, firstname=None, lastname=None, skills=None, all_skills=None):
         super(Skills, self).__init__()
@@ -136,10 +136,10 @@ class Skills(QMainWindow):
                 self.skills.append(skill)
 
         self.update_skill_box()
-        self.skill_edited.emit(added_list, removed_list)
+        self.skill_edited.emit(self.user_id, added_list, removed_list)
 
-if __name__ == "__main__":
-    app = QApplication([])
-    window = Skills('mersad', 'khalafi', skills_ex, all_skills_ex)
-    window.show()
-    sys.exit(app.exec())
+# if __name__ == "__main__":
+#     app = QApplication([])
+#     window = Skills('mersad', 'khalafi', skills_ex, all_skills_ex)
+#     window.show()
+#     sys.exit(app.exec())

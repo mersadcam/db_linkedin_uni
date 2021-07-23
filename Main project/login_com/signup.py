@@ -31,7 +31,7 @@ class Signup(QMainWindow):
         print('switch to login_com')
         self.switch_to_login.emit()
 
-    def set_msg_err_msg(self, msg):
+    def set_err_msg(self, msg):
         self.ui.msg_label.setText(msg)
         self.ui.msg_label.setVisible(True)
 

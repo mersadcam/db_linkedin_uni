@@ -34,6 +34,9 @@ class TableColumns:
     LIKE_CONTENT_ID = 'content_id'
     LIKE_USER_UUID = 'user_uuid'
 
+    SKILL_SKILL_NAME = 'skill_name'
+    SKILL_SKILL_ID = 'skill_id'
+
 
 
 DB_NAME = 'LinkeInDB.db'
@@ -166,6 +169,24 @@ CREATE_TABLE_LIKE = """CREATE TABLE IF NOT EXISTS like(
 INSERT_RECORD_LIKE = """INSERT INTO like(content_id, user_uuid) VALUES(?, ?)"""
 DELETE_RECORD_LIKE = 'DELETE FROM like WHERE content_id = (?) AND user_uuid = (?)'
 SELECT_NUMBER_OF_LIKES_LIKE = 'SELECT COUNT(*) FROM like WHERE content_id = (?)'
+
+CREATE_TABLE_SKILL = """CREATE TABLE IF NOT EXISTS skill(
+                        skill_name text NOT NULL,
+                        skill_id text PRIMARY KEY
+)"""
+SELECT_ALL_SKILLS = 'SELECT * FROM skill'
+INSERT_SKILL = 'INSERT INTO skill(skill_name, skill_id) VALUES(?, ?)'
+
+CREATE_TABLE_USER_SKILL = """CREATE TABLE IF NOT EXISTS user_skill(
+                              skill_id text NOT NULL,
+                              user_uuid text NOT NULL,
+                              FOREIGN KEY (skill_id) REFERENCES skill (skill_id),
+                              FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
+)"""
+
+INSERT_USER_SKILL = 'INSERT INTO user_skill(skill_id, user_uuid) VALUES(?, ?)'
+SELECT_ALL_USER_SKILLS = 'SELECT * FROM skill WHERE skill_id IN (SELECT skill_id FROM user_skill WHERE user_uuid = (?))'
+DELETE_USER_SKILL = 'DELETE FROM user_skill WHERE skill_id = (?) AND user_uuid = (?)'
 
 # create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
 #                         profile_id integer PRIMARY KEY,

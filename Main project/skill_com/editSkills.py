@@ -1,4 +1,4 @@
-from ui_editSkills import Ui_EditSkillsDialog
+from skill_com.ui_editSkills import Ui_EditSkillsDialog
 from PySide6.QtWidgets import QMainWindow, QDialog, QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 from PySide6.QtGui import Qt
 from PySide6.QtCore import Signal, Slot
