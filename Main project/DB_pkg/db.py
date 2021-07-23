@@ -223,6 +223,9 @@ class User:
             self.db_cursor.execute(constants.CREATE_TABLE_USER)
             self.db_cursor.execute(constants.CREATE_TABLE_PROFILE)
             self.db_cursor.execute(constants.CREATE_TABLE_CONNECTIONS)
+            self.db_cursor.execute(constants.CREATE_TABLE_SKILL)
+            self.skill_init()
+            self.db_cursor.execute(constants.CREATE_TABLE_USER_SKILL)
 
             self.db_connection.commit()
         except Error as e:
@@ -463,6 +466,37 @@ class User:
             print(e)
             return None
 
+    def skill_init(self):
+        skills = self.skill_get_all_skills()
+        if len(skills) == 0:
+            self.db_cursor.execute(constants.INSERT_SKILL, ('pyqt', '2231423'))
+            self.db_cursor.execute(constants.INSERT_SKILL, ('Qt', '121423'))
+            self.db_cursor.execute(constants.INSERT_SKILL, ('python', '12423'))
+            self.db_cursor.execute(constants.INSERT_SKILL, ('C++', '12314'))
+            self.db_cursor.execute(constants.INSERT_SKILL, ('Unity', '11423'))
+            self.db_connection.commit()
+
+    def skill_get_all_skills(self):
+        skills = self.db_cursor.execute(constants.SELECT_ALL_SKILLS)
+        skills = skills.fetchall()
+        return skills
+
+    def skill_insert_user_skill(self, user_uuid, skill_ids=[]):
+        for skill_id in skill_ids:
+            self.db_cursor.execute(constants.INSERT_USER_SKILL, (skill_id, user_uuid))
+        self.db_connection.commit()
+
+    def skill_get_all_user_skills(self, user_uuid):
+        us = self.db_cursor.execute(constants.SELECT_ALL_USER_SKILLS, (user_uuid))
+        us = us.fetchall()
+        return us
+
+    def skill_remove_user_skills(self, user_uuid, skill_ids=[]):
+        for skill in skill_ids:
+            self.db_cursor.execute(constants.DELETE_USER_SKILL, (skill, user_uuid))
+        self.db_connection.commit()
+            
+
 class DB:
     
     def __init__(self, db_name):
@@ -533,9 +567,16 @@ if __name__ == '__main__':
         # a = user.profile_search('m')
         # a = content.content_insert('2')
         # a = user.connection_get_user_connections_uuid('0')
-        a = content.post_get_user_connection_posts('0')
+        # a = content.post_get_user_connection_posts('0')
 
-        print(a)
+        # a = user.skill_get_all_skills()
+        # a = user.skill_insert_user_skill('1253', '1')
+        # a = user.skill_get_all_user_skills('0')
+        # user.skill_remove_user_skills('0', ['12423', '11423', '12314'])
+        # user.skill_insert_user_skill('0', ['12423', '11423', '12314'])
+
+
+        # print(a)
 
         db_connection.close()
     except Error as e:
