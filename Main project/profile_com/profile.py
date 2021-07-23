@@ -42,7 +42,6 @@ class Profile(QMainWindow):
         self.editInfo_dialog.edit_saved.connect(self.info_edited)
         self.editAbout_dialog.about_changed.connect(self.about_changed)
 
-
     # public method
     def set_contact_info(self, email, addr, birthday, link):
         self.contact_info_link = link
@@ -81,7 +80,7 @@ class Profile(QMainWindow):
                     country, addr, birthday, email_addr, link):
         # This one should be connected to center class slot
         self.editInfo.emit(firstname, lastname, headline, country, addr,
-                           birthday, addr, birthday, email_addr, link)
+                           birthday, email_addr, link)
         # If data changed successfully, changes will be showed by center class
 
     @Slot(str)
@@ -93,7 +92,7 @@ class Profile(QMainWindow):
     @Slot()
     def editAbout_pushButton_onClicked(self):
         self.editAbout_dialog.fill_field(self.ui.firstName_label.text(),
-                                         self.ui.lastName_label.text(),self.ui.aboutContent_label.text())
+                                         self.ui.lastName_label.text(), self.ui.aboutContent_label.text())
         self.editAbout_dialog.show()
 
     @Slot()
