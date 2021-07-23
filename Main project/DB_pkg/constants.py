@@ -122,7 +122,7 @@ CREATE_TABLE_POST = """CREATE TABLE IF NOT EXISTS post(
                         post_content text NOT NULL,
                         post_isFeatured integer NOT NULL,                    
                         content_id text NOT NULL UNIQUE,
-                        FOREIGN KEY (content_id) REFERENCES user (content_id)
+                        FOREIGN KEY (content_id) REFERENCES content (content_id)
 )"""
 
 #comment_reply_id is the id of the content which this comment is refering to

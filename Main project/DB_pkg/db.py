@@ -38,12 +38,24 @@ class Content:
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_CONTENT, values_tuple)
             self.db_connection.commit()
-            return True
+            return content_id
         except Error as e:
             print(e)
-            return False
+            return None
 
-    def post_insert(self, post_content, post_isFeatured, content_id):
+    def post_add(self, post_content, user_uuid):
+        content_id = self.content_insert(user_uuid)
+        self.db_connection.commit()
+        self.post_insert(post_content=post_content, content_id=content_id)
+        self.db_connection.commit()
+
+    def comment_add(self, comment_content, comment_reply_id, user_uuid):
+        content_id = self.content_insert(user_uuid)
+        self.db_connection.commit()
+        self.comment_insert(comment_content=comment_content, comment_reply_id=comment_reply_id, content_id=content_id)
+        self.db_connection.commit()
+
+    def post_insert(self, post_content, content_id, post_isFeatured=0):
         check_id = self.check_content_id(content_id)
         if not check_id:
             return False
@@ -220,6 +232,7 @@ class User:
     #table creation
     def initialise_User(self):
         try:
+            self.db_cursor.execute(constants.ENABLE_FOREIGN_KEY)
             self.db_cursor.execute(constants.CREATE_TABLE_USER)
             self.db_cursor.execute(constants.CREATE_TABLE_PROFILE)
             self.db_cursor.execute(constants.CREATE_TABLE_CONNECTIONS)
@@ -363,7 +376,7 @@ class User:
 
    
     #PROFILE METHODS
-    def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_link=None):
+    def profile_insert(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday='0001-01-01', profile_address=None, profile_about=None, profile_link=None):
         insert_table_values = (profile_first_name, profile_last_name, profile_headline, profile_country, profile_birthday, profile_address, profile_about, profile_link, user_uuid)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_PROFILE, insert_table_values)
@@ -574,9 +587,11 @@ if __name__ == '__main__':
         # a = user.skill_get_all_user_skills('0')
         # user.skill_remove_user_skills('0', ['12423', '11423', '12314'])
         # user.skill_insert_user_skill('0', ['12423', '11423', '12314'])
-
-
-        # print(a)
+        # user.user_signUp('amir', 'sh', 'amir@gmail.com', '123')
+        # user.profile_select('4ace9200-5b2f-4785-8833-2f4552edd62f')
+        # print(datetime.date(1, 1, 1))
+        # content.post_add('my first post', '0')
+        # content.comment_add('my first comment', '4e12fa604fc24f78bc9a65549b740504','0')
 
         db_connection.close()
     except Error as e:
