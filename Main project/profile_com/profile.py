@@ -20,6 +20,7 @@ class Profile(QMainWindow):
     editInfo = Signal(str, str, str, int, str, datetime.datetime, str, str)
     change_about = Signal(str)
     profile_back_to_home = Signal()
+    switch_to_skills = Signal(str)
 
     def __init__(self):
         super(Profile, self).__init__()
@@ -30,6 +31,7 @@ class Profile(QMainWindow):
         self.contactInfo_dialog = ContactInfo()
         self.editAbout_dialog = EditAbout_Dialog()
 
+        self.user_id = None
         self.contact_info_email = None
         self.contact_info_addr = None
         self.contact_info_bd = None
@@ -39,8 +41,14 @@ class Profile(QMainWindow):
         self.ui.editInfo_pushButton.clicked.connect(self.editInfo_pushButton_onClicked)
         self.ui.contactInfo_pushButton.clicked.connect(self.contactInfo_pushButton_onClicked)
         self.ui.editAbout_pushButton.clicked.connect(self.editAbout_pushButton_onClicked)
+        self.ui.skills_pushButton.clicked.connect(self.skills_pushButton_onClicked)
         self.editInfo_dialog.edit_saved.connect(self.info_edited)
         self.editAbout_dialog.about_changed.connect(self.about_changed)
+
+    def setup(self, user_id, is_owner):
+        self.user_id = user_id
+        self.ui.editInfo_pushButton.setVisible(is_owner)
+        self.ui.editAbout_pushButton.setVisible(is_owner)
 
     # public method
     def set_contact_info(self, email, addr, birthday, link):
@@ -109,7 +117,7 @@ class Profile(QMainWindow):
 
     @Slot()
     def skills_pushButton_onClicked(self):
-        pass
+        self.skills_pushButton_onClicked.emit(self.user_id)
 
     @Slot()
     def background_pushButton_onClicked(self):

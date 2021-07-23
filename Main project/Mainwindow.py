@@ -5,6 +5,7 @@ from PySide6.QtCore import Signal, Slot
 from PySide6 import QtGui
 from login_com.login import Login
 from login_com.signup import Signup
+from skill_com.skills import Skills
 from profile_com.profile import Profile
 from db import DB
 from consts import Messages, DB_NAME, debug, Columns
@@ -23,6 +24,7 @@ class Mainwindow(QMainWindow):
         self.login = Login()
         self.signup = Signup()
         self.profile = Profile()
+        self.skills = Skills()
 
         # Attr:
         self.own_uuid = None
@@ -56,6 +58,8 @@ class Mainwindow(QMainWindow):
         self.ui.profile_widget.mousePressEvent = self.switch_to_own_profile
         self.profile.editInfo.connect(self.editUserProfile)
         self.profile.change_about.connect(self.editAbout)
+        self.skills.switch_to_profile.connect(self.switch_to_profile)
+        self.skills.skills_pushButton_onClicked.connect()
         # self.ui.profile_widget.
 
     # Public slots:
@@ -94,12 +98,36 @@ class Mainwindow(QMainWindow):
     @Slot()
     def switch_to_own_profile(self, event):
         print("Switch to profile")
+        self.profile.setup(self.own_uuid, True)
         self.profile.set_connection_numbers(self.own_profile_data['profile_number_of_connections'])
         self.profile.set_name(self.own_profile_data[Columns.FIRSTNAME],
                               self.own_profile_data[Columns.LASTNAME])
         self.profile.set_headline_label(self.own_profile_data[Columns.HEADLINE])
         self.profile.set_about_content(self.own_profile_data[Columns.ABOUT])
+        self.profile.set_contact_info(self.own_profile_data[Columns.EMAIL], self.own_profile_data[Columns.ADDR],
+                                      self.own_profile_data[Columns.BIRTHDAY], self.own_profile_data[Columns.LINK])
         self.central_widget.setCurrentWidget(self.profile_widget)
+
+    @Slot(str)
+    def switch_to_profile(self, user_id):
+        if user_id == self.own_uuid:
+            self.switch_to_own_profile()
+        else:
+            self.profile.setup(user_id, False)
+            profile_data = self.db.user.profile_select(user_id)
+            user_data = self.db.user.user_select(user_id)
+            self.profile.set_connection_numbers(profile_data['profile_number_of_connections'])
+            self.profile.set_name(profile_data[Columns.FIRSTNAME], profile_data[Columns.LASTNAME])
+            self.profile.set_headline_label(profile_data[Columns.HEADLINE])
+            self.profile.set_about_content(profile_data[Columns.ABOUT])
+            self.profile.set_contact_info(user_data[Columns.EMAIL], profile_data[Columns.ADDR],
+                                          profile_data[Columns.BIRTHDAY], profile_data[Columns.LINK])
+            self.central_widget.setCurrentWidget(self.profile_widget)
+
+
+    @Slot(str)
+    def switch_to_skills(self, user_id):
+        self.db.user
 
     @Slot()
     def switch_to_home(self):

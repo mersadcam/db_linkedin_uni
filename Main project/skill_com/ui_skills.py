@@ -12,7 +12,9 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-import resources.resources_rc
+import resources_rc
+import resources_rc
+import resources_rc
 
 class Ui_Skills(object):
     def setupUi(self, Skills):
@@ -29,17 +31,17 @@ class Ui_Skills(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.backup_pushButton = QPushButton(self.centralwidget)
-        self.backup_pushButton.setObjectName(u"backup_pushButton")
-        self.backup_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
-        self.backup_pushButton.setStyleSheet(u"")
+        self.back_pushButton = QPushButton(self.centralwidget)
+        self.back_pushButton.setObjectName(u"back_pushButton")
+        self.back_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.back_pushButton.setStyleSheet(u"")
         icon = QIcon()
         icon.addFile(u":/images/back.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.backup_pushButton.setIcon(icon)
-        self.backup_pushButton.setIconSize(QSize(28, 28))
-        self.backup_pushButton.setFlat(True)
+        self.back_pushButton.setIcon(icon)
+        self.back_pushButton.setIconSize(QSize(28, 28))
+        self.back_pushButton.setFlat(True)
 
-        self.horizontalLayout_4.addWidget(self.backup_pushButton)
+        self.horizontalLayout_4.addWidget(self.back_pushButton)
 
         self.label_4 = QLabel(self.centralwidget)
         self.label_4.setObjectName(u"label_4")
@@ -112,7 +114,7 @@ class Ui_Skills(object):
 
     def retranslateUi(self, Skills):
         Skills.setWindowTitle(QCoreApplication.translate("Skills", u"MainWindow", None))
-        self.backup_pushButton.setText("")
+        self.back_pushButton.setText("")
         self.label_4.setText(QCoreApplication.translate("Skills", u"Skills and endorsment", None))
         self.edit_pushButton.setText("")
     # retranslateUi
