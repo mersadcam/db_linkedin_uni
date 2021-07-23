@@ -25,5 +25,9 @@ class EditAbout_Dialog(QDialog):
 
     @Slot()
     def save_pushButton_onClicked(self):
-        self.about_changed.emit(str(self.ui.about_plainTextEdit.toPlainText()))
+        about = self.ui.about_plainTextEdit.toPlainText()
+        if about.replace(' ', '') != "":
+            self.about_changed.emit(about)
+
         self.cancel_pushButton_onClicked()
+

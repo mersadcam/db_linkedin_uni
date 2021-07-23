@@ -100,6 +100,15 @@ class Ui_signup(object):
 
         self.verticalLayout.addLayout(self.gridLayout)
 
+        self.msg_label = QLabel(self.centralwidget)
+        self.msg_label.setObjectName(u"msg_label")
+        font1 = QFont()
+        font1.setPointSize(12)
+        self.msg_label.setFont(font1)
+        self.msg_label.setStyleSheet(u"color:red")
+
+        self.verticalLayout.addWidget(self.msg_label)
+
         self.verticalSpacer = QSpacerItem(17, 25, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -107,9 +116,9 @@ class Ui_signup(object):
         self.signup_pushButton = QPushButton(self.centralwidget)
         self.signup_pushButton.setObjectName(u"signup_pushButton")
         self.signup_pushButton.setMinimumSize(QSize(0, 50))
-        font1 = QFont()
-        font1.setPointSize(17)
-        self.signup_pushButton.setFont(font1)
+        font2 = QFont()
+        font2.setPointSize(17)
+        self.signup_pushButton.setFont(font2)
         self.signup_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.signup_pushButton.setStyleSheet(u"QPushButton{\n"
 "color:white;\n"
@@ -167,10 +176,10 @@ class Ui_signup(object):
 
         self.verticalLayout.setStretch(0, 5)
         self.verticalLayout.setStretch(1, 2)
-        self.verticalLayout.setStretch(2, 1)
         self.verticalLayout.setStretch(3, 1)
         self.verticalLayout.setStretch(4, 1)
         self.verticalLayout.setStretch(5, 1)
+        self.verticalLayout.setStretch(6, 1)
         signup.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(signup)
         self.menubar.setObjectName(u"menubar")
@@ -192,6 +201,7 @@ class Ui_signup(object):
         self.label_firstname.setText(QCoreApplication.translate("signup", u"First name", None))
         self.label_lastname.setText(QCoreApplication.translate("signup", u"Last name", None))
         self.label_email.setText(QCoreApplication.translate("signup", u"Email", None))
+        self.msg_label.setText(QCoreApplication.translate("signup", u"Email address has been used before.", None))
         self.signup_pushButton.setText(QCoreApplication.translate("signup", u"sign up", None))
         self.label.setText(QCoreApplication.translate("signup", u"Do you have account?", None))
         self.login_pushButton.setText(QCoreApplication.translate("signup", u"Login", None))

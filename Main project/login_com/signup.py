@@ -15,7 +15,7 @@ class Signup(QMainWindow):
 
         self.ui.signup_pushButton.clicked.connect(self.signup_pushButton_onClicked)
         self.ui.login_pushButton.clicked.connect(self.login_pushButton_onClicked)
-
+        self.ui.msg_label.setVisible(False)
     @Slot()
     def signup_pushButton_onClicked(self):
         # print("signup")
@@ -31,6 +31,9 @@ class Signup(QMainWindow):
         print('switch to login_com')
         self.switch_to_login.emit()
 
+    def set_msg_err_msg(self, msg):
+        self.ui.msg_label.setText(msg)
+        self.ui.msg_label.setVisible(True)
 
 if __name__ == "__main__":
     app = QApplication([])

@@ -76,6 +76,15 @@ class Ui_login(object):
 
         self.verticalLayout.addLayout(self.gridLayout)
 
+        self.msg_label = QLabel(self.centralwidget)
+        self.msg_label.setObjectName(u"msg_label")
+        font1 = QFont()
+        font1.setPointSize(12)
+        self.msg_label.setFont(font1)
+        self.msg_label.setStyleSheet(u"color:red")
+
+        self.verticalLayout.addWidget(self.msg_label)
+
         self.verticalSpacer_2 = QSpacerItem(17, 53, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer_2)
@@ -142,10 +151,10 @@ class Ui_login(object):
 
         self.verticalLayout.setStretch(0, 3)
         self.verticalLayout.setStretch(1, 2)
-        self.verticalLayout.setStretch(2, 1)
         self.verticalLayout.setStretch(3, 1)
         self.verticalLayout.setStretch(4, 1)
         self.verticalLayout.setStretch(5, 1)
+        self.verticalLayout.setStretch(6, 1)
         login.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(login)
         self.menubar.setObjectName(u"menubar")
@@ -165,6 +174,7 @@ class Ui_login(object):
         self.label_login.setText(QCoreApplication.translate("login", u"Login to Linkedin", None))
         self.label_email.setText(QCoreApplication.translate("login", u"Email", None))
         self.label_password.setText(QCoreApplication.translate("login", u"password", None))
+        self.msg_label.setText(QCoreApplication.translate("login", u"Invalid email or password.", None))
         self.login_pushButton.setText(QCoreApplication.translate("login", u"login", None))
         self.label_dont_have_acc.setText(QCoreApplication.translate("login", u"Don't have an account?", None))
         self.signup_pushButton.setText(QCoreApplication.translate("login", u"Sign up", None))

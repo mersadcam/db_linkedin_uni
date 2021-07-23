@@ -6,6 +6,7 @@ from profile_com.contactInfo import ContactInfo
 from profile_com.editAbout import EditAbout_Dialog
 import sys
 import datetime
+from consts import Messages
 
 data = {
     "about-content": '''
@@ -18,6 +19,7 @@ data = {
 class Profile(QMainWindow):
     editInfo = Signal(str, str, str, int, str, datetime.datetime, str, str)
     change_about = Signal(str)
+    profile_back_to_home = Signal()
 
     def __init__(self):
         super(Profile, self).__init__()
@@ -49,13 +51,18 @@ class Profile(QMainWindow):
 
     # Ui set Methods:
     def set_connection_numbers(self, connection_numbers):
+
         text = self.ui.connections_pushButton.text()
+        if connection_numbers is None:
+            connection_numbers = 0
         self.ui.connections_pushButton.setText(f"{connection_numbers} {text}")
 
     def set_country(self, country):
         self.ui.country_label.setText(country)
 
-    def set_name(self, first_name, last_name):
+    def set_name(self, first_name: str, last_name: str):
+        first_name = first_name[0].upper() + first_name[1:]
+        last_name = last_name[0].upper() + last_name[1:]
         self.ui.firstName_label.setText(first_name)
         self.ui.lastName_label.setText(last_name)
 
@@ -63,6 +70,8 @@ class Profile(QMainWindow):
         self.ui.aboutContent_label.setText(about_content)
 
     def set_headline_label(self, headline):
+        if headline is None:
+            headline = Messages.DEFAULT_HEAD_LINE
         self.ui.headline_label.setText(headline)
 
     # Public slots:
@@ -71,7 +80,7 @@ class Profile(QMainWindow):
                     country, addr, birthday, email_addr, link):
         # This one should be connected to center class slot
         self.editInfo.emit(firstname, lastname, headline, country, addr,
-                           birthday, addr, birthday, email_addr, link)
+                           birthday, email_addr, link)
         # If data changed successfully, changes will be showed by center class
 
     @Slot(str)
@@ -83,7 +92,7 @@ class Profile(QMainWindow):
     @Slot()
     def editAbout_pushButton_onClicked(self):
         self.editAbout_dialog.fill_field(self.ui.firstName_label.text(),
-                                         self.ui.lastName_label.text(),self.ui.aboutContent_label.text())
+                                         self.ui.lastName_label.text(), self.ui.aboutContent_label.text())
         self.editAbout_dialog.show()
 
     @Slot()
@@ -121,6 +130,10 @@ class Profile(QMainWindow):
         self.contactInfo_dialog.fill_fields(firstname, lastname, headline, country, self.contact_info_addr,
                                             self.contact_info_bd, self.contact_info_email, self.contact_info_link)
         self.contactInfo_dialog.show()
+
+    @Slot()
+    def back_pushButton_onClicked(self):
+        self.profile_back_to_home.emit()
 
     @Slot()
     def connections_pushButton_onClicked(self):

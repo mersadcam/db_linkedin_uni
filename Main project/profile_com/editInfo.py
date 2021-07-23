@@ -56,11 +56,14 @@ class EditInfo(QDialog):
         self.ui = Ui_EditInfoDialog()
         self.ui.setupUi(self)
 
-        for i in range(1800, 2022):
-            self.ui.bd_year_comboBox.setItemText(i - 1800, str(i))
+        items = []
+        for i in range(1900, 2010):
+            items.append(str(i))
+        self.ui.bd_year_comboBox.addItems(items)
 
         self.ui.cancel_pushButton.clicked.connect(self.cancel_pushButton_onClicked)
         self.ui.save_pushButton.clicked.connect(self.save_pushButton_onClicked)
+        self.ui.emailAddr_lineEdit.textChanged.connect(self.emailChecker_onChanged)
 
     def fill_fields(self, firstname, lastname, headline, country,
                     addr, birthday: datetime.datetime, email_addr, link):
@@ -89,8 +92,12 @@ class EditInfo(QDialog):
         country = Country.case(ui.country_comboBox.currentIndex())
         headline = ui.headline_lineEdit.text()
         addr = ui.addr_plainTextEdit.toPlainText()
-        birthday = datetime.datetime(int(ui.bd_year_comboBox.currentText()),
-                                     ui.bd_month_comboBox.currentIndex() + 1, int(ui.bd_day_comboBox.currentText()))
+        try:
+            birthday = datetime.datetime(int(ui.bd_year_comboBox.currentText()),
+                                         ui.bd_month_comboBox.currentIndex() + 1, int(ui.bd_day_comboBox.currentText()))
+        except:
+            birthday = None
+
         email_addr = ui.emailAddr_lineEdit.text()
         link = ui.link_lineEdit.text()
         self.edit_saved.emit(firstname, lastname, headline, country, addr, birthday, email_addr, link)
@@ -99,3 +106,15 @@ class EditInfo(QDialog):
     @Slot()
     def cancel_pushButton_onClicked(self):
         self.hide()
+
+    @Slot()
+    def emailChecker_onChanged(self):
+        text = self.ui.emailAddr_lineEdit.text()
+        print(text)
+        if '@' in text:
+            if '.' in text.split('@')[1]:
+                self.ui.save_pushButton.setEnabled(True)
+                return
+        self.ui.save_pushButton.setEnabled(False)
+
+

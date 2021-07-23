@@ -12,7 +12,7 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-import resources
+import resources.resources_rc
 
 class Ui_Mainwindow(object):
     def setupUi(self, Mainwindow):
@@ -36,46 +36,49 @@ class Ui_Mainwindow(object):
         self.profile_widget.setStyleSheet(u"QWidget#profile_widget{border:1px solid rgb(48, 162, 249)}")
         self.horizontalLayout_4 = QHBoxLayout(self.profile_widget)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.label = QLabel(self.profile_widget)
-        self.label.setObjectName(u"label")
-        self.label.setMinimumSize(QSize(101, 101))
-        self.label.setMaximumSize(QSize(101, 101))
-        self.label.setCursor(QCursor(Qt.PointingHandCursor))
-        self.label.setPixmap(QPixmap(u":/images/User-Profile-PNG-Image.png"))
-        self.label.setScaledContents(True)
+        self.img_label = QLabel(self.profile_widget)
+        self.img_label.setObjectName(u"img_label")
+        self.img_label.setMinimumSize(QSize(95, 95))
+        self.img_label.setMaximumSize(QSize(95, 95))
+        self.img_label.setCursor(QCursor(Qt.PointingHandCursor))
+        self.img_label.setPixmap(QPixmap(u":/images/User-Profile-PNG-Image.png"))
+        self.img_label.setScaledContents(True)
+        self.img_label.setAlignment(Qt.AlignCenter)
+        self.img_label.setWordWrap(False)
+        self.img_label.setIndent(0)
 
-        self.horizontalLayout_4.addWidget(self.label)
+        self.horizontalLayout_4.addWidget(self.img_label)
 
         self.verticalLayout_4 = QVBoxLayout()
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_2 = QLabel(self.profile_widget)
-        self.label_2.setObjectName(u"label_2")
+        self.firstname_label = QLabel(self.profile_widget)
+        self.firstname_label.setObjectName(u"firstname_label")
         font = QFont()
         font.setPointSize(11)
-        self.label_2.setFont(font)
+        self.firstname_label.setFont(font)
 
-        self.horizontalLayout_3.addWidget(self.label_2)
+        self.horizontalLayout_3.addWidget(self.firstname_label)
 
-        self.label_4 = QLabel(self.profile_widget)
-        self.label_4.setObjectName(u"label_4")
-        self.label_4.setFont(font)
+        self.lastname_label = QLabel(self.profile_widget)
+        self.lastname_label.setObjectName(u"lastname_label")
+        self.lastname_label.setFont(font)
 
-        self.horizontalLayout_3.addWidget(self.label_4)
+        self.horizontalLayout_3.addWidget(self.lastname_label)
 
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
 
-        self.plainTextEdit = QPlainTextEdit(self.profile_widget)
-        self.plainTextEdit.setObjectName(u"plainTextEdit")
-        self.plainTextEdit.setStyleSheet(u"border:none;")
-        self.plainTextEdit.setReadOnly(True)
-        self.plainTextEdit.setMaximumBlockCount(0)
-        self.plainTextEdit.setBackgroundVisible(False)
-        self.plainTextEdit.setCenterOnScroll(False)
+        self.headline_plainTextEdit = QPlainTextEdit(self.profile_widget)
+        self.headline_plainTextEdit.setObjectName(u"headline_plainTextEdit")
+        self.headline_plainTextEdit.setStyleSheet(u"border:none;")
+        self.headline_plainTextEdit.setReadOnly(True)
+        self.headline_plainTextEdit.setMaximumBlockCount(0)
+        self.headline_plainTextEdit.setBackgroundVisible(False)
+        self.headline_plainTextEdit.setCenterOnScroll(False)
 
-        self.verticalLayout_4.addWidget(self.plainTextEdit)
+        self.verticalLayout_4.addWidget(self.headline_plainTextEdit)
 
         self.verticalLayout_4.setStretch(0, 1)
 
@@ -104,7 +107,7 @@ class Ui_Mainwindow(object):
 "{\n"
 "	border:1px solid rgb(48, 162, 249);\n"
 "	border-radius:5px;\n"
-"	background:rgba(68, 170, 248, 56);\n"
+"	background:rgba(68, 170, 248, 35);\n"
 "}")
         icon = QIcon()
         icon.addFile(u":/images/search-icon.png", QSize(), QIcon.Normal, QIcon.Off)
@@ -145,12 +148,12 @@ class Ui_Mainwindow(object):
 
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(0, 45))
-        self.pushButton.setFont(font)
-        self.pushButton.setCursor(QCursor(Qt.PointingHandCursor))
-        self.pushButton.setStyleSheet(u"QPushButton{\n"
+        self.newPost_pushButton = QPushButton(self.centralwidget)
+        self.newPost_pushButton.setObjectName(u"newPost_pushButton")
+        self.newPost_pushButton.setMinimumSize(QSize(0, 45))
+        self.newPost_pushButton.setFont(font)
+        self.newPost_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.newPost_pushButton.setStyleSheet(u"QPushButton{\n"
 "color:white;\n"
 "border:1px solid white;\n"
 "border-radius:5px;\n"
@@ -163,10 +166,10 @@ class Ui_Mainwindow(object):
 "	border-radius:5px;\n"
 "	background:rgb(48, 162, 249);\n"
 "}")
-        self.pushButton.setIconSize(QSize(25, 25))
-        self.pushButton.setFlat(True)
+        self.newPost_pushButton.setIconSize(QSize(25, 25))
+        self.newPost_pushButton.setFlat(True)
 
-        self.verticalLayout_2.addWidget(self.pushButton)
+        self.verticalLayout_2.addWidget(self.newPost_pushButton)
 
         self.verticalLayout_2.setStretch(0, 1)
         self.verticalLayout_2.setStretch(2, 3)
@@ -180,7 +183,7 @@ class Ui_Mainwindow(object):
         self.post_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 700, 786))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 706, 786))
         self.verticalLayout_3 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.widget_2 = QWidget(self.scrollAreaWidgetContents)
@@ -214,14 +217,14 @@ class Ui_Mainwindow(object):
 
     def retranslateUi(self, Mainwindow):
         Mainwindow.setWindowTitle(QCoreApplication.translate("Mainwindow", u"MainWindow", None))
-        self.label.setText("")
-        self.label_2.setText(QCoreApplication.translate("Mainwindow", u"Firstname", None))
-        self.label_4.setText(QCoreApplication.translate("Mainwindow", u"Lastname", None))
-        self.plainTextEdit.setPlainText(QCoreApplication.translate("Mainwindow", u"Headline...\n"
+        self.img_label.setText("")
+        self.firstname_label.setText(QCoreApplication.translate("Mainwindow", u"Firstname", None))
+        self.lastname_label.setText(QCoreApplication.translate("Mainwindow", u"Lastname", None))
+        self.headline_plainTextEdit.setPlainText(QCoreApplication.translate("Mainwindow", u"Headline...\n"
 "", None))
         self.search_lineEdit.setPlaceholderText(QCoreApplication.translate("Mainwindow", u"Search ...", None))
         self.pushButton_2.setText("")
         self.label_5.setText(QCoreApplication.translate("Mainwindow", u"Suggestion", None))
-        self.pushButton.setText(QCoreApplication.translate("Mainwindow", u"New post", None))
+        self.newPost_pushButton.setText(QCoreApplication.translate("Mainwindow", u"New post", None))
     # retranslateUi
 
