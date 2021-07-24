@@ -1,6 +1,7 @@
-from ui_editSkills import Ui_EditSkillsDialog
+from skill_com.ui_editSkills import Ui_EditSkillsDialog
 from PySide6.QtWidgets import QMainWindow, QDialog, QWidget, QVBoxLayout, QHBoxLayout, QPushButton
 from PySide6.QtGui import Qt
+from PySide6.QtCore import Signal, Slot
 
 skills_ex = [
     ('Qt', '1231423')
@@ -26,6 +27,8 @@ button_style_sheet = \
 
 
 class EditSkills(QDialog):
+    saved_changes = Signal(list, list)
+
     def __init__(self, firstname, lastname, skills, all_skills):
         super(EditSkills, self).__init__()
         self.ui = Ui_EditSkillsDialog()
@@ -106,7 +109,10 @@ class EditSkills(QDialog):
         self.ui.scrollArea.setWidget(widget)
 
     def save_pushButton_clicked(self):
-        #emit removed list and add list
+        # emit removed list and add list
+        self.saved_changes(self.saved_changes, self.removed_skills)
+        self.added_skills = []
+        self.removed_skills = []
         self.cancel_pushButton_clicked()
 
     def cancel_pushButton_clicked(self):

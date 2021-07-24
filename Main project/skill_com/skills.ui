@@ -34,7 +34,7 @@ color:rgb(1, 31, 54);\n</string>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QPushButton" name="backup_pushButton">
+       <widget class="QPushButton" name="back_pushButton">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>

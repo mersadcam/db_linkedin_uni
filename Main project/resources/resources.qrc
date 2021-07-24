@@ -7,5 +7,9 @@
     <file>search-icon.png</file>
     <file>plus.png</file>
     <file>back.png</file>
+    <file>eye.png</file>
+    <file>like-fill.png</file>
+    <file>like-empty.png</file>
+    <file>comment.png</file>
   </qresource>
 </RCC>

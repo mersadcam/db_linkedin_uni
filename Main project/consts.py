@@ -15,6 +15,7 @@ class Columns:
     BIRTHDAY = 'profile_birthday'
     ADDR = 'profile_address'
     ABOUT = 'profile_about'
+    LINK = 'profile_link'
 
     # User:
     EMAIL = 'user_email'
