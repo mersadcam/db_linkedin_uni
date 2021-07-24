@@ -479,6 +479,14 @@ class User:
             print(e)
             return None
 
+    def connection_add(self, user1_uuid, user2_uuid):
+        self.db_cursor.execute(constants.INSERT_RECORD_CONNECTIONS, (user1_uuid, user2_uuid))
+        self.db_connection.commit()
+
+    def connection_remove(self, user1_uuid, user2_uuid):
+        self.db_cursor.execute(constants.DELETE_RECORD_CONNECTIONS, (user1_uuid, user2_uuid))
+        self.db_connection.commit()
+
     def skill_init(self):
         skills = self.skill_get_all_skills()
         if len(skills) == 0:
