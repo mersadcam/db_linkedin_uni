@@ -109,7 +109,7 @@ color:rgb(1, 31, 54);\n</string>
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="edit_pushButton">
+       <widget class="QPushButton" name="add_pushButton">
         <property name="cursor">
          <cursorShape>PointingHandCursor</cursorShape>
         </property>
@@ -126,7 +126,7 @@ color:rgb(1, 31, 54);\n</string>
         </property>
         <property name="icon">
          <iconset resource="../resources/resources.qrc">
-          <normaloff>:/images/edit_icon2.png</normaloff>:/images/edit_icon2.png</iconset>
+          <normaloff>:/images/plus.png</normaloff>:/images/plus.png</iconset>
         </property>
         <property name="iconSize">
          <size>

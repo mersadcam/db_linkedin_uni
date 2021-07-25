@@ -12,6 +12,7 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import resources_rc
 
 class Ui_backgroundWidget(object):
     def setupUi(self, backgroundWidget):
@@ -26,7 +27,8 @@ class Ui_backgroundWidget(object):
 "}")
         self.verticalLayout = QVBoxLayout(backgroundWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(10, 10, 10, 10)
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.title_label = QLabel(backgroundWidget)
         self.title_label.setObjectName(u"title_label")
         font = QFont()
@@ -34,7 +36,48 @@ class Ui_backgroundWidget(object):
         font.setBold(True)
         self.title_label.setFont(font)
 
-        self.verticalLayout.addWidget(self.title_label)
+        self.horizontalLayout_3.addWidget(self.title_label)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
+
+        self.remove_pushButton = QPushButton(backgroundWidget)
+        self.remove_pushButton.setObjectName(u"remove_pushButton")
+        self.remove_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.remove_pushButton.setStyleSheet(u"QPushButton:hover\n"
+"{\n"
+"	border:1px solid grey;\n"
+"	border-radius:5px;\n"
+"	background:rgba(214, 239, 255, 231);\n"
+"}\n"
+"")
+        icon = QIcon()
+        icon.addFile(u":/images/remove.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.remove_pushButton.setIcon(icon)
+        self.remove_pushButton.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.remove_pushButton)
+
+        self.edit_pushButton = QPushButton(backgroundWidget)
+        self.edit_pushButton.setObjectName(u"edit_pushButton")
+        self.edit_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.edit_pushButton.setStyleSheet(u"QPushButton:hover\n"
+"{\n"
+"	border:1px solid grey;\n"
+"	border-radius:5px;\n"
+"	background:rgba(214, 239, 255, 231);\n"
+"}")
+        icon1 = QIcon()
+        icon1.addFile(u":/images/edit_icon2.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.edit_pushButton.setIcon(icon1)
+        self.edit_pushButton.setIconSize(QSize(20, 20))
+        self.edit_pushButton.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.edit_pushButton)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -109,6 +152,8 @@ class Ui_backgroundWidget(object):
     def retranslateUi(self, backgroundWidget):
         backgroundWidget.setWindowTitle(QCoreApplication.translate("backgroundWidget", u"Form", None))
         self.title_label.setText(QCoreApplication.translate("backgroundWidget", u"TextLabel", None))
+        self.remove_pushButton.setText("")
+        self.edit_pushButton.setText("")
         self.label.setText(QCoreApplication.translate("backgroundWidget", u"In", None))
         self.compName_label.setText(QCoreApplication.translate("backgroundWidget", u"Apple company", None))
         self.label_3.setText(QCoreApplication.translate("backgroundWidget", u"From", None))

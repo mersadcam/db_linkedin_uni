@@ -150,17 +150,19 @@ class Content:
                 dict_post_list.append({
                     'post_content': post[0],
                     'post_isFeatured': post[1],
-                    'content_id': post[2],
-                    'content_likes_number': self.like_numberOfLikes(post[2]),
-                    'content_comments_number': self.comment_numberOfComments(post[2])
+                    'content_id': post[2]
                 })
-
             return dict_post_list
 
         except Error as e:
             print(e)
             return None
     
+    def content_get_user_uuid_by_content(self, content_id):
+        user_uuid = self.db_cursor.execute(constants.SELECT_USER_UUID_BY_CONTENT, (content_id, ))
+        user_uuid = user_uuid.fetchall()
+        return user_uuid[0][0]
+
     def content_select_content_comments(self, content_id):
         try:
             comments = self.db_cursor.execute(constants.SELECT_ALL_COMMENT, (content_id, ))
@@ -170,9 +172,7 @@ class Content:
                 dict_comment_list.append({
                     'comment_content': comment[0],
                     'comment_reply_id': comment[1],
-                    'content_id': comment[2],
-                    'content_likes_number': self.like_numberOfLikes(comment[2]),
-                    'content_comments_number': self.comment_numberOfComments(comment[2])
+                    'content_id': comment[2]
                 })
             return dict_comment_list
 
@@ -244,6 +244,10 @@ class User:
             self.db_cursor.execute(constants.CREATE_TABLE_SKILL)
             self.skill_init()
             self.db_cursor.execute(constants.CREATE_TABLE_USER_SKILL)
+            self.db_cursor.execute(constants.CREATE_TABLE_ENV)
+            self.env_init()
+            self.db_cursor.execute(constants.CREATE_TABLE_BACKGROUND)
+            self.db_cursor.execute(constants.CREATE_TABLE_RECOM)
 
             self.db_connection.commit()
         except Error as e:
@@ -484,6 +488,14 @@ class User:
             print(e)
             return None
 
+    def connection_add(self, user1_uuid, user2_uuid):
+        self.db_cursor.execute(constants.INSERT_RECORD_CONNECTIONS, (user1_uuid, user2_uuid))
+        self.db_connection.commit()
+
+    def connection_remove(self, user1_uuid, user2_uuid):
+        self.db_cursor.execute(constants.DELETE_RECORD_CONNECTIONS, (user1_uuid, user2_uuid))
+        self.db_connection.commit()
+
     def skill_init(self):
         skills = self.skill_get_all_skills()
         if len(skills) == 0:
@@ -505,7 +517,7 @@ class User:
         self.db_connection.commit()
 
     def skill_get_all_user_skills(self, user_uuid):
-        us = self.db_cursor.execute(constants.SELECT_ALL_USER_SKILLS, (user_uuid,))
+        us = self.db_cursor.execute(constants.SELECT_ALL_USER_SKILLS, (user_uuid))
         us = us.fetchall()
         return us
 
@@ -513,7 +525,66 @@ class User:
         for skill in skill_ids:
             self.db_cursor.execute(constants.DELETE_USER_SKILL, (skill, user_uuid))
         self.db_connection.commit()
-            
+
+    #BACKGROUND METHODS
+    def env_init(self):
+        envs = self.env_get_all_envs()
+        if len(envs) == 0:
+            self.db_cursor.execute(constants.INSERT_ENV, ('intel', '001'))
+            self.db_cursor.execute(constants.INSERT_ENV, ('google', '020'))
+            self.db_cursor.execute(constants.INSERT_ENV, ('amazon', '300'))
+           
+            self.db_connection.commit()
+
+    def env_get_all_envs(self):
+        envs = self.db_cursor.execute(constants.SELECT_ALL_ENV)
+        envs = envs.fetchall()
+        return envs
+
+    def background_insert(self, user_uuid, env_id, bg_start_date, bg_end_date='Now', bg_description=None):
+        bg_id = uuid.uuid4().hex
+        values = (bg_id, env_id, user_uuid, bg_description, bg_start_date, bg_end_date)
+        self.db_cursor.execute(constants.INSERT_BACKGROUND, values)
+        self.db_connection.commit()
+
+    def background_get_all(self, user_uuid):
+        bgs = self.db_cursor.execute(constants.SELECT_ALL_BACKGROUND, (user_uuid, ))
+        bgs = bgs.fetchall()
+        bg_dict = []
+        for bg in bgs:
+            bg_dict.append({
+                'user_uuid': bg[0],
+                'env_id': bg[1],
+                'bg_start_date': bg[2],
+                'bg_end_date': bg[3],
+                'bg_description': bg[4],
+            })
+        return bg_dict
+
+    def background_remove(self, bg_id):
+        self.db_cursor.execute(constants.DELETE_BACKGROUND, (bg_id, ))
+        self.db_connection.commit()
+
+    def recom_insert(self, recom_writer_uuid, recom_reciever_uuid, recom_text):
+        values = (recom_writer_uuid, recom_reciever_uuid, recom_text)
+        self.db_cursor.execute(constants.INSERT_RECOM, values)
+        self.db_connection.commit()
+
+    def recom_delete(self, recom_writer_uuid, recom_reciever_uuid):
+        self.db_cursor.execute(constants.DELETE_RECOM, (recom_writer_uuid, recom_reciever_uuid))
+        self.db_connection.commit()
+
+    def recom_select_recieved_recoms(self, recom_reciever_uuid):
+        recoms = self.db_cursor.execute(constants.SELECT_RECIEVED_RECOM, (recom_reciever_uuid, ))
+        recoms = recoms.fetchall()
+        recom_dict = []
+        for rc in recoms:
+            recom_dict.append({
+                'recom_writer': rc[0],
+                'recom_reciever': rc[1],
+                'recom_text': rc[2]        
+            })
+        return recom_dict
 
 class DB:
 
@@ -597,7 +668,16 @@ if __name__ == '__main__':
         # print(datetime.date(1, 1, 1))
         # content.post_add('my first post', '0')
         # content.comment_add('my first comment', '4e12fa604fc24f78bc9a65549b740504','0')
+        # a = user.env_get_all_envs()
+        # user.background_insert('0', '001', datetime.date(2000,1,1), datetime.date(2020,1,1), 'hero of my life')
+        # user.background_remove('0', '001')
+        # a = user.background_get_all('0')
+        # a = content.content_get_user_uuid_by_content('4e12fa604fc24f78bc9a65549b740504')
+        
+        user.recom_insert('1', '0', 'this is it.')
+        a = user.recom_select_recieved_recoms('0')
 
+        print(a)
         db_connection.close()
     except Error as e:
         print(e)

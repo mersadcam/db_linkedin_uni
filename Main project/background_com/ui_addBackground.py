@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'editBackground.ui'
+## Form generated from reading UI file 'addBackground.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.1.2
 ##
@@ -15,16 +15,16 @@ from PySide6.QtWidgets import *  # type: ignore
 import resources_rc
 import resources_rc
 
-class Ui_EditBackgroundDialog(object):
-    def setupUi(self, EditBackgroundDialog):
-        if not EditBackgroundDialog.objectName():
-            EditBackgroundDialog.setObjectName(u"EditBackgroundDialog")
-        EditBackgroundDialog.resize(358, 378)
-        EditBackgroundDialog.setStyleSheet(u"background:rgb(247, 252, 255);\n"
+class Ui_addBackgroundDialog(object):
+    def setupUi(self, addBackgroundDialog):
+        if not addBackgroundDialog.objectName():
+            addBackgroundDialog.setObjectName(u"addBackgroundDialog")
+        addBackgroundDialog.resize(358, 378)
+        addBackgroundDialog.setStyleSheet(u"background:rgb(247, 252, 255);\n"
 "color:rgb(1, 31, 54);\\n")
-        self.verticalLayout = QVBoxLayout(EditBackgroundDialog)
+        self.verticalLayout = QVBoxLayout(addBackgroundDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label_9 = QLabel(EditBackgroundDialog)
+        self.label_9 = QLabel(addBackgroundDialog)
         self.label_9.setObjectName(u"label_9")
         font = QFont()
         font.setPointSize(17)
@@ -35,12 +35,12 @@ class Ui_EditBackgroundDialog(object):
 
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.label_4 = QLabel(EditBackgroundDialog)
+        self.label_4 = QLabel(addBackgroundDialog)
         self.label_4.setObjectName(u"label_4")
 
         self.horizontalLayout_5.addWidget(self.label_4)
 
-        self.title_lineEdit = QLineEdit(EditBackgroundDialog)
+        self.title_lineEdit = QLineEdit(addBackgroundDialog)
         self.title_lineEdit.setObjectName(u"title_lineEdit")
 
         self.horizontalLayout_5.addWidget(self.title_lineEdit)
@@ -50,12 +50,12 @@ class Ui_EditBackgroundDialog(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label = QLabel(EditBackgroundDialog)
+        self.label = QLabel(addBackgroundDialog)
         self.label.setObjectName(u"label")
 
         self.horizontalLayout.addWidget(self.label)
 
-        self.env_comboBox = QComboBox(EditBackgroundDialog)
+        self.env_comboBox = QComboBox(addBackgroundDialog)
         self.env_comboBox.setObjectName(u"env_comboBox")
 
         self.horizontalLayout.addWidget(self.env_comboBox)
@@ -65,12 +65,12 @@ class Ui_EditBackgroundDialog(object):
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.label_2 = QLabel(EditBackgroundDialog)
+        self.label_2 = QLabel(addBackgroundDialog)
         self.label_2.setObjectName(u"label_2")
 
         self.horizontalLayout_4.addWidget(self.label_2)
 
-        self.startTime_comboBox = QComboBox(EditBackgroundDialog)
+        self.startTime_comboBox = QComboBox(addBackgroundDialog)
         self.startTime_comboBox.setObjectName(u"startTime_comboBox")
 
         self.horizontalLayout_4.addWidget(self.startTime_comboBox)
@@ -80,12 +80,12 @@ class Ui_EditBackgroundDialog(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_3 = QLabel(EditBackgroundDialog)
+        self.label_3 = QLabel(addBackgroundDialog)
         self.label_3.setObjectName(u"label_3")
 
         self.horizontalLayout_3.addWidget(self.label_3)
 
-        self.endTime_comboBox = QComboBox(EditBackgroundDialog)
+        self.endTime_comboBox = QComboBox(addBackgroundDialog)
         self.endTime_comboBox.setObjectName(u"endTime_comboBox")
 
         self.horizontalLayout_3.addWidget(self.endTime_comboBox)
@@ -95,12 +95,12 @@ class Ui_EditBackgroundDialog(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_5 = QLabel(EditBackgroundDialog)
+        self.label_5 = QLabel(addBackgroundDialog)
         self.label_5.setObjectName(u"label_5")
 
         self.horizontalLayout_2.addWidget(self.label_5)
 
-        self.description_plainTextEdit = QPlainTextEdit(EditBackgroundDialog)
+        self.description_plainTextEdit = QPlainTextEdit(addBackgroundDialog)
         self.description_plainTextEdit.setObjectName(u"description_plainTextEdit")
 
         self.horizontalLayout_2.addWidget(self.description_plainTextEdit)
@@ -115,7 +115,7 @@ class Ui_EditBackgroundDialog(object):
 
         self.horizontalLayout_9.addItem(self.horizontalSpacer)
 
-        self.cancel_pushButton = QPushButton(EditBackgroundDialog)
+        self.cancel_pushButton = QPushButton(addBackgroundDialog)
         self.cancel_pushButton.setObjectName(u"cancel_pushButton")
         self.cancel_pushButton.setMinimumSize(QSize(80, 0))
         self.cancel_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
@@ -131,7 +131,7 @@ class Ui_EditBackgroundDialog(object):
 
         self.horizontalLayout_9.addWidget(self.cancel_pushButton)
 
-        self.save_pushButton = QPushButton(EditBackgroundDialog)
+        self.save_pushButton = QPushButton(addBackgroundDialog)
         self.save_pushButton.setObjectName(u"save_pushButton")
         self.save_pushButton.setMinimumSize(QSize(80, 0))
         self.save_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
@@ -156,20 +156,20 @@ class Ui_EditBackgroundDialog(object):
         self.verticalLayout.addLayout(self.horizontalLayout_9)
 
 
-        self.retranslateUi(EditBackgroundDialog)
+        self.retranslateUi(addBackgroundDialog)
 
-        QMetaObject.connectSlotsByName(EditBackgroundDialog)
+        QMetaObject.connectSlotsByName(addBackgroundDialog)
     # setupUi
 
-    def retranslateUi(self, EditBackgroundDialog):
-        EditBackgroundDialog.setWindowTitle(QCoreApplication.translate("EditBackgroundDialog", u"Dialog", None))
-        self.label_9.setText(QCoreApplication.translate("EditBackgroundDialog", u"Edit background", None))
-        self.label_4.setText(QCoreApplication.translate("EditBackgroundDialog", u"Title", None))
-        self.label.setText(QCoreApplication.translate("EditBackgroundDialog", u"Environment", None))
-        self.label_2.setText(QCoreApplication.translate("EditBackgroundDialog", u"Start time", None))
-        self.label_3.setText(QCoreApplication.translate("EditBackgroundDialog", u"End time", None))
-        self.label_5.setText(QCoreApplication.translate("EditBackgroundDialog", u"Description", None))
-        self.cancel_pushButton.setText(QCoreApplication.translate("EditBackgroundDialog", u"Cancel", None))
-        self.save_pushButton.setText(QCoreApplication.translate("EditBackgroundDialog", u"Save", None))
+    def retranslateUi(self, addBackgroundDialog):
+        addBackgroundDialog.setWindowTitle(QCoreApplication.translate("addBackgroundDialog", u"Dialog", None))
+        self.label_9.setText(QCoreApplication.translate("addBackgroundDialog", u"Add background", None))
+        self.label_4.setText(QCoreApplication.translate("addBackgroundDialog", u"Title", None))
+        self.label.setText(QCoreApplication.translate("addBackgroundDialog", u"Environment", None))
+        self.label_2.setText(QCoreApplication.translate("addBackgroundDialog", u"Start time", None))
+        self.label_3.setText(QCoreApplication.translate("addBackgroundDialog", u"End time", None))
+        self.label_5.setText(QCoreApplication.translate("addBackgroundDialog", u"Description", None))
+        self.cancel_pushButton.setText(QCoreApplication.translate("addBackgroundDialog", u"Cancel", None))
+        self.save_pushButton.setText(QCoreApplication.translate("addBackgroundDialog", u"Save", None))
     # retranslateUi
 

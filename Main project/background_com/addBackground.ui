@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EditBackgroundDialog</class>
- <widget class="QDialog" name="EditBackgroundDialog">
+ <class>addBackgroundDialog</class>
+ <widget class="QDialog" name="addBackgroundDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -29,7 +29,7 @@ color:rgb(1, 31, 54);\n</string>
       <string notr="true">margin-top:10px</string>
      </property>
      <property name="text">
-      <string>Edit background</string>
+      <string>Add background</string>
      </property>
     </widget>
    </item>
