@@ -4,6 +4,7 @@ from os import error, truncate
 import sqlite3
 from sqlite3.dbapi2 import Connection, Cursor, Error
 import constants
+from constants import TableColumns
 import uuid
 import secrets
 import re
@@ -34,7 +35,7 @@ class Content:
         content_date_time = datetime.datetime.now()
         content_id = str(uuid.uuid4().hex)
         values_tuple = (content_id, content_date_time, user_uuid)
-
+        
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_CONTENT, values_tuple)
             self.db_connection.commit()
@@ -146,12 +147,27 @@ class Content:
             posts = self.db_cursor.execute(constants.SELECT_ALL_RECORD_POST, (user_uuid, ))
             posts = posts.fetchall()
             dict_post_list = []
-            for post in posts:
+            
+            for post in posts:                
+                user_first_name = user.profile_select(user_uuid)[0]
+                user_last_name = user.profile_select(user_uuid)[1]
+                content_number_of_likes = self.like_numberOfLikes(post[2])
+                content_number_of_comments = self.comment_numberOfComments(post[2])
+
                 dict_post_list.append({
-                    'post_content': post[0],
-                    'post_isFeatured': post[1],
-                    'content_id': post[2]
+                    TableColumns.POST_CONTENT: post[0],
+                    TableColumns.POST_IS_FEATURED: post[1],
+                    TableColumns.POST_CONTENT_ID: post[2],
+                    TableColumns.CONTENT_OWNER: {TableColumns.CONTENT_USER_UUID: user_uuid,
+                                                TableColumns.CONTENT_OWNER_FNAME: user_first_name,
+                                                TableColumns.CONTENT_OWNER_LNAME:user_last_name
+                    },
+                    TableColumns.CONTENT_NUMBER_OF_LIKES: content_number_of_likes,
+                    TableColumns.CONTENT_NUMBER_OF_COMMENTS: content_number_of_comments
                 })
+
+
+
             return dict_post_list
 
         except Error as e:
@@ -169,10 +185,22 @@ class Content:
             comments = comments.fetchall()
             dict_comment_list = []
             for comment in comments:
+                user_uuid = self.content_get_user_uuid_by_content(comment[2])
+                user_first_name = user.profile_select(user_uuid)[0]
+                user_last_name = user.profile_select(user_uuid)[1]
+                content_number_of_likes = self.like_numberOfLikes(comment[2])
+                content_number_of_comments = self.comment_numberOfComments(comment[2])
+
                 dict_comment_list.append({
-                    'comment_content': comment[0],
-                    'comment_reply_id': comment[1],
-                    'content_id': comment[2]
+                    TableColumns.COMMENT_CONTENT: comment[0],
+                    TableColumns.COMMENT_REPLY_ID: comment[1],
+                    TableColumns.COMMENT_CONTENT_ID: comment[2],
+                    TableColumns.CONTENT_OWNER: {TableColumns.CONTENT_USER_UUID: user_uuid,
+                                                TableColumns.CONTENT_OWNER_FNAME: user_first_name,
+                                                TableColumns.CONTENT_OWNER_LNAME:user_last_name
+                    },
+                    TableColumns.CONTENT_NUMBER_OF_LIKES: content_number_of_likes,
+                    TableColumns.CONTENT_NUMBER_OF_COMMENTS: content_number_of_comments
                 })
             return dict_comment_list
 
@@ -211,12 +239,26 @@ class Content:
             posts = self.db_cursor.execute(constants.SELECT_ALL_USER_CONNECTIONS_POSTS, (user_uuid, user_uuid))
             posts = posts.fetchall()
             dict_post_list = []
-            for post in posts:
+            for post in posts:                    
+                user_uuid = self.content_get_user_uuid_by_content(post[2])
+                user_first_name = user.profile_select(user_uuid)[0]
+                user_last_name = user.profile_select(user_uuid)[1]
+                content_number_of_likes = self.like_numberOfLikes(post[2])
+                content_number_of_comments = self.comment_numberOfComments(post[2])
+
                 dict_post_list.append({
-                    'post_content': post[0],
-                    'post_isFeatured': post[1],
-                    'content_id': post[2]
+                    TableColumns.POST_CONTENT: post[0],
+                    TableColumns.POST_IS_FEATURED: post[1],
+                    TableColumns.POST_CONTENT_ID: post[2],
+                    TableColumns.CONTENT_OWNER: {TableColumns.CONTENT_USER_UUID: user_uuid,
+                                                TableColumns.CONTENT_OWNER_FNAME: user_first_name,
+                                                TableColumns.CONTENT_OWNER_LNAME:user_last_name
+                    },
+                    TableColumns.CONTENT_NUMBER_OF_LIKES: content_number_of_likes,
+                    TableColumns.CONTENT_NUMBER_OF_COMMENTS: content_number_of_comments
                 })
+
+
             return dict_post_list
         except Error as e:
             print(e)

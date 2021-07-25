@@ -22,6 +22,11 @@ class TableColumns:
     CONTENT_DATE = 'content_date'
     CONTENT_TIME = 'content_time'
     CONTENT_USER_UUID = 'user_uuid'
+    CONTENT_NUMBER_OF_LIKES = 'content_number_of_likes'
+    CONTENT_NUMBER_OF_COMMENTS = 'content_number_of_comments'
+    CONTENT_OWNER = 'content_owner'
+    CONTENT_OWNER_FNAME = 'content_owner_first_name'
+    CONTENT_OWNER_LNAME = 'content_owner_last_name'
     
     POST_CONTENT = 'post_content'
     POST_IS_FEATURED = 'post_isFeatured'
@@ -30,6 +35,7 @@ class TableColumns:
     COMMENT_CONTENT = 'comment_content'
     COMMENT_REPLY_ID = 'comment_reply_id'
     COMMENT_CONTENT_ID = 'content_id'
+    
 
     LIKE_CONTENT_ID = 'content_id'
     LIKE_USER_UUID = 'user_uuid'
