@@ -546,14 +546,13 @@ class User:
         uuid_list = self.connection_get_user_network_uuid(user_uuid)
         con_list = []
         for u in uuid_list:
-            u_profile = self.profile_select()
-            print(u_profile)
-            # con_list.append({
-            #     TableColumns.PROFILE_USER_UUID: u,
-            #     TableColumns.PROFILE_FIRST_NAME: u_profile[TableColumns.PROFILE_FIRST_NAME],
-            #     TableColumns.PROFILE_LAST_NAME: u_profile[TableColumns.PROFILE_LAST_NAME],
-            #     TableColumns.PROFILE_HEADLINE: u_profile[TableColumns.PROFILE_HEADLINE]
-            # })
+            u_profile = self.profile_select(u)
+            con_list.append({
+                TableColumns.PROFILE_USER_UUID: u,
+                TableColumns.PROFILE_FIRST_NAME: u_profile[TableColumns.PROFILE_FIRST_NAME],
+                TableColumns.PROFILE_LAST_NAME: u_profile[TableColumns.PROFILE_LAST_NAME],
+                TableColumns.PROFILE_HEADLINE: u_profile[TableColumns.PROFILE_HEADLINE]
+            })
         return con_list
 
     def connection_get_user_network_uuid(self, user_uuid): #the one who are not in user connection  
@@ -896,12 +895,12 @@ if __name__ == '__main__':
         # a = user.recom_select('0')
         # a = user.connection_get_user_network_uuid('0')
         # a = user.connection_get_user_connections_info('0')
-        # a = user.connection_get_user_network_info('0')
+        a = user.connection_get_user_network_info('0')
         # user.user_signUp('2', '2', '2@0.com', '2')
         # a = user.user_select('0')
-        # a = user.profile_select('5')
+        # a = user.profile_select('0')
 
-        # print(a)
+        print(a)
 
 
         db_connection.close()

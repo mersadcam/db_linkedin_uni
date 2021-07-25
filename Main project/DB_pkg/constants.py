@@ -21,6 +21,7 @@ class TableColumns:
     CONTENT_ID = 'content_id'
     CONTENT_DATE = 'content_date'
     CONTENT_TIME = 'content_time'
+    CONTENT_DATE_TIME = 'content_date_time'
     CONTENT_USER_UUID = 'user_uuid'
     CONTENT_NUMBER_OF_LIKES = 'content_number_of_likes'
     CONTENT_NUMBER_OF_COMMENTS = 'content_number_of_comments'
@@ -68,6 +69,9 @@ class TableColumns:
     ACCOMP_TEXT = 'accomp_text'
     ACCOMP_DATE = 'accomp_date'
     ACCOMP_LINK = 'accomp_link'
+
+    USER_ACCOMP_ACCOMP_ID = 'accomp_id'
+    USER_ACCOMP_USER_UUID = 'user_uuid'
 
 DB_NAME = 'LinkeInDB.db'
 
@@ -137,8 +141,8 @@ SELECT_UUID1_CONNECTIONS = 'SELECT user2_uuid FROM connections WHERE user1_uuid 
 SELECT_UUID2_CONNECTIONS = 'SELECT user1_uuid FROM connections WHERE user2_uuid = (?)'
 INSERT_RECORD_CONNECTIONS = 'INSERT INTO connections(user1_uuid, user2_uuid) VALUES(?, ?)'
 DELETE_RECORD_CONNECTIONS = 'DELETE FROM connections WHERE user1_uuid = (?) AND user2_uuid = (?)'
-SELECT_UUID1_NETWORK = f'SELECT DISTINCT user2_uuid FROM connections WHERE user1_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user1_uuid IN({SELECT_UUID2_CONNECTIONS})'
-SELECT_UUID2_NETWORK = f'SELECT DISTINCT user1_uuid FROM connections WHERE user2_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user2_uuid IN({SELECT_UUID2_CONNECTIONS})'
+# SELECT_UUID1_NETWORK = f'SELECT DISTINCT user2_uuid FROM connections WHERE user1_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user1_uuid IN({SELECT_UUID2_CONNECTIONS})'
+# SELECT_UUID2_NETWORK = f'SELECT DISTINCT user1_uuid FROM connections WHERE user2_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user2_uuid IN({SELECT_UUID2_CONNECTIONS})'
 
 #**************************
 # profile table constants
@@ -287,3 +291,9 @@ CREATE_TABLE_USER_ACCOMP = """CREATE TABLE IF NOT EXISTS user_accomp(
 
 INSERT_USER_ACCOMP = 'INSERT INTO user_accomp(accomp_id, user_uuid) VALUES(?, ?)'
 DELETE_USER_ACCOMP = 'DELETE FROM user_accomp WHERE accomp_id = (?) AND user_uuid = (?)'
+
+#******************************
+#******************************
+#no time for ui
+
+SELECT_LIKED_POSTS_BY_USER_CONNECTIONS = 'SELECT content_id FROM like WHERE user_uuid IN (SELECT user_uuid FROM )'
