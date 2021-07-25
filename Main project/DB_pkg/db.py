@@ -538,6 +538,11 @@ class User:
 
     def connection_get_user_network_info(self, user_uuid): #the one who are not in user connection  
         uuid_list = self.connection_get_user_connections_uuid(user_uuid)
+        net_list = []
+        
+        for u in uuid_list:
+            pass
+        # net_list = list(set(net_list)) # to avoid duplicates
 
     def connection_get_user_connections_info(self, user_uuid):
         uuid_list = self.connection_get_user_connections_uuid(user_uuid)
@@ -651,9 +656,9 @@ class User:
         if bg_end_date != None:
             updated_values_with_fileds = updated_values_with_fileds + f'bg_end_date = \'{bg_end_date}\','
         if bg_description != None:
-            updated_values_with_fileds = updated_values_with_fileds + f'profile_country = \'{bg_description}\','
+            updated_values_with_fileds = updated_values_with_fileds + f'bg_description = \'{bg_description}\','
         if bg_title != None:
-            updated_values_with_fileds = updated_values_with_fileds + f'profile_birthday = \'{bg_title}\','
+            updated_values_with_fileds = updated_values_with_fileds + f'bg_title = \'{bg_title}\','
        
         #to remoev the last probbable ','
         u_len = len(updated_values_with_fileds)
@@ -665,7 +670,7 @@ class User:
             self.db_connection.commit()
             return (True)
         except Error as e:
-            return (False)
+            print(e)
     #RECOM
     def recom_insert(self, recom_writer_uuid, recom_reciever_uuid, recom_text):
         recom_id = str(uuid.uuid4().hex)
@@ -855,9 +860,9 @@ if __name__ == '__main__':
         
         # a = user.recom_select_recieved_recoms('0')
         # user.accomp_insert('article', 'i did it', '2020')
-        # user.background_update(bg_id='67f85ef548184b41a91c9ba1a401f209', env_id='020')
-        user.userAcc_insert('15', '0')
-        user.userAcc_delete('15', '0')
+        # user.background_update(bg_id='67f85ef548184b41a91c9ba1a401f209', env_id='001', bg_start_date='2015', bg_end_date='2018', bg_description='this', bg_title='that')
+        # user.userAcc_insert('15', '0')
+        # user.userAcc_delete('15', '0')
         
         # a = user.recom_select('0')
         # print(a)
