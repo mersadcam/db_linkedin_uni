@@ -212,7 +212,8 @@ SELECT_ALL_ENV = 'SELECT * FROM  env'
 INSERT_ENV = 'INSERT INTO env(env_name, env_id) VALUES(?, ?)'
 
 
-CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background(
+CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background( 
+                              bg_id text PRIMARY KEY,
                               env_id text NOT NULL,
                               user_uuid text NOT NULL,
                               bg_description text,
@@ -222,7 +223,7 @@ CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background(
                               FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
 )"""
 
-INSERT_BACKGROUND = 'INSERT INTO background(env_id, user_uuid, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?)'
+INSERT_BACKGROUND = 'INSERT INTO background(bg_id, env_id, user_uuid, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?, ?)'
 SELECT_ALL_BACKGROUND = 'SELECT * FROM  background WHERE user_uuid = (?)'
-DELETE_BACKGROUND = 'DELETE FROM background WHERE user_uuid=(?) AND env_id = (?)'
+DELETE_BACKGROUND = 'DELETE FROM background WHERE bg_id = (?)'
 

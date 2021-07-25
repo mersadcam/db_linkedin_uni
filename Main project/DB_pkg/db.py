@@ -541,7 +541,8 @@ class User:
         return envs
 
     def background_insert(self, user_uuid, env_id, bg_start_date, bg_end_date='Now', bg_description=None):
-        values = (env_id, user_uuid, bg_description, bg_start_date, bg_end_date)
+        bg_id = uuid.uuid4().hex
+        values = (bg_id, env_id, user_uuid, bg_description, bg_start_date, bg_end_date)
         self.db_cursor.execute(constants.INSERT_BACKGROUND, values)
         self.db_connection.commit()
 
@@ -559,8 +560,8 @@ class User:
             })
         return bg_dict
 
-    def background_remove(self, user_uuid, env_id):
-        self.db_cursor.execute(constants.DELETE_BACKGROUND, (user_uuid, env_id))
+    def background_remove(self, bg_id):
+        self.db_cursor.execute(constants.DELETE_BACKGROUND, (bg_id, ))
         self.db_connection.commit()
 
 
