@@ -1,16 +1,20 @@
 import sys
 from ui_Mainwindow import Ui_Mainwindow
-from PySide6.QtWidgets import QMainWindow, QApplication, QStackedWidget
+from PySide6.QtWidgets import QMainWindow, QApplication, QStackedWidget, QWidget, QVBoxLayout
 from PySide6.QtCore import Signal, Slot
+from PySide6.QtGui import Qt
 from PySide6 import QtGui
 from login_com.login import Login
 from login_com.signup import Signup
 from skill_com.skills import Skills
+from post_comp.postWidget import PostWidget
+from post_comp.newCommentDialog import NewComment
+from post_comp.newPostDialog import NewPost
 from profile_com.profile import Profile
 from db import DB
 from consts import Messages, DB_NAME, debug, Columns
 import datetime
-import constants
+from constants import TableColumns
 
 
 class Mainwindow(QMainWindow):
@@ -41,7 +45,7 @@ class Mainwindow(QMainWindow):
         self.signup_widget = self.signup.centralWidget()
         self.profile_widget = self.profile.centralWidget()
         self.home_widget = self.centralWidget()
-        self.skills_widget = self.centralWidget()
+        self.skills_widget = self.skills.centralWidget()
 
         self.central_widget = QStackedWidget()
         self.central_widget.addWidget(self.login_widget)
@@ -58,7 +62,7 @@ class Mainwindow(QMainWindow):
         self.login.switch_to_signup.connect(self.switch_to_signup)
         self.signup.switch_to_login.connect(self.switch_to_login)
         self.signup.on_signup.connect(self.on_signup)
-        self.profile.profile_back_to_home.connect(self.switch_to_home)
+        self.profile.switch_to_home.connect(self.switch_to_home)
         self.ui.profile_widget.mousePressEvent = self.switch_to_own_profile
         self.profile.editInfo.connect(self.editUserProfile)
         self.profile.change_about.connect(self.editAbout)
@@ -81,6 +85,9 @@ class Mainwindow(QMainWindow):
         self.own_uuid = self.db.user.user_get_uuid_by_token(token)[1]
         self.own_user_data = self.db.user.user_select(self.own_uuid)
         self.own_profile_data = self.db.user.profile_select(self.own_uuid)
+
+        self.update_post_area()
+
         self.switch_to_home()
 
     @Slot(str, str, str, str)
@@ -91,6 +98,9 @@ class Mainwindow(QMainWindow):
             return
 
         token = res[1]
+        self.own_uuid = self.db.user.user_get_uuid_by_token(token)[1]
+        self.own_user_data = self.db.user.user_select(self.own_uuid)
+        self.own_profile_data = self.db.user.profile_select(self.own_uuid)
         self.switch_to_home()
 
     @Slot()
@@ -105,22 +115,23 @@ class Mainwindow(QMainWindow):
     def switch_to_own_profile(self, event):
         print("Switch to profile")
         self.profile.setup(self.own_uuid, True)
-        self.profile.set_connection_numbers(self.own_profile_data['profile_number_of_connections'])
+        number_of_conn = self.db.user.connection_numberOfConnections(self.own_uuid)
+        self.profile.set_connection_numbers(number_of_conn)
         self.profile.set_name(self.own_profile_data[Columns.FIRSTNAME],
                               self.own_profile_data[Columns.LASTNAME])
         self.profile.set_headline_label(self.own_profile_data[Columns.HEADLINE])
         self.profile.set_about_content(self.own_profile_data[Columns.ABOUT])
-        self.profile.set_contact_info(self.own_profile_data[Columns.EMAIL], self.own_profile_data[Columns.ADDR],
+        self.profile.set_contact_info(self.own_user_data[Columns.EMAIL], self.own_profile_data[Columns.ADDR],
                                       self.own_profile_data[Columns.BIRTHDAY], self.own_profile_data[Columns.LINK])
         self.central_widget.setCurrentWidget(self.profile_widget)
 
     @Slot(str)
     def switch_to_profile(self, user_id):
         if user_id == self.own_uuid:
-            self.switch_to_own_profile()
+            self.switch_to_own_profile(None)
         else:
             self.profile.setup(user_id, False)
-            self.other_profile_data = self.db.user.profile_select(user_id)
+            self.other_profile_data = self.db.user.profile_szelect(user_id)
             self.other_user_data = self.db.user.user_select(user_id)
             self.profile.set_connection_numbers(self.other_profile_data['profile_number_of_connections'])
             self.profile.set_name(self.other_profile_data[Columns.FIRSTNAME], self.other_profile_data[Columns.LASTNAME])
@@ -135,14 +146,21 @@ class Mainwindow(QMainWindow):
     def switch_to_skills(self, user_id):
         all_skills = self.db.user.skill_get_all_skills()
         user_skills = self.db.user.skill_get_all_user_skills(user_id)
-        self.skills.setup(user_id, self.own_uuid == user_id, self.other_profile_data[Columns.FIRSTNAME],
-                          self.other_profile_data[Columns.LASTNAME], user_skills, all_skills)
+        debug(all_skills=all_skills, user_skills=user_skills)
+        if self.own_uuid == user_id:
+            profile_data = self.own_profile_data
+        else:
+            profile_data = self.other_profile_data
+
+        self.skills.setup(user_id, self.own_uuid == user_id, profile_data[Columns.FIRSTNAME],
+                          profile_data[Columns.LASTNAME], user_skills, all_skills)
         self.central_widget.setCurrentWidget(self.skills_widget)
 
     @Slot(str, list, list)
     def save_skill_changes(self, user_id, added_skills, removed_skills):
-        self.db.user.skill_insert_user_skill(user_id, added_skills)
-        self.db.user.skill_remove_user_skills(user_id, removed_skills)
+        res_insert = self.db.user.skill_insert_user_skill(user_id, added_skills)
+        res_delete = self.db.user.skill_remove_user_skills(user_id, removed_skills)
+        debug(res_insert=res_insert, added_skills=added_skills, removed_skills=removed_skills, res_delete=res_delete)
 
     @Slot()
     def switch_to_home(self):
@@ -163,6 +181,8 @@ class Mainwindow(QMainWindow):
         self.db.user.profile_update(user_uuid=self.own_uuid, profile_first_name=firstname, profile_last_name=lastname,
                                     profile_headline=headline, profile_country=country, profile_birthday=birthday,
                                     profile_address=addr, profile_about=None)
+        self.own_profile_data = self.db.user.profile_select(self.own_uuid)
+        self.own_user_data = self.db.user.user_select(self.own_uuid)
         if email_addr != self.own_user_data[Columns.EMAIL]:
             self.db.user.user_update(self.own_uuid, email_addr)
 
@@ -180,6 +200,52 @@ class Mainwindow(QMainWindow):
         if about is not None:
             self.db.user.profile_update(self.own_uuid, profile_about=about)
             self.own_profile_data[Columns.ABOUT] = about
+
+    @Slot(str)
+    def new_comment(self, content_id):
+        new_comment = NewComment(content_id)
+        new_comment.new_comment.connect(self.save_new_comment)
+
+    @Slot(str, str)
+    def save_new_comment(self, content_id, content):
+        self.db.content.comment_add(content, content_id, self.own_uuid)
+
+    def newPost_pushButton_onClicked(self):
+        new_post = NewPost(self.own_profile_data[TableColumns.PROFILE_FIRST_NAME],
+                           self.own_profile_data[TableColumns.PROFILE_LAST_NAME])
+        new_post.new_post.connect(self.save_new_post)
+
+    @Slot(str)
+    def save_new_post(self, content):
+        self.db.content.post_add(content, self.own_uuid)
+
+    def update_post_area(self):
+        posts = self.db.content.post_select_userPosts(self.own_uuid)
+
+        v_widget = QWidget()
+        v_layout = QVBoxLayout()
+        v_layout.setAlignment(Qt.AlignTop)
+
+        for post in posts:
+            post = PostWidget(post[TableColumns.CONTENT_ID], post[TableColumns.POST_CONTENT],
+                              post[TableColumns.CONTENT_LIKES_NUMBER], post[TableColumns.CONTENT_COMMENTS_NUMBER])
+            # need firstname and lastname in this constructor
+            post.post_liked.connect(self.like_post)
+            post.new_comment.connect(self.new_comment)
+            post.view_comments.connect(self.view_comments)
+            v_layout.addWidget(post)
+
+        v_widget.setLayout(v_layout)
+        self.ui.post_scrollArea.setWidget(v_widget)
+
+    @Slot(str)
+    def like_post(self, content_id):
+        self.db.content.like_insert(content_id, self.own_uuid)
+
+    @Slot(str)
+    def view_comments(self, content_id):
+        pass
+
 
 
 if __name__ == "__main__":

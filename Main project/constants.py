@@ -26,6 +26,8 @@ class TableColumns:
     POST_CONTENT = 'post_content'
     POST_IS_FEATURED = 'post_isFeatured'
     POST_CONTENT_ID = 'content_id'
+    CONTENT_LIKES_NUMBER = 'content_likes_number'
+    CONTENT_COMMENTS_NUMBER = 'content_comments_number'
 
     COMMENT_CONTENT = 'comment_content'
     COMMENT_REPLY_ID = 'comment_reply_id'
@@ -122,7 +124,7 @@ CREATE_TABLE_POST = """CREATE TABLE IF NOT EXISTS post(
                         post_content text NOT NULL,
                         post_isFeatured integer NOT NULL,                    
                         content_id text NOT NULL UNIQUE,
-                        FOREIGN KEY (content_id) REFERENCES user (content_id)
+                        FOREIGN KEY (content_id) REFERENCES content (content_id)
 )"""
 
 #comment_reply_id is the id of the content which this comment is refering to

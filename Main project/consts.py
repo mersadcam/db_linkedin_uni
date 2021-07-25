@@ -6,6 +6,11 @@ def debug(**kwargs):
         print(f'{key}: {kwargs[key]}')
 
 
+class Labels:
+    LIKE = 'Like'
+    COMMENT = 'Comment'
+
+
 class Columns:
     # Profile:
     FIRSTNAME = 'profile_first_name'
@@ -22,6 +27,7 @@ class Columns:
     UUID = 'user_uuid'
     PASSWORD = 'user_password'
     TOKEN = 'user_token'
+
 
 class Messages:
     ERR_INVALID_EMAIL_OR_PASSWORD = "Invalid email or password."
