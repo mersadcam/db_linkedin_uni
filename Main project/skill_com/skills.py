@@ -3,17 +3,18 @@ from PySide6.QtGui import QFont
 from PySide6.QtCore import Signal, Slot, Qt
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QHBoxLayout
 from skill_com.editSkills import EditSkills
+from consts import debug
 import sys
 
 # ('SKILL_NAME', 'SKILL_ID', SKILL_ENDORSEMENTS_NUMBER)
-skills_ex = [('pyqt', '2231423'), ('Qt', '121423')]
-all_skills_ex = [
-    ('pyqt', '2231423'),
-    ('Qt', '121423'),
-    ('python', '12423'),
-    ('C++', '12314'),
-    ('Unity', '11423')
-]
+# skills_ex = [('pyqt', '2231423'), ('Qt', '121423')]
+# all_skills_ex = [
+#     ('pyqt', '2231423'),
+#     ('Qt', '121423'),
+#     ('python', '12423'),
+#     ('C++', '12314'),
+#     ('Unity', '11423')
+# ]
 label_style_sheet = \
     '''
     QLabel{
@@ -112,7 +113,7 @@ class Skills(QMainWindow):
         font = QFont()
         font.setPointSize(16)
 
-        for skill in skills_ex:
+        for skill in self.skills:
             label = QLabel()
             label.setCursor(Qt.PointingHandCursor)
             label.setFont(font)
@@ -127,6 +128,9 @@ class Skills(QMainWindow):
 
     @Slot(list, list)
     def save_skill_edit(self, added_list, removed_list):
+
+        debug(added_list=added_list, removed_list=removed_list)
+
         for skill in self.skills:
             if skill[1] in removed_list:
                 del skill

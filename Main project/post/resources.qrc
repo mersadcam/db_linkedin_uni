@@ -1,8 +1,0 @@
-<RCC>
-  <qresource prefix="/images">
-    <file>mountain-lake-header.jpg</file>
-    <file>edit_icon.png</file>
-    <file>edit_icon2.png</file>
-    <file>User-Profile-PNG-Image.png</file>
-  </qresource>
-</RCC>

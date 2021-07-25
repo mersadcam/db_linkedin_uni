@@ -3,9 +3,9 @@ from PySide6.QtWidgets import QMainWindow, QDialog, QWidget, QVBoxLayout, QHBoxL
 from PySide6.QtGui import Qt
 from PySide6.QtCore import Signal, Slot
 
-skills_ex = [
-    ('Qt', '1231423')
-]
+# skills_ex = [
+#     ('Qt', '1231423')
+# ]
 
 button_style_sheet = \
     '''
@@ -59,19 +59,23 @@ class EditSkills(QDialog):
     def add_new_skill(self):
         skill_name = self.ui.skills_comboBox.currentText()
         skill_id = self.get_id_by_name(skill_name)
-        if (skill_name, skill_id) not in self.skills:
+        if skill_id in self.removed_skills:
+            self.removed_skills.remove(skill_id)
+        elif (skill_name, skill_id) not in self.skills:
             self.added_skills.append(skill_id)
             self.skills.append((skill_name, skill_id))
-            self.update_skill_box()
+        self.update_skill_box()
 
     def remove_skill(self):
         selected_skill = self.sender().objectName()
-        if selected_skill not in self.removed_skills:
+        if selected_skill in self.added_skills:
+            self.added_skills.remove(selected_skill)
+        elif selected_skill not in self.removed_skills:
             self.removed_skills.append(selected_skill)
-            for skill in self.skills:
-                if skill[1] == selected_skill:
-                    self.skills.remove(skill)
-            self.update_skill_box()
+        for skill in self.skills:
+            if skill[1] == selected_skill:
+                self.skills.remove(skill)
+        self.update_skill_box()
 
     def update_skill_box(self):
 
@@ -110,7 +114,7 @@ class EditSkills(QDialog):
 
     def save_pushButton_clicked(self):
         # emit removed list and add list
-        self.saved_changes(self.saved_changes, self.removed_skills)
+        self.saved_changes.emit(self.added_skills, self.removed_skills)
         self.added_skills = []
         self.removed_skills = []
         self.cancel_pushButton_clicked()

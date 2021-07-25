@@ -19,7 +19,7 @@ data = {
 class Profile(QMainWindow):
     editInfo = Signal(str, str, str, int, str, datetime.datetime, str, str)
     change_about = Signal(str)
-    profile_back_to_home = Signal()
+    switch_to_home = Signal()
     switch_to_skills = Signal(str)
 
     def __init__(self):
@@ -44,6 +44,8 @@ class Profile(QMainWindow):
         self.ui.skills_pushButton.clicked.connect(self.skills_pushButton_onClicked)
         self.editInfo_dialog.edit_saved.connect(self.info_edited)
         self.editAbout_dialog.about_changed.connect(self.about_changed)
+        self.ui.back_pushButton.clicked.connect(self.back_pushButton_onClicked)
+
 
     def setup(self, user_id, is_owner):
         self.user_id = user_id
@@ -83,6 +85,7 @@ class Profile(QMainWindow):
         self.ui.headline_label.setText(headline)
 
     # Public slots:
+
     @Slot(str, str, str, int, str, datetime.datetime, str, str)
     def info_edited(self, firstname, lastname, headline,
                     country, addr, birthday, email_addr, link):
@@ -117,7 +120,7 @@ class Profile(QMainWindow):
 
     @Slot()
     def skills_pushButton_onClicked(self):
-        self.skills_pushButton_onClicked.emit(self.user_id)
+        self.switch_to_skills.emit(self.user_id)
 
     @Slot()
     def background_pushButton_onClicked(self):
@@ -141,7 +144,7 @@ class Profile(QMainWindow):
 
     @Slot()
     def back_pushButton_onClicked(self):
-        self.profile_back_to_home.emit()
+        self.switch_to_home.emit()
 
     @Slot()
     def connections_pushButton_onClicked(self):

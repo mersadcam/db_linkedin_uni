@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>comment</class>
- <widget class="QDialog" name="comment">
+ <class>newComment</class>
+ <widget class="QDialog" name="newComment">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -32,7 +32,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="comment_plainText"/>
+    <widget class="QPlainTextEdit" name="content_plainTextEdit"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -50,7 +50,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="ok_Button">
+      <widget class="QPushButton" name="save_pushButton">
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
