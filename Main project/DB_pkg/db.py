@@ -247,6 +247,7 @@ class User:
             self.db_cursor.execute(constants.CREATE_TABLE_ENV)
             self.env_init()
             self.db_cursor.execute(constants.CREATE_TABLE_BACKGROUND)
+            self.db_cursor.execute(constants.CREATE_TABLE_RECOM)
 
             self.db_connection.commit()
         except Error as e:
@@ -564,6 +565,26 @@ class User:
         self.db_cursor.execute(constants.DELETE_BACKGROUND, (bg_id, ))
         self.db_connection.commit()
 
+    def recom_insert(self, recom_writer_uuid, recom_reciever_uuid, recom_text):
+        values = (recom_writer_uuid, recom_reciever_uuid, recom_text)
+        self.db_cursor.execute(constants.INSERT_RECOM, values)
+        self.db_connection.commit()
+
+    def recom_delete(self, recom_writer_uuid, recom_reciever_uuid):
+        self.db_cursor.execute(constants.DELETE_RECOM, (recom_writer_uuid, recom_reciever_uuid))
+        self.db_connection.commit()
+
+    def recom_select_recieved_recoms(self, recom_reciever_uuid):
+        recoms = self.db_cursor.execute(constants.SELECT_RECIEVED_RECOM, (recom_reciever_uuid, ))
+        recoms = recoms.fetchall()
+        recom_dict = []
+        for rc in recoms:
+            recom_dict.append({
+                'recom_writer': rc[0],
+                'recom_reciever': rc[1],
+                'recom_text': rc[2]        
+            })
+        return recom_dict
 
 class DB:
 
@@ -651,8 +672,11 @@ if __name__ == '__main__':
         # user.background_insert('0', '001', datetime.date(2000,1,1), datetime.date(2020,1,1), 'hero of my life')
         # user.background_remove('0', '001')
         # a = user.background_get_all('0')
-        a = content.content_get_user_uuid_by_content('4e12fa604fc24f78bc9a65549b740504')
+        # a = content.content_get_user_uuid_by_content('4e12fa604fc24f78bc9a65549b740504')
         
+        user.recom_insert('1', '0', 'this is it.')
+        a = user.recom_select_recieved_recoms('0')
+
         print(a)
         db_connection.close()
     except Error as e:
