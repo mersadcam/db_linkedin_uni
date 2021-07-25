@@ -248,6 +248,7 @@ class User:
             self.env_init()
             self.db_cursor.execute(constants.CREATE_TABLE_BACKGROUND)
             self.db_cursor.execute(constants.CREATE_TABLE_RECOM)
+            self.db_cursor.execute(constants.CREATE_TABLE_ACCOMP)
 
             self.db_connection.commit()
         except Error as e:
@@ -561,12 +562,14 @@ class User:
             })
         return bg_dict
 
-    def background_remove(self, bg_id):
+    def background_delete(self, bg_id):
         self.db_cursor.execute(constants.DELETE_BACKGROUND, (bg_id, ))
         self.db_connection.commit()
 
+    #RECOM
     def recom_insert(self, recom_writer_uuid, recom_reciever_uuid, recom_text):
-        values = (recom_writer_uuid, recom_reciever_uuid, recom_text)
+        recom_id = str(uuid.uuid4().hex)
+        values = (recom_id, recom_writer_uuid, recom_reciever_uuid, recom_text)
         self.db_cursor.execute(constants.INSERT_RECOM, values)
         self.db_connection.commit()
 
@@ -601,7 +604,29 @@ class User:
         recom = self.db_cursor.execute(constants.SELECT_GET_RECOM_ID, (recom_writer_uuid, recom_reciever_uuid))
         recom = recom.fetchall()
         return recom[0][0]
-        
+
+    #accomp
+    def accomp_insert(self, accomp_title, accomp_text, accomp_date, accomp_link):
+        accomp_id = str(uuid.uuid4().hex)
+        values = (accomp_id, accomp_title, accomp_text, accomp_date, accomp_link)
+        self.db_cursor.execute(constants.INSERT_ACCOMP, values)
+        self.db_connection.commit()
+
+    def accomp_delete(self, accomp_id):
+        self.db_cursor.execute(constants.DELETE_ACCOMP, (accomp_id,))
+        self.db_connection.commit()
+    def accomp_select(self, accomp_id):
+        acc = self.db_cursor.execute(constants.SELECT_ACCOMP, (accomp_id,))
+        acc = acc.fetchall()
+        acc_date = datetime.datetime.strptime(acc[0][3], '%Y-%m-%d').date()
+        return {
+            'accomp_id': acc[0][0],
+            'accomp_title': acc[0][1],
+            'accomp_text': acc[0][2],
+            'accomp_date': acc_date,
+            'accomp_link': acc[0][4]
+        }
+
 class DB:
 
     def __init__(self, db_name):
@@ -692,7 +717,9 @@ if __name__ == '__main__':
         
         # user.recom_insert('1', '0', 'this is it.')
         # a = user.recom_select_recieved_recoms('0')
-
+        # user.accomp_insert('0', '01', datetime.date(2000, 1, 1), 'google.com')
+        # a = user.accomp_select('f8eb7b2fab124819a6aa10dddff4cf56')
+        # user.accomp_delete('f8eb7b2fab124819a6aa10dddff4cf56')
         # print(a)
         db_connection.close()
     except Error as e:

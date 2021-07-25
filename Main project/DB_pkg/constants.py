@@ -243,10 +243,14 @@ SELECT_GET_RECOM_ID = 'SELECT * FROM  recom WHERE recom_writer_uuid = (?) AND re
 SELECT_RECIEVED_RECOM = 'SELECT * FROM  recom WHERE recom_reciever_uuid = (?)'
 
 #accomplishment
-CREATE_TABLE_RECOM = """CREATE TABLE IF NOT EXISTS accomp( 
-                              recom_writer_uuid text NOT NULL,
-                              recom_reciever_uuid text NOT NULL,
-                              recom_text text,
-                              FOREIGN KEY (recom_writer_uuid) REFERENCES user (user_uuid),
-                              FOREIGN KEY (recom_reciever_uuid) REFERENCES user (user_uuid)
+CREATE_TABLE_ACCOMP = """CREATE TABLE IF NOT EXISTS accomp( 
+                              accomp_id text PRIMARY KEY,
+                              accomp_title text,
+                              accomp_text text,
+                              accomp_date text,
+                              accomp_link text
 )"""
+INSERT_ACCOMP = 'INSERT INTO accomp(accomp_id, accomp_title, accomp_text, accomp_date, accomp_link) VALUES(?, ?, ?, ?, ?)'
+DELETE_ACCOMP = 'DELETE FROM accomp WHERE accomp_id = (?)'
+SELECT_ACCOMP = 'SELECT * FROM accomp WHERE accomp_id = (?)'
+
