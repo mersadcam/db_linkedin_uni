@@ -119,7 +119,7 @@ INSERT_RECORD_PROFILE = """INSERT INTO profile(profile_first_name, profile_last_
 SELECT_RECORD_PROFILE = 'SELECT * FROM profile WHERE user_uuid = (?)'
 DELETE_RECORD_PROFILE = 'DELETE FROM profile WHERE user_uuid = (?)'
 SELECT_RECORD_SEARCH_PROFILE = """SELECT user_uuid, profile_first_name, profile_last_name FROM profile WHERE
-                                 profile_first_name LIKE (?) OR profile.profile_last_name LIKE (?) LIMIT 5"""
+                                 profile_first_name LIKE (?) OR profile.profile_last_name LIKE (?)  LIMIT 5"""
 
 #**************************
 #connection table constants
@@ -286,3 +286,4 @@ CREATE_TABLE_USER_ACCOMP = """CREATE TABLE IF NOT EXISTS user_accomp(
 )"""
 
 INSERT_USER_ACCOMP = 'INSERT INTO user_accomp(accomp_id, user_uuid) VALUES(?, ?)'
+DELETE_USER_ACCOMP = 'DELETE FROM user_accomp WHERE accomp_id = (?) AND user_uuid = (?)'

@@ -23,6 +23,7 @@ class Content:
 
     def initialise_Content(self):
         try:
+            self.db_cursor.execute(constants.ENABLE_FOREIGN_KEY)
             self.db_cursor.execute(constants.CREATE_TABLE_CONTENT)
             self.db_cursor.execute(constants.CREATE_TABLE_POST)
             self.db_cursor.execute(constants.CREATE_TABLE_COMMENT)
@@ -640,6 +641,31 @@ class User:
         self.db_cursor.execute(constants.DELETE_BACKGROUND, (bg_id, ))
         self.db_connection.commit()
 
+    def background_update(self, bg_id, env_id=None, bg_start_date=None, bg_end_date=None, bg_description=None, bg_title=None):
+        updated_values_with_fileds = ''
+
+        if env_id != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'env_id = \'{env_id}\','
+        if bg_start_date != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'bg_start_date = \'{bg_start_date}\','
+        if bg_end_date != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'bg_end_date = \'{bg_end_date}\','
+        if bg_description != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_country = \'{bg_description}\','
+        if bg_title != None:
+            updated_values_with_fileds = updated_values_with_fileds + f'profile_birthday = \'{bg_title}\','
+       
+        #to remoev the last probbable ','
+        u_len = len(updated_values_with_fileds)
+        if updated_values_with_fileds[-1] == ',':
+            updated_values_with_fileds = updated_values_with_fileds[0:u_len-1]
+
+        try:
+            self.db_cursor.execute(f'UPDATE background SET {updated_values_with_fileds} WHERE bg_id = \'{bg_id}\'')
+            self.db_connection.commit()
+            return (True)
+        except Error as e:
+            return (False)
     #RECOM
     def recom_insert(self, recom_writer_uuid, recom_reciever_uuid, recom_text):
         recom_id = str(uuid.uuid4().hex)
@@ -654,11 +680,12 @@ class User:
     def recom_select_recieved_recoms(self, recom_reciever_uuid):
         recoms = self.db_cursor.execute(constants.SELECT_RECIEVED_RECOM, (recom_reciever_uuid, ))
         recoms = recoms.fetchall()
+    
         recom_dict = []
         for rc in recoms:
             writer_uuid = rc[1]
-            writer_first_name = user.profile_select(writer_uuid)[0]
-            writer_last_name = user.profile_select(writer_uuid)[1]
+            writer_first_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_FIRST_NAME]
+            writer_last_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_LAST_NAME]
             recom_dict.append({
                 TableColumns.RECOM_ID: rc[0],
                 TableColumns.RECOM_WRITER: {
@@ -674,10 +701,10 @@ class User:
     
     def recom_select(self, recom_id):
         recom = self.db_cursor.execute(constants.SELECT_RECOM, (recom_id, ))
-        recom = recom.fetchall()
+        recom = recom.fetchone()
         writer_uuid = recom[1]
-        writer_first_name = user.profile_select(writer_uuid)[0]
-        writer_last_name = user.profile_select(writer_uuid)[1]
+        writer_first_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_FIRST_NAME]
+        writer_last_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_LAST_NAME]
         return {
                 TableColumns.RECOM_ID: recom[0],
                 TableColumns.RECOM_WRITER: {
@@ -695,7 +722,7 @@ class User:
         return recom[0][0]
 
     #accomp
-    def accomp_insert(self, accomp_title, accomp_text, accomp_date, accomp_link):
+    def accomp_insert(self, accomp_title, accomp_text, accomp_date, accomp_link=None):
         accomp_id = str(uuid.uuid4().hex)
         values = (accomp_id, accomp_title, accomp_text, accomp_date, accomp_link)
         self.db_cursor.execute(constants.INSERT_ACCOMP, values)
@@ -717,8 +744,13 @@ class User:
             TableColumns.ACCOMP_LINK: acc[0][4]
         }
     
-    # def userAcc_insert(self, accomp_id, user_uuid):
+    def userAcc_insert(self, accomp_id, user_uuid):
+        self.db_cursor.execute(constants.INSERT_USER_ACCOMP, (accomp_id, user_uuid))
+        self.db_connection.commit()
 
+    def userAcc_delete(self, accomp_id, user_uuid):
+        self.db_cursor.execute(constants.DELETE_USER_ACCOMP, (accomp_id, user_uuid))
+        self.db_connection.commit()
 
 class DB:
 
@@ -821,8 +853,13 @@ if __name__ == '__main__':
         # user.background_insert(user_uuid='0', env_id='001', bg_start_date='2000', bg_title='t', bg_description='d')
         # a = user.background_get_all('0')
         
+        # a = user.recom_select_recieved_recoms('0')
+        # user.accomp_insert('article', 'i did it', '2020')
+        # user.background_update(bg_id='67f85ef548184b41a91c9ba1a401f209', env_id='020')
+        user.userAcc_insert('15', '0')
+        user.userAcc_delete('15', '0')
         
-        
+        # a = user.recom_select('0')
         # print(a)
 
 
