@@ -228,14 +228,25 @@ SELECT_ALL_BACKGROUND = 'SELECT * FROM  background WHERE user_uuid = (?)'
 DELETE_BACKGROUND = 'DELETE FROM background WHERE bg_id = (?)'
 
 #recommendation
-CREATE_TABLE_RECOM = """CREATE TABLE IF NOT EXISTS recom( 
+CREATE_TABLE_RECOM = """CREATE TABLE IF NOT EXISTS recom(
+                              recom_id text PRIMARY KEY,
                               recom_writer_uuid text NOT NULL,
                               recom_reciever_uuid text NOT NULL,
                               recom_text text,
                               FOREIGN KEY (recom_writer_uuid) REFERENCES user (user_uuid),
                               FOREIGN KEY (recom_reciever_uuid) REFERENCES user (user_uuid)
 )"""
-INSERT_RECOM = 'INSERT INTO recom(recom_writer_uuid, recom_reciever_uuid, recom_text) VALUES(?, ?, ?)'
-DELETE_RECOM = 'DELETE FROM recom WHERE recom_writer_uuid = (?) AND recom_reciever_uuid = (?)'
-SELECT_RECOM = 'SELECT * FROM  recom WHERE recom_writer_uuid = (?) AND recom_reciever_uuid = (?)'
+INSERT_RECOM = 'INSERT INTO recom(recom_id, recom_writer_uuid, recom_reciever_uuid, recom_text) VALUES(?, ?, ?, ?)'
+DELETE_RECOM = 'DELETE FROM recom WHERE recom_id = (?)'
+SELECT_RECOM = 'SELECT * FROM  recom WHERE recom_id = (?)'
+SELECT_GET_RECOM_ID = 'SELECT * FROM  recom WHERE recom_writer_uuid = (?) AND recom_reciever_uuid = (?)'
 SELECT_RECIEVED_RECOM = 'SELECT * FROM  recom WHERE recom_reciever_uuid = (?)'
+
+#accomplishment
+CREATE_TABLE_RECOM = """CREATE TABLE IF NOT EXISTS accomp( 
+                              recom_writer_uuid text NOT NULL,
+                              recom_reciever_uuid text NOT NULL,
+                              recom_text text,
+                              FOREIGN KEY (recom_writer_uuid) REFERENCES user (user_uuid),
+                              FOREIGN KEY (recom_reciever_uuid) REFERENCES user (user_uuid)
+)"""

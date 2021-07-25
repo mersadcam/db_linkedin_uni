@@ -580,12 +580,28 @@ class User:
         recom_dict = []
         for rc in recoms:
             recom_dict.append({
-                'recom_writer': rc[0],
-                'recom_reciever': rc[1],
-                'recom_text': rc[2]        
+                'recom_id': rc[0],
+                'recom_writer': rc[1],
+                'recom_reciever': rc[2],
+                'recom_text': rc[3]        
             })
         return recom_dict
+    
+    def recom_select(self, recom_id):
+        recom = self.db_cursor.execute(constants.SELECT_RECOM, (recom_id, ))
+        recom = recom.fetchall()
+        return {
+                'recom_id': recom[0],
+                'recom_writer': recom[1],
+                'recom_reciever': recom[2],
+                'recom_text': recom[3]        
+            }
 
+    def recom_get_recom_id(self, recom_writer_uuid, recom_reciever_uuid):
+        recom = self.db_cursor.execute(constants.SELECT_GET_RECOM_ID, (recom_writer_uuid, recom_reciever_uuid))
+        recom = recom.fetchall()
+        return recom[0][0]
+        
 class DB:
 
     def __init__(self, db_name):
@@ -674,10 +690,10 @@ if __name__ == '__main__':
         # a = user.background_get_all('0')
         # a = content.content_get_user_uuid_by_content('4e12fa604fc24f78bc9a65549b740504')
         
-        user.recom_insert('1', '0', 'this is it.')
-        a = user.recom_select_recieved_recoms('0')
+        # user.recom_insert('1', '0', 'this is it.')
+        # a = user.recom_select_recieved_recoms('0')
 
-        print(a)
+        # print(a)
         db_connection.close()
     except Error as e:
         print(e)
