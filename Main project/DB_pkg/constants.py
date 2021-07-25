@@ -46,14 +46,28 @@ class TableColumns:
     ENV_ENV_NAME = 'env_name'
     ENV_ENV_ID = 'env_id'
 
+    BACKGROUND_ENV = 'bg_env'
     BACKGROUND_ENV_ID = 'env_id'
     BACKGROUND_USER_UUID = 'user_uuid'
     BACKGROUND_DESCRIPTION = 'bg_description'
+    BACKGROUND_TITLE = 'bg_title'
     BACKGROUND_START_DATE = 'bg_start_date'
     BACKGROUND_END_DATE = 'bg_end_date'
+    BACKGROUND_BG_ID = 'bg_id'
 
+    RECOM_ID = 'recom_id'
+    RECOM_WRITER_UUID = 'recom_writer_uuid'
+    RECOM_RECIEVER_UUID = 'recom_reciever_uuid'
+    RECOM_TEXT = 'recom_text'
+    RECOM_WRITER = 'recom_writer'
+    RECOM_WRITER_FNAME = 'recom_writer_first_name'
+    RECOM_WRITER_LNAME = 'recom_writer_last_name'
 
-
+    ACCOMP_ID = 'accomp_id'
+    ACCOMP_TITLE = 'accomp_title'
+    ACCOMP_TEXT = 'accomp_text'
+    ACCOMP_DATE = 'accomp_date'
+    ACCOMP_LINK = 'accomp_link'
 
 DB_NAME = 'LinkeInDB.db'
 
@@ -215,6 +229,7 @@ CREATE_TABLE_ENV = """CREATE TABLE IF NOT EXISTS env(
                         env_id text PRIMARY KEY                        
 )"""
 SELECT_ALL_ENV = 'SELECT * FROM  env'
+SELECT_ENV = 'SELECT * FROM  env WHERE env_id = (?)'
 INSERT_ENV = 'INSERT INTO env(env_name, env_id) VALUES(?, ?)'
 
 
@@ -222,6 +237,7 @@ CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background(
                               bg_id text PRIMARY KEY,
                               env_id text NOT NULL,
                               user_uuid text NOT NULL,
+                              bg_title text,
                               bg_description text,
                               bg_start_date text NOT NULL,
                               bg_end_date text,
@@ -229,7 +245,7 @@ CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background(
                               FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
 )"""
 
-INSERT_BACKGROUND = 'INSERT INTO background(bg_id, env_id, user_uuid, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?, ?)'
+INSERT_BACKGROUND = 'INSERT INTO background(bg_id, env_id, user_uuid, bg_title, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?, ?)'
 SELECT_ALL_BACKGROUND = 'SELECT * FROM  background WHERE user_uuid = (?)'
 DELETE_BACKGROUND = 'DELETE FROM background WHERE bg_id = (?)'
 
