@@ -1,4 +1,4 @@
-from ui_addBackground import Ui_addBackgroundDialog
+from background_com.ui_addBackground import Ui_addBackgroundDialog
 from PySide6.QtCore import Signal, Slot, Qt
 from PySide6.QtWidgets import QApplication, QDialog, QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
@@ -7,13 +7,13 @@ sample_env = [
 ]
 
 
-class EditBackground(QDialog):
+class AddBackground(QDialog):
     add_new_background = Signal(str, str, str, str, str)
 
     #               (title, env, start, end, description)
 
     def __init__(self, all_env):
-        super(EditBackground, self).__init__()
+        super(AddBackground, self).__init__()
         self.ui = Ui_addBackgroundDialog()
         self.ui.setupUi(self)
 

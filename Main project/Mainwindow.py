@@ -15,6 +15,7 @@ from db import DB
 from consts import Messages, DB_NAME, debug, Columns
 import datetime
 from constants import TableColumns
+from background_com.background import Background
 
 
 class Mainwindow(QMainWindow):
@@ -29,6 +30,7 @@ class Mainwindow(QMainWindow):
         self.signup = Signup()
         self.profile = Profile()
         self.skills = Skills()
+        self.background = Background()
 
         # Attr:
         self.own_uuid = None
@@ -46,6 +48,7 @@ class Mainwindow(QMainWindow):
         self.profile_widget = self.profile.centralWidget()
         self.home_widget = self.centralWidget()
         self.skills_widget = self.skills.centralWidget()
+        self.bg_widget = self.background.centralWidget()
 
         self.central_widget = QStackedWidget()
         self.central_widget.addWidget(self.login_widget)
@@ -53,6 +56,7 @@ class Mainwindow(QMainWindow):
         self.central_widget.addWidget(self.profile_widget)
         self.central_widget.addWidget(self.home_widget)
         self.central_widget.addWidget(self.skills_widget)
+        self.central_widget.addWidget(self.bg_widget)
 
         self.setCentralWidget(self.central_widget)
         self.central_widget.setCurrentWidget(self.login_widget)
@@ -67,8 +71,13 @@ class Mainwindow(QMainWindow):
         self.profile.editInfo.connect(self.editUserProfile)
         self.profile.change_about.connect(self.editAbout)
         self.skills.switch_to_profile.connect(self.switch_to_profile)
+        self.profile.switch_to_bg.connect(self.switch_to_bg)
         self.profile.switch_to_skills.connect(self.switch_to_skills)
         self.skills.skill_edited.connect(self.save_skill_changes)
+        self.background.remove_background.connect()
+        self.background.new_background.connect()
+        self.background.save_background_change.connect()
+        self.background.switch_to_profile.connect(self.switch_to_profile)
         # self.ui.profile_widget.
 
     # Public slots:
@@ -246,6 +255,12 @@ class Mainwindow(QMainWindow):
     def view_comments(self, content_id):
         pass
 
+    @Slot(str)
+    def switch_to_bg(self, user_id):
+        bgs = self.db.user.background_get_all(user_id)
+        all_envs = self.db.user.env_get_all_envs()
+        self.background.setup(user_id, user_id == self.own_uuid, bgs, all_envs)
+        self.central_widget.setCurrentWidget(self.bg_widget)
 
 
 if __name__ == "__main__":

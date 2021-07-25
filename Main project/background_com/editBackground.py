@@ -1,4 +1,4 @@
-from ui_editBackground import Ui_EditBackgroundDialog
+from background_com.ui_editBackground import Ui_EditBackgroundDialog
 from PySide6.QtCore import Signal, Slot, Qt
 from PySide6.QtWidgets import QApplication, QDialog, QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
@@ -8,17 +8,17 @@ sample_env = [
 
 
 class EditBackground(QDialog):
-    save_changes = Signal(str, str, str, str, str)
+    save_changes = Signal(str, str, str, str, str, str)
 
     #               (title, env, start, end, description)
 
-    def __init__(self, title, env, start, end, description, all_env):
+    def __init__(self, bg_id, title, env, start, end, description, all_env):
         super(EditBackground, self).__init__()
         self.ui = Ui_EditBackgroundDialog()
         self.ui.setupUi(self)
 
         self.all_env = all_env
-
+        self.bg_id = bg_id
         self.ui.save_pushButton.clicked.connect(self.save_pushButton_clicked)
         self.ui.cancel_pushButton.clicked.connect(self.cancel_pushButton_onClicked)
         self.ui.title_lineEdit.setText(title)
@@ -48,7 +48,7 @@ class EditBackground(QDialog):
         start_time = self.ui.startTime_comboBox.currentText()
         end_time = self.ui.endTime_comboBox.currentText()
         description = self.ui.description_plainTextEdit.toPlainText()
-        self.save_changes.emit(title, env, start_time, end_time, description)
+        self.save_changes.emit(self.bg_id, title, env, start_time, end_time, description)
         self.cancel_pushButton_onClicked()
 
     def find_env_id_by_name(self, env_name):
