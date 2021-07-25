@@ -158,6 +158,11 @@ class Content:
             print(e)
             return None
     
+    def content_get_user_uuid_by_content(self, content_id):
+        user_uuid = self.db_cursor.execute(constants.SELECT_USER_UUID_BY_CONTENT, (content_id, ))
+        user_uuid = user_uuid.fetchall()
+        return user_uuid[0][0]
+
     def content_select_content_comments(self, content_id):
         try:
             comments = self.db_cursor.execute(constants.SELECT_ALL_COMMENT, (content_id, ))
@@ -239,6 +244,9 @@ class User:
             self.db_cursor.execute(constants.CREATE_TABLE_SKILL)
             self.skill_init()
             self.db_cursor.execute(constants.CREATE_TABLE_USER_SKILL)
+            self.db_cursor.execute(constants.CREATE_TABLE_ENV)
+            self.env_init()
+            self.db_cursor.execute(constants.CREATE_TABLE_BACKGROUND)
 
             self.db_connection.commit()
         except Error as e:
@@ -516,7 +524,45 @@ class User:
         for skill in skill_ids:
             self.db_cursor.execute(constants.DELETE_USER_SKILL, (skill, user_uuid))
         self.db_connection.commit()
-            
+
+    #BACKGROUND METHODS
+    def env_init(self):
+        envs = self.env_get_all_envs()
+        if len(envs) == 0:
+            self.db_cursor.execute(constants.INSERT_ENV, ('intel', '001'))
+            self.db_cursor.execute(constants.INSERT_ENV, ('google', '020'))
+            self.db_cursor.execute(constants.INSERT_ENV, ('amazon', '300'))
+           
+            self.db_connection.commit()
+
+    def env_get_all_envs(self):
+        envs = self.db_cursor.execute(constants.SELECT_ALL_ENV)
+        envs = envs.fetchall()
+        return envs
+
+    def background_insert(self, user_uuid, env_id, bg_start_date, bg_end_date='Now', bg_description=None):
+        values = (env_id, user_uuid, bg_description, bg_start_date, bg_end_date)
+        self.db_cursor.execute(constants.INSERT_BACKGROUND, values)
+        self.db_connection.commit()
+
+    def background_get_all(self, user_uuid):
+        bgs = self.db_cursor.execute(constants.SELECT_ALL_BACKGROUND, (user_uuid, ))
+        bgs = bgs.fetchall()
+        bg_dict = []
+        for bg in bgs:
+            bg_dict.append({
+                'user_uuid': bg[0],
+                'env_id': bg[1],
+                'bg_start_date': bg[2],
+                'bg_end_date': bg[3],
+                'bg_description': bg[4],
+            })
+        return bg_dict
+
+    def background_remove(self, user_uuid, env_id):
+        self.db_cursor.execute(constants.DELETE_BACKGROUND, (user_uuid, env_id))
+        self.db_connection.commit()
+
 
 class DB:
 
@@ -600,7 +646,13 @@ if __name__ == '__main__':
         # print(datetime.date(1, 1, 1))
         # content.post_add('my first post', '0')
         # content.comment_add('my first comment', '4e12fa604fc24f78bc9a65549b740504','0')
-
+        # a = user.env_get_all_envs()
+        # user.background_insert('0', '001', datetime.date(2000,1,1), datetime.date(2020,1,1), 'hero of my life')
+        # user.background_remove('0', '001')
+        # a = user.background_get_all('0')
+        a = content.content_get_user_uuid_by_content('4e12fa604fc24f78bc9a65549b740504')
+        
+        print(a)
         db_connection.close()
     except Error as e:
         print(e)

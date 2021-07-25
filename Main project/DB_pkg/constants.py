@@ -37,6 +37,16 @@ class TableColumns:
     SKILL_SKILL_NAME = 'skill_name'
     SKILL_SKILL_ID = 'skill_id'
 
+    ENV_ENV_NAME = 'env_name'
+    ENV_ENV_ID = 'env_id'
+
+    BACKGROUND_ENV_ID = 'env_id'
+    BACKGROUND_USER_UUID = 'user_uuid'
+    BACKGROUND_DESCRIPTION = 'bg_description'
+    BACKGROUND_START_DATE = 'bg_start_date'
+    BACKGROUND_END_DATE = 'bg_end_date'
+
+
 
 
 DB_NAME = 'LinkeInDB.db'
@@ -154,6 +164,8 @@ SELECT_ALL_USER_CONNECTIONS_POSTS = """SELECT * FROM post WHERE content_id IN
                             (SELECT user2_uuid FROM connections WHERE user1_uuid = (?)) OR
                             user_uuid IN (SELECT user1_uuid FROM connections WHERE user2_uuid = (?)) ORDER BY content_date_time)"""
 
+SELECT_USER_UUID_BY_CONTENT = 'SELECT user_uuid FROM content WHERE content_id = (?)'
+
 DELETE_RECORD_CONTENT = 'DELETE FROM content WHERE content_id = (?)'
 DELETE_RECORD_POST = 'DELETE FROM post WHERE content_id = (?)'
 DELETE_RECORD_COMMENT = 'DELETE FROM comment WHERE content_id = (?)'
@@ -172,6 +184,7 @@ INSERT_RECORD_LIKE = """INSERT INTO like(content_id, user_uuid) VALUES(?, ?)"""
 DELETE_RECORD_LIKE = 'DELETE FROM like WHERE content_id = (?) AND user_uuid = (?)'
 SELECT_NUMBER_OF_LIKES_LIKE = 'SELECT COUNT(*) FROM like WHERE content_id = (?)'
 
+#SKILL
 CREATE_TABLE_SKILL = """CREATE TABLE IF NOT EXISTS skill(
                         skill_name text NOT NULL,
                         skill_id text PRIMARY KEY
@@ -190,20 +203,26 @@ INSERT_USER_SKILL = 'INSERT INTO user_skill(skill_id, user_uuid) VALUES(?, ?)'
 SELECT_ALL_USER_SKILLS = 'SELECT * FROM skill WHERE skill_id IN (SELECT skill_id FROM user_skill WHERE user_uuid = (?))'
 DELETE_USER_SKILL = 'DELETE FROM user_skill WHERE skill_id = (?) AND user_uuid = (?)'
 
-# create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
-#                         profile_id integer PRIMARY KEY,
-#                         FOREIGN KEY (user_id) REFERENCES user (user_id)
-# )"""
+#BACKGROUND
+CREATE_TABLE_ENV = """CREATE TABLE IF NOT EXISTS env(
+                        env_name text,
+                        env_id text PRIMARY KEY                        
+)"""
+SELECT_ALL_ENV = 'SELECT * FROM  env'
+INSERT_ENV = 'INSERT INTO env(env_name, env_id) VALUES(?, ?)'
 
-# create_table_connections = """CREATE TABLE IF NOT EXISTS connections(
-#                         connection_id integer PRIMARY KEY,
-#                         FOREIGN KEY (user1_id) REFERENCES user (user_id),
-#                         FOREIGN KEY (user2_id) REFERENCES user (user_id)
-# )"""
 
-# insert_table_name = ''
-# insert_table_fields = ''
-# insert_table_values = ''
-# insert_table = f'INSERT INTO {insert_table_name} ({insert_table_fields}) VALUES({insert_table_values})'
-# insert_table = f'INSERT INTO user ()'
+CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background(
+                              env_id text NOT NULL,
+                              user_uuid text NOT NULL,
+                              bg_description text,
+                              bg_start_date text NOT NULL,
+                              bg_end_date text,
+                              FOREIGN KEY (env_id) REFERENCES env (env_id),
+                              FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
+)"""
+
+INSERT_BACKGROUND = 'INSERT INTO background(env_id, user_uuid, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?)'
+SELECT_ALL_BACKGROUND = 'SELECT * FROM  background WHERE user_uuid = (?)'
+DELETE_BACKGROUND = 'DELETE FROM background WHERE user_uuid=(?) AND env_id = (?)'
 
