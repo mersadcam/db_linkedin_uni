@@ -137,8 +137,8 @@ SELECT_UUID1_CONNECTIONS = 'SELECT user2_uuid FROM connections WHERE user1_uuid 
 SELECT_UUID2_CONNECTIONS = 'SELECT user1_uuid FROM connections WHERE user2_uuid = (?)'
 INSERT_RECORD_CONNECTIONS = 'INSERT INTO connections(user1_uuid, user2_uuid) VALUES(?, ?)'
 DELETE_RECORD_CONNECTIONS = 'DELETE FROM connections WHERE user1_uuid = (?) AND user2_uuid = (?)'
-SELECT_UUID1_NETWORK = f'select user2_uuid FROM connections WHERE user1_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user1_uuid IN({SELECT_UUID2_CONNECTIONS})'
-SELECT_UUID2_NETWORK = f'select user1_uuid FROM connections WHERE user2_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user2_uuid IN({SELECT_UUID2_CONNECTIONS})'
+SELECT_UUID1_NETWORK = f'SELECT DISTINCT user2_uuid FROM connections WHERE user1_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user1_uuid IN({SELECT_UUID2_CONNECTIONS})'
+SELECT_UUID2_NETWORK = f'SELECT DISTINCT user1_uuid FROM connections WHERE user2_uuid IN({SELECT_UUID1_CONNECTIONS}) OR user2_uuid IN({SELECT_UUID2_CONNECTIONS})'
 
 #**************************
 # profile table constants

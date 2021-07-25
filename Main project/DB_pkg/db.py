@@ -448,19 +448,25 @@ class User:
     def profile_select(self, user_uuid):
         profile = self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_uuid,))
         profile = profile.fetchall()
-        profile_birthday_date_format = datetime.datetime.strptime(profile[0][4], '%Y-%m-%d').date()
-        # print(profile_birthday_date_format)
-        profile_dict = {
-            TableColumns.PROFILE_FIRST_NAME: profile[0][0],
-            TableColumns.PROFILE_LAST_NAME: profile[0][1],
-            TableColumns.PROFILE_HEADLINE: profile[0][2],
-            TableColumns.PROFILE_COUNTRY: profile[0][3],
-            TableColumns.PROFILE_BIRTHDAY: profile_birthday_date_format,
-            TableColumns.PROFILE_ADDRESS: profile[0][5],
-            TableColumns.PROFILE_ABOUT: profile[0][6],
-            TableColumns.PROFILE_LINK: profile[0][7]
-        }
-        return profile_dict
+        if len(profile) == 0:
+            print('no such profile exists.')
+            return
+        try:
+            # print(profile_birthday_date_format)
+            profile_dict = {
+                TableColumns.PROFILE_FIRST_NAME: profile[0][0],
+                TableColumns.PROFILE_LAST_NAME: profile[0][1],
+                TableColumns.PROFILE_HEADLINE: profile[0][2],
+                TableColumns.PROFILE_COUNTRY: profile[0][3],
+                TableColumns.PROFILE_BIRTHDAY: datetime.datetime.strptime(profile[0][4], '%Y-%m-%d').date(),
+                TableColumns.PROFILE_ADDRESS: profile[0][5],
+                TableColumns.PROFILE_ABOUT: profile[0][6],
+                TableColumns.PROFILE_LINK: profile[0][7]
+            }
+            return profile_dict
+        except Error as e:
+            print(e)
+            return None
 
 
     def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None, profile_country=None, profile_birthday=None, profile_address=None, profile_about=None, profile_link=None):
@@ -536,13 +542,37 @@ class User:
             print(e)
             return None
 
-    def connection_get_user_network_info(self, user_uuid): #the one who are not in user connection  
-        uuid_list = self.connection_get_user_connections_uuid(user_uuid)
-        net_list = []
-        
+    def connection_get_user_network_info(self, user_uuid):
+        uuid_list = self.connection_get_user_network_uuid(user_uuid)
+        con_list = []
         for u in uuid_list:
-            pass
-        # net_list = list(set(net_list)) # to avoid duplicates
+            u_profile = self.profile_select()
+            print(u_profile)
+            # con_list.append({
+            #     TableColumns.PROFILE_USER_UUID: u,
+            #     TableColumns.PROFILE_FIRST_NAME: u_profile[TableColumns.PROFILE_FIRST_NAME],
+            #     TableColumns.PROFILE_LAST_NAME: u_profile[TableColumns.PROFILE_LAST_NAME],
+            #     TableColumns.PROFILE_HEADLINE: u_profile[TableColumns.PROFILE_HEADLINE]
+            # })
+        return con_list
+
+    def connection_get_user_network_uuid(self, user_uuid): #the one who are not in user connection  
+        connection_list = self.connection_get_user_connections_uuid(user_uuid)
+        
+        # print(connection_list)
+        net_uuid_list = []
+        tmp_list = []
+        for u in connection_list:
+            tmp_list.clear()
+            tmp_list = self.connection_get_user_connections_uuid(u)
+            for cc in tmp_list:
+                net_uuid_list.append(cc)
+        net_uuid_list = list(set(net_uuid_list))
+        net_uuid_list.remove(user_uuid)
+        net_uuid_list = list(set(net_uuid_list) - set(connection_list))
+        
+        return net_uuid_list
+
 
     def connection_get_user_connections_info(self, user_uuid):
         uuid_list = self.connection_get_user_connections_uuid(user_uuid)
@@ -863,8 +893,14 @@ if __name__ == '__main__':
         # user.background_update(bg_id='67f85ef548184b41a91c9ba1a401f209', env_id='001', bg_start_date='2015', bg_end_date='2018', bg_description='this', bg_title='that')
         # user.userAcc_insert('15', '0')
         # user.userAcc_delete('15', '0')
-        
         # a = user.recom_select('0')
+        # a = user.connection_get_user_network_uuid('0')
+        # a = user.connection_get_user_connections_info('0')
+        # a = user.connection_get_user_network_info('0')
+        # user.user_signUp('2', '2', '2@0.com', '2')
+        # a = user.user_select('0')
+        # a = user.profile_select('5')
+
         # print(a)
 
 
