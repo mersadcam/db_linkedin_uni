@@ -2,10 +2,6 @@ from background_com.ui_addBackground import Ui_addBackgroundDialog
 from PySide6.QtCore import Signal, Slot, Qt
 from PySide6.QtWidgets import QApplication, QDialog, QWidget, QVBoxLayout, QLabel, QHBoxLayout
 
-sample_env = [
-    {'name': 'name', 'id': 'id'}
-]
-
 
 class AddBackground(QDialog):
     add_new_background = Signal(str, str, str, str, str)
@@ -23,8 +19,9 @@ class AddBackground(QDialog):
         self.ui.cancel_pushButton.clicked.connect(self.cancel_pushButton_onClicked)
 
         env_list = []
+
         for env in all_env:
-            env_list.append(env['name'])
+            env_list.append(env[0])
 
         items = []
         for i in range(1900, 2021):
@@ -47,8 +44,8 @@ class AddBackground(QDialog):
 
     def find_env_id_by_name(self, env_name):
         for env in self.all_env:
-            if env['name'] == env_name:
-                return env['id']
+            if env[0] == env_name:
+                return env[1]
 
     def cancel_pushButton_onClicked(self):
         self.close()

@@ -1,7 +1,7 @@
 from background_com.ui_editBackground import Ui_EditBackgroundDialog
 from PySide6.QtCore import Signal, Slot, Qt
 from PySide6.QtWidgets import QApplication, QDialog, QWidget, QVBoxLayout, QLabel, QHBoxLayout
-
+from constants import TableColumns
 sample_env = [
     {'name': 'name', 'id': 'id'}
 ]
@@ -24,8 +24,8 @@ class EditBackground(QDialog):
         self.ui.title_lineEdit.setText(title)
 
         env_list = []
-        for env in all_env:
-            env_list.append(env['name'])
+        for env_ in all_env:
+            env_list.append(env_[0])
 
         items = []
         for i in range(1900, 2021):
@@ -36,7 +36,7 @@ class EditBackground(QDialog):
         self.ui.endTime_comboBox.addItems(items)
         self.ui.env_comboBox.addItems(env_list)
 
-        self.ui.env_comboBox.setCurrentText(env['name'])
+        self.ui.env_comboBox.setCurrentText(env[TableColumns.ENV_ENV_NAME])
         self.ui.startTime_comboBox.setCurrentText(start)
         self.ui.endTime_comboBox.setCurrentText(end)
         self.ui.description_plainTextEdit.setPlainText(description)
@@ -53,8 +53,8 @@ class EditBackground(QDialog):
 
     def find_env_id_by_name(self, env_name):
         for env in self.all_env:
-            if env['name'] == env_name:
-                return env['id']
+            if env[0] == env_name:
+                return env[1]
 
     def cancel_pushButton_onClicked(self):
         self.close()

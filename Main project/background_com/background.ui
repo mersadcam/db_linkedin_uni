@@ -143,6 +143,14 @@ color:rgb(1, 31, 54);\n</string>
     </item>
     <item>
      <widget class="QScrollArea" name="scrollArea">
+      <property name="styleSheet">
+       <string notr="true">QWidget#backgroundWidget{
+border:2px solid rgb(48, 162, 249);
+border-radius:10px;
+background:rgba(248, 253, 255, 206);
+color:rgb(1, 31, 54);
+}</string>
+      </property>
       <property name="widgetResizable">
        <bool>true</bool>
       </property>

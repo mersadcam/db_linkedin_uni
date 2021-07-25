@@ -74,9 +74,9 @@ class Mainwindow(QMainWindow):
         self.profile.switch_to_bg.connect(self.switch_to_bg)
         self.profile.switch_to_skills.connect(self.switch_to_skills)
         self.skills.skill_edited.connect(self.save_skill_changes)
-        self.background.remove_background.connect()
-        self.background.new_background.connect()
-        self.background.save_background_change.connect()
+        self.background.remove_background.connect(self.remove_background)
+        self.background.new_background.connect(self.new_background)
+        # self.background.save_background_change.connect()
         self.background.switch_to_profile.connect(self.switch_to_profile)
         # self.ui.profile_widget.
 
@@ -262,6 +262,21 @@ class Mainwindow(QMainWindow):
         self.background.setup(user_id, user_id == self.own_uuid, bgs, all_envs)
         self.central_widget.setCurrentWidget(self.bg_widget)
 
+    @Slot(str)
+    def remove_background(self, bg_id):
+        self.db.user.background_delete(bg_id)
+        bgs = self.db.user.background_get_all(self.own_uuid)
+        self.background.update_base_on_changes(bgs)
+
+    @Slot(str, str, str, str, str)
+    def new_background(self, title, env, start, end, description):
+        self.db.user.background_insert(self.own_uuid, env, start, end, description, title)
+        bgs = self.db.user.background_get_all(self.own_uuid)
+        self.background.update_base_on_changes(bgs)
+
+    # @Slot(str, str, str, str, str, str)
+    # def edit_background(self, bg_id, title, env, start_time, end_time, description):
+    #     self.db.user.back
 
 if __name__ == "__main__":
     app = QApplication([])

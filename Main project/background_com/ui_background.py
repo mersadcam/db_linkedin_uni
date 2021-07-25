@@ -12,7 +12,6 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-
 import resources.resources_rc
 
 class Ui_background(object):
@@ -89,6 +88,12 @@ class Ui_background(object):
 
         self.scrollArea = QScrollArea(self.centralwidget)
         self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setStyleSheet(u"QWidget#backgroundWidget{\n"
+"border:2px solid rgb(48, 162, 249);\n"
+"border-radius:10px;\n"
+"background:rgba(248, 253, 255, 206);\n"
+"color:rgb(1, 31, 54);\n"
+"}")
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
