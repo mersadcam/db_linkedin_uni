@@ -4,6 +4,7 @@ from os import error, truncate
 import sqlite3
 from sqlite3.dbapi2 import Connection, Cursor, Error
 import constants
+from constants import TableColumns
 import uuid
 import secrets
 import re
@@ -34,7 +35,7 @@ class Content:
         content_date_time = datetime.datetime.now()
         content_id = str(uuid.uuid4().hex)
         values_tuple = (content_id, content_date_time, user_uuid)
-
+        
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_CONTENT, values_tuple)
             self.db_connection.commit()
@@ -146,12 +147,28 @@ class Content:
             posts = self.db_cursor.execute(constants.SELECT_ALL_RECORD_POST, (user_uuid, ))
             posts = posts.fetchall()
             dict_post_list = []
-            for post in posts:
+            
+            for post in posts:                
+                user_first_name = user.profile_select(user_uuid)[0]
+                user_last_name = user.profile_select(user_uuid)[1]
+                content_number_of_likes = self.like_numberOfLikes(post[2])
+                content_number_of_comments = self.comment_numberOfComments(post[2])
+
                 dict_post_list.append({
-                    'post_content': post[0],
-                    'post_isFeatured': post[1],
-                    'content_id': post[2]
+                    TableColumns.POST_CONTENT: post[0],
+                    TableColumns.POST_IS_FEATURED: post[1],
+                    TableColumns.POST_CONTENT_ID: post[2],
+                    TableColumns.CONTENT_OWNER: {
+                        TableColumns.CONTENT_USER_UUID: user_uuid,
+                        TableColumns.CONTENT_OWNER_FNAME: user_first_name,
+                        TableColumns.CONTENT_OWNER_LNAME:user_last_name
+                    },
+                    TableColumns.CONTENT_NUMBER_OF_LIKES: content_number_of_likes,
+                    TableColumns.CONTENT_NUMBER_OF_COMMENTS: content_number_of_comments
                 })
+
+
+
             return dict_post_list
 
         except Error as e:
@@ -169,10 +186,23 @@ class Content:
             comments = comments.fetchall()
             dict_comment_list = []
             for comment in comments:
+                user_uuid = self.content_get_user_uuid_by_content(comment[2])
+                user_first_name = user.profile_select(user_uuid)[0]
+                user_last_name = user.profile_select(user_uuid)[1]
+                content_number_of_likes = self.like_numberOfLikes(comment[2])
+                content_number_of_comments = self.comment_numberOfComments(comment[2])
+
                 dict_comment_list.append({
-                    'comment_content': comment[0],
-                    'comment_reply_id': comment[1],
-                    'content_id': comment[2]
+                    TableColumns.COMMENT_CONTENT: comment[0],
+                    TableColumns.COMMENT_REPLY_ID: comment[1],
+                    TableColumns.COMMENT_CONTENT_ID: comment[2],
+                    TableColumns.CONTENT_OWNER: {
+                        TableColumns.CONTENT_USER_UUID: user_uuid,
+                        TableColumns.CONTENT_OWNER_FNAME: user_first_name,
+                        TableColumns.CONTENT_OWNER_LNAME:user_last_name
+                    },
+                    TableColumns.CONTENT_NUMBER_OF_LIKES: content_number_of_likes,
+                    TableColumns.CONTENT_NUMBER_OF_COMMENTS: content_number_of_comments
                 })
             return dict_comment_list
 
@@ -211,12 +241,27 @@ class Content:
             posts = self.db_cursor.execute(constants.SELECT_ALL_USER_CONNECTIONS_POSTS, (user_uuid, user_uuid))
             posts = posts.fetchall()
             dict_post_list = []
-            for post in posts:
+            for post in posts:                    
+                user_uuid = self.content_get_user_uuid_by_content(post[2])
+                user_first_name = user.profile_select(user_uuid)[0]
+                user_last_name = user.profile_select(user_uuid)[1]
+                content_number_of_likes = self.like_numberOfLikes(post[2])
+                content_number_of_comments = self.comment_numberOfComments(post[2])
+
                 dict_post_list.append({
-                    'post_content': post[0],
-                    'post_isFeatured': post[1],
-                    'content_id': post[2]
+                    TableColumns.POST_CONTENT: post[0],
+                    TableColumns.POST_IS_FEATURED: post[1],
+                    TableColumns.POST_CONTENT_ID: post[2],
+                    TableColumns.CONTENT_OWNER: {
+                        TableColumns.CONTENT_USER_UUID: user_uuid,
+                        TableColumns.CONTENT_OWNER_FNAME: user_first_name,
+                        TableColumns.CONTENT_OWNER_LNAME:user_last_name
+                    },
+                    TableColumns.CONTENT_NUMBER_OF_LIKES: content_number_of_likes,
+                    TableColumns.CONTENT_NUMBER_OF_COMMENTS: content_number_of_comments
                 })
+
+
             return dict_post_list
         except Error as e:
             print(e)
@@ -248,6 +293,8 @@ class User:
             self.env_init()
             self.db_cursor.execute(constants.CREATE_TABLE_BACKGROUND)
             self.db_cursor.execute(constants.CREATE_TABLE_RECOM)
+            self.db_cursor.execute(constants.CREATE_TABLE_ACCOMP)
+            self.db_cursor.execute(constants.CREATE_TABLE_USER_ACCOMP)
 
             self.db_connection.commit()
         except Error as e:
@@ -297,10 +344,10 @@ class User:
                 return None
             
             user_dict = {
-                "user_uuid": user[0][0],
-                "user_email": user[0][1],
-                "user_password": user[0][2],
-                "user_token": user[0][3],
+                TableColumns.USER_UUID: user[0][0],
+                TableColumns.USER_EMAIL: user[0][1],
+                TableColumns.USER_PASSWORD: user[0][2],
+                TableColumns.USER_TOKEN: user[0][3],
             }
             return user_dict
         except Error as e:
@@ -402,15 +449,14 @@ class User:
         profile_birthday_date_format = datetime.datetime.strptime(profile[0][4], '%Y-%m-%d').date()
         # print(profile_birthday_date_format)
         profile_dict = {
-            "profile_first_name": profile[0][0],
-            "profile_last_name": profile[0][1],
-            "profile_headline": profile[0][2],
-            "profile_country": profile[0][3],
-            "profile_birthday": profile_birthday_date_format,
-            "profile_address": profile[0][5],
-            "profile_about": profile[0][6],
-            "profile_link": profile[0][7],
-
+            TableColumns.PROFILE_FIRST_NAME: profile[0][0],
+            TableColumns.PROFILE_LAST_NAME: profile[0][1],
+            TableColumns.PROFILE_HEADLINE: profile[0][2],
+            TableColumns.PROFILE_COUNTRY: profile[0][3],
+            TableColumns.PROFILE_BIRTHDAY: profile_birthday_date_format,
+            TableColumns.PROFILE_ADDRESS: profile[0][5],
+            TableColumns.PROFILE_ABOUT: profile[0][6],
+            TableColumns.PROFILE_LINK: profile[0][7],
         }
         return profile_dict
 
@@ -455,9 +501,9 @@ class User:
         users_dict_list = []
         for u in users_list:
             users_dict_list.append({
-                'user_uuid': u[0],
-                'profile_first_name': u[1],
-                'profile_last_name': u[2]
+                TableColumns.PROFILE_USER_UUID: u[0],
+                TableColumns.PROFILE_FIRST_NAME : u[1],
+                TableColumns.PROFILE_LAST_NAME : u[2]
             })
         return users_dict_list
             
@@ -536,6 +582,11 @@ class User:
            
             self.db_connection.commit()
 
+    def env_get_name(self, env_id):
+        name = self.db_cursor.execute(constants.SELECT_ENV, (env_id,))
+        name = name.fetchall()
+        return name[0][0]
+
     def env_get_all_envs(self):
         envs = self.db_cursor.execute(constants.SELECT_ALL_ENV)
         envs = envs.fetchall()
@@ -552,21 +603,29 @@ class User:
         bgs = bgs.fetchall()
         bg_dict = []
         for bg in bgs:
+            env_name = self.env_get_name()
             bg_dict.append({
-                'user_uuid': bg[0],
-                'env_id': bg[1],
-                'bg_start_date': bg[2],
-                'bg_end_date': bg[3],
-                'bg_description': bg[4],
+                TableColumns.BACKGROUND_BG_ID: bg[0],
+                TableColumns.BACKGROUND_USER_UUID: bg[2],
+                TableColumns.BACKGROUND_ENV : {
+                    TableColumns.ENV_ENV_NAME: env_name,
+                    TableColumns.BACKGROUND_ENV_ID: bg[1],
+                },
+                TableColumns.BACKGROUND_TITLE: bg[3],
+                TableColumns.BACKGROUND_DESCRIPTION: bg[4],
+                TableColumns.BACKGROUND_START_DATE :bg[5],
+                TableColumns.BACKGROUND_END_DATE : bg[6]
             })
         return bg_dict
 
-    def background_remove(self, bg_id):
+    def background_delete(self, bg_id):
         self.db_cursor.execute(constants.DELETE_BACKGROUND, (bg_id, ))
         self.db_connection.commit()
 
+    #RECOM
     def recom_insert(self, recom_writer_uuid, recom_reciever_uuid, recom_text):
-        values = (recom_writer_uuid, recom_reciever_uuid, recom_text)
+        recom_id = str(uuid.uuid4().hex)
+        values = (recom_id, recom_writer_uuid, recom_reciever_uuid, recom_text)
         self.db_cursor.execute(constants.INSERT_RECOM, values)
         self.db_connection.commit()
 
@@ -579,12 +638,69 @@ class User:
         recoms = recoms.fetchall()
         recom_dict = []
         for rc in recoms:
+            writer_uuid = rc[1]
+            writer_first_name = user.profile_select(writer_uuid)[0]
+            writer_last_name = user.profile_select(writer_uuid)[1]
             recom_dict.append({
-                'recom_writer': rc[0],
-                'recom_reciever': rc[1],
-                'recom_text': rc[2]        
+                TableColumns.RECOM_ID: rc[0],
+                TableColumns.RECOM_WRITER: {
+                    TableColumns.RECOM_WRITER_UUID : writer_uuid,
+                    TableColumns.RECOM_WRITER_FNAME : writer_first_name,
+                    TableColumns.RECOM_WRITER_LNAME : writer_last_name
+                },
+                TableColumns.RECOM_RECIEVER_UUID: rc[2],
+                TableColumns.RECOM_TEXT: rc[3]        
             })
+
         return recom_dict
+    
+    def recom_select(self, recom_id):
+        recom = self.db_cursor.execute(constants.SELECT_RECOM, (recom_id, ))
+        recom = recom.fetchall()
+        writer_uuid = recom[1]
+        writer_first_name = user.profile_select(writer_uuid)[0]
+        writer_last_name = user.profile_select(writer_uuid)[1]
+        return {
+                TableColumns.RECOM_ID: recom[0],
+                TableColumns.RECOM_WRITER: {
+                    TableColumns.RECOM_WRITER_UUID : writer_uuid,
+                    TableColumns.RECOM_WRITER_FNAME : writer_first_name,
+                    TableColumns.RECOM_WRITER_LNAME : writer_last_name
+                },
+                TableColumns.RECOM_RECIEVER_UUID: recom[2],
+                TableColumns.RECOM_TEXT: recom[3]        
+            }
+
+    def recom_get_recom_id(self, recom_writer_uuid, recom_reciever_uuid):
+        recom = self.db_cursor.execute(constants.SELECT_GET_RECOM_ID, (recom_writer_uuid, recom_reciever_uuid))
+        recom = recom.fetchall()
+        return recom[0][0]
+
+    #accomp
+    def accomp_insert(self, accomp_title, accomp_text, accomp_date, accomp_link):
+        accomp_id = str(uuid.uuid4().hex)
+        values = (accomp_id, accomp_title, accomp_text, accomp_date, accomp_link)
+        self.db_cursor.execute(constants.INSERT_ACCOMP, values)
+        self.db_connection.commit()
+
+    def accomp_delete(self, accomp_id):
+        self.db_cursor.execute(constants.DELETE_ACCOMP, (accomp_id,))
+        self.db_connection.commit()
+    
+    def accomp_select(self, accomp_id):
+        acc = self.db_cursor.execute(constants.SELECT_ACCOMP, (accomp_id,))
+        acc = acc.fetchall()
+        acc_date = datetime.datetime.strptime(acc[0][3], '%Y-%m-%d').date()
+        return {
+            TableColumns.ACCOMP_ID: acc[0][0],
+            TableColumns.ACCOMP_TITLE: acc[0][1],
+            TableColumns.ACCOMP_TEXT: acc[0][2],
+            TableColumns.ACCOMP_DATE: acc_date,
+            TableColumns.ACCOMP_LINK: acc[0][4]
+        }
+    
+    # def userAcc_insert(self, accomp_id, user_uuid):
+
 
 class DB:
 
@@ -674,10 +790,12 @@ if __name__ == '__main__':
         # a = user.background_get_all('0')
         # a = content.content_get_user_uuid_by_content('4e12fa604fc24f78bc9a65549b740504')
         
-        user.recom_insert('1', '0', 'this is it.')
-        a = user.recom_select_recieved_recoms('0')
-
-        print(a)
+        # user.recom_insert('1', '0', 'this is it.')
+        # a = user.recom_select_recieved_recoms('0')
+        # user.accomp_insert('0', '01', datetime.date(2000, 1, 1), 'google.com')
+        # a = user.accomp_select('f8eb7b2fab124819a6aa10dddff4cf56')
+        # user.accomp_delete('f8eb7b2fab124819a6aa10dddff4cf56')
+        # print(a)
         db_connection.close()
     except Error as e:
         print(e)
