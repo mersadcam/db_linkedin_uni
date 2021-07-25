@@ -654,11 +654,12 @@ class User:
     def recom_select_recieved_recoms(self, recom_reciever_uuid):
         recoms = self.db_cursor.execute(constants.SELECT_RECIEVED_RECOM, (recom_reciever_uuid, ))
         recoms = recoms.fetchall()
+    
         recom_dict = []
         for rc in recoms:
             writer_uuid = rc[1]
-            writer_first_name = user.profile_select(writer_uuid)[0]
-            writer_last_name = user.profile_select(writer_uuid)[1]
+            writer_first_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_FIRST_NAME]
+            writer_last_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_LAST_NAME]
             recom_dict.append({
                 TableColumns.RECOM_ID: rc[0],
                 TableColumns.RECOM_WRITER: {
@@ -674,10 +675,10 @@ class User:
     
     def recom_select(self, recom_id):
         recom = self.db_cursor.execute(constants.SELECT_RECOM, (recom_id, ))
-        recom = recom.fetchall()
+        recom = recom.fetchone()
         writer_uuid = recom[1]
-        writer_first_name = user.profile_select(writer_uuid)[0]
-        writer_last_name = user.profile_select(writer_uuid)[1]
+        writer_first_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_FIRST_NAME]
+        writer_last_name = user.profile_select(writer_uuid)[TableColumns.PROFILE_LAST_NAME]
         return {
                 TableColumns.RECOM_ID: recom[0],
                 TableColumns.RECOM_WRITER: {
@@ -821,9 +822,10 @@ if __name__ == '__main__':
         # user.background_insert(user_uuid='0', env_id='001', bg_start_date='2000', bg_title='t', bg_description='d')
         # a = user.background_get_all('0')
         
+        # a = user.recom_select_recieved_recoms('0')
+        a = user.recom_select('01')
         
-        
-        # print(a)
+        print(a)
 
 
         db_connection.close()
