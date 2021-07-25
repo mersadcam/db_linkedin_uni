@@ -1,6 +1,7 @@
 # from _typeshed import Self
 # from _typeshed import Self
-from os import error, truncate
+# from _typeshed import Self
+# from os import error, truncate
 import sqlite3
 from sqlite3.dbapi2 import Connection, Cursor, Error
 import constants
@@ -149,8 +150,8 @@ class Content:
             dict_post_list = []
             
             for post in posts:                
-                user_first_name = user.profile_select(user_uuid)[0]
-                user_last_name = user.profile_select(user_uuid)[1]
+                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(post[2])
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
@@ -187,8 +188,8 @@ class Content:
             dict_comment_list = []
             for comment in comments:
                 user_uuid = self.content_get_user_uuid_by_content(comment[2])
-                user_first_name = user.profile_select(user_uuid)[0]
-                user_last_name = user.profile_select(user_uuid)[1]
+                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(comment[2])
                 content_number_of_comments = self.comment_numberOfComments(comment[2])
 
@@ -243,8 +244,8 @@ class Content:
             dict_post_list = []
             for post in posts:                    
                 user_uuid = self.content_get_user_uuid_by_content(post[2])
-                user_first_name = user.profile_select(user_uuid)[0]
-                user_last_name = user.profile_select(user_uuid)[1]
+                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(post[2])
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
@@ -456,7 +457,7 @@ class User:
             TableColumns.PROFILE_BIRTHDAY: profile_birthday_date_format,
             TableColumns.PROFILE_ADDRESS: profile[0][5],
             TableColumns.PROFILE_ABOUT: profile[0][6],
-            TableColumns.PROFILE_LINK: profile[0][7],
+            TableColumns.PROFILE_LINK: profile[0][7]
         }
         return profile_dict
 
@@ -534,6 +535,23 @@ class User:
             print(e)
             return None
 
+    def connection_get_user_network_info(self, user_uuid): #the one who are not in user connection  
+        uuid_list = self.connection_get_user_connections_uuid(user_uuid)
+
+    def connection_get_user_connections_info(self, user_uuid):
+        uuid_list = self.connection_get_user_connections_uuid(user_uuid)
+        con_list = []
+        for u in uuid_list:
+            u_profile = self.profile_select(u)
+            con_list.append({
+                TableColumns.PROFILE_USER_UUID: u,
+                TableColumns.PROFILE_FIRST_NAME: u_profile[TableColumns.PROFILE_FIRST_NAME],
+                TableColumns.PROFILE_LAST_NAME: u_profile[TableColumns.PROFILE_LAST_NAME],
+                TableColumns.PROFILE_HEADLINE: u_profile[TableColumns.PROFILE_HEADLINE]
+            })
+        return con_list
+
+
     def connection_add(self, user1_uuid, user2_uuid):
         self.db_cursor.execute(constants.INSERT_RECORD_CONNECTIONS, (user1_uuid, user2_uuid))
         self.db_connection.commit()
@@ -592,9 +610,9 @@ class User:
         envs = envs.fetchall()
         return envs
 
-    def background_insert(self, user_uuid, env_id, bg_start_date, bg_end_date='Now', bg_description=None):
+    def background_insert(self, user_uuid, env_id, bg_start_date, bg_end_date='Now', bg_description=None, bg_title=None):
         bg_id = uuid.uuid4().hex
-        values = (bg_id, env_id, user_uuid, bg_description, bg_start_date, bg_end_date)
+        values = (bg_id, env_id, user_uuid, bg_title, bg_description, bg_start_date, bg_end_date)
         self.db_cursor.execute(constants.INSERT_BACKGROUND, values)
         self.db_connection.commit()
 
@@ -603,7 +621,7 @@ class User:
         bgs = bgs.fetchall()
         bg_dict = []
         for bg in bgs:
-            env_name = self.env_get_name()
+            env_name = self.env_get_name(bg[1])
             bg_dict.append({
                 TableColumns.BACKGROUND_BG_ID: bg[0],
                 TableColumns.BACKGROUND_USER_UUID: bg[2],
@@ -795,7 +813,19 @@ if __name__ == '__main__':
         # user.accomp_insert('0', '01', datetime.date(2000, 1, 1), 'google.com')
         # a = user.accomp_select('f8eb7b2fab124819a6aa10dddff4cf56')
         # user.accomp_delete('f8eb7b2fab124819a6aa10dddff4cf56')
+        # a = user.connection_get_user_connections_info('0')
+        # a = content.post_select_userPosts('0')
+        # a = content.content_select_content_comments('4e12fa604fc24f78bc9a65549b740504')
+        # a = content.post_get_user_connection_posts('1')
+        # a = user.user_select('0')
+        # user.background_insert(user_uuid='0', env_id='001', bg_start_date='2000', bg_title='t', bg_description='d')
+        # a = user.background_get_all('0')
+        
+        
+        
         # print(a)
+
+
         db_connection.close()
     except Error as e:
         print(e)

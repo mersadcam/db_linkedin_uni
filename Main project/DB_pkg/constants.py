@@ -8,10 +8,10 @@ class TableColumns:
     PROFILE_FIRST_NAME = 'profile_first_name'
     PROFILE_LAST_NAME = 'profile_last_name'
     PROFILE_HEADLINE = 'profile_headline'
-    PROFILE_COUNTRY = 'profile_headline'
-    PROFILE_BIRTHDAY = 'profile_headline'
-    PROFILE_ADDRESS = 'profile_headline'
-    PROFILE_ABOUT = 'profile_headline'
+    PROFILE_COUNTRY = 'profile_country'
+    PROFILE_BIRTHDAY = 'profile_birthday'
+    PROFILE_ADDRESS = 'profile_address'
+    PROFILE_ABOUT = 'profile_about'
     PROFILE_LINK = 'profile_link'
     PROFILE_USER_UUID = 'user_uuid'
 
@@ -245,7 +245,7 @@ CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background(
                               FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
 )"""
 
-INSERT_BACKGROUND = 'INSERT INTO background(bg_id, env_id, user_uuid, bg_title, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?, ?)'
+INSERT_BACKGROUND = 'INSERT INTO background(bg_id, env_id, user_uuid, bg_title, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?, ?, ?)'
 SELECT_ALL_BACKGROUND = 'SELECT * FROM  background WHERE user_uuid = (?)'
 DELETE_BACKGROUND = 'DELETE FROM background WHERE bg_id = (?)'
 
