@@ -294,6 +294,7 @@ class User:
             self.db_cursor.execute(constants.CREATE_TABLE_BACKGROUND)
             self.db_cursor.execute(constants.CREATE_TABLE_RECOM)
             self.db_cursor.execute(constants.CREATE_TABLE_ACCOMP)
+            self.db_cursor.execute(constants.CREATE_TABLE_USER_ACCOMP)
 
             self.db_connection.commit()
         except Error as e:
@@ -697,6 +698,9 @@ class User:
             TableColumns.ACCOMP_DATE: acc_date,
             TableColumns.ACCOMP_LINK: acc[0][4]
         }
+    
+    # def userAcc_insert(self, accomp_id, user_uuid):
+
 
 class DB:
 

@@ -272,7 +272,17 @@ CREATE_TABLE_ACCOMP = """CREATE TABLE IF NOT EXISTS accomp(
                               accomp_date text,
                               accomp_link text
 )"""
+
 INSERT_ACCOMP = 'INSERT INTO accomp(accomp_id, accomp_title, accomp_text, accomp_date, accomp_link) VALUES(?, ?, ?, ?, ?)'
 DELETE_ACCOMP = 'DELETE FROM accomp WHERE accomp_id = (?)'
 SELECT_ACCOMP = 'SELECT * FROM accomp WHERE accomp_id = (?)'
 
+
+CREATE_TABLE_USER_ACCOMP = """CREATE TABLE IF NOT EXISTS user_accomp( 
+                              accomp_id text NOT NULL,
+                              user_uuid text NOT NULL,
+                              FOREIGN KEY (accomp_id) REFERENCES accomp (accomp_id),
+                              FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
+)"""
+
+INSERT_USER_ACCOMP = 'INSERT INTO user_accomp(accomp_id, user_uuid) VALUES(?, ?)'
