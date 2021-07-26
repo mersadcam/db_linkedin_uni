@@ -1,4 +1,4 @@
-from post_comp.ui_postWidget import Ui_postWidget
+from post_com.ui_postWidget import Ui_postWidget
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
 from consts import Labels

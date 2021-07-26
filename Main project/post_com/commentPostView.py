@@ -2,8 +2,8 @@ from ui_commentPostView import Ui_commentPostView
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QDialog, QLayout, QWidget, QVBoxLayout
 from PySide6.QtGui import Qt
-from post_comp.postWidget import PostWidget
-from post_comp.viewCommentWidget import ViewCommentWidget
+from post_com.postWidget import PostWidget
+from post_com.viewCommentWidget import ViewCommentWidget
 from constants import TableColumns
 
 

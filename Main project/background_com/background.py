@@ -85,6 +85,7 @@ class Background(QMainWindow):
 
     @Slot(str, str, str, str, str, str)
     def on_saved_changes(self, bg_id, title, env, start_time, end_time, description):
+        print("OOOps")
         self.save_background_change.emit(bg_id, title, env, start_time, end_time, description)
 
     @Slot(str)

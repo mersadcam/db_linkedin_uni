@@ -1,4 +1,4 @@
-from post_comp.ui_newPostDialog import Ui_newPost
+from post_com.ui_newPostDialog import Ui_newPost
 from PySide6.QtWidgets import QDialog
 from PySide6.QtCore import Signal, Slot
 
@@ -17,3 +17,4 @@ class NewPost(QDialog):
 
     def post_pushButton_onClicked(self, content):
         self.new_post.emit(content)
+        self.close()
