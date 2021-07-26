@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QWidget
 from consts import Labels
 from PySide6.QtGui import QIcon
 
-liked = QIcon(':/images/like-fill.png')
+# liked = QIcon(':/images/like-fill.png')
 
 
 class PostWidget(QWidget):
@@ -28,10 +28,10 @@ class PostWidget(QWidget):
         self.ui.content_plainTextEdit.setPlainText(content)
         self.ui.firstname_label.setText(firstname)
         self.ui.lastname_label.setText(lastname)
-        self.ui.like_pushButton.clicked.connect(self.like_pushButton_onClicked)
+        # self.ui.like_pushButton.clicked.connect(self.like_pushButton_onClicked)
 
     def set_post_liked(self, is_liked):
         pass
 
-    def like_pushButton_onClicked(self):
-        self.ui.like_pushButton.setIcon(liked)
+    # def like_pushButton_onClicked(self):
+    #     self.ui.like_pushButton.setIcon(liked)

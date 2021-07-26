@@ -290,7 +290,7 @@ class Mainwindow(QMainWindow):
     @Slot(str)
     def view_comments(self, content_id):
         # content, comments, content_is_post, is_liked, firstname, lastname
-        content = {}
+        content = self.db.content.post_select_one(content_id)
         comments = self.db.content.content_select_content_comments(content_id)
         user_uuid = self.db.content.content_get_user_uuid_by_content(content_id)
         profile = self.db.user.profile_select(user_uuid)

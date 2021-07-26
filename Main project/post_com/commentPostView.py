@@ -1,4 +1,4 @@
-from ui_commentPostView import Ui_commentPostView
+from post_com.ui_commentPostView import Ui_commentPostView
 from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QDialog, QLayout, QWidget, QVBoxLayout
 from PySide6.QtGui import Qt
@@ -19,14 +19,14 @@ class CommentPostView(QDialog):
         if content_is_post:
             main_content_widget = PostWidget(content[TableColumns.POST_CONTENT_ID],
                                              content[TableColumns.POST_CONTENT],
-                                             content[TableColumns.CONTENT_LIKES_NUMBER],
-                                             content[TableColumns.CONTENT_COMMENTS_NUMBER],
+                                             content[TableColumns.CONTENT_NUMBER_OF_LIKES],
+                                             content[TableColumns.CONTENT_NUMBER_OF_COMMENTS],
                                              firstname, lastname)
         else:
             main_content_widget = ViewCommentWidget(content[TableColumns.COMMENT_CONTENT_ID],
                                                     content[TableColumns.COMMENT_CONTENT],
-                                                    content[TableColumns.CONTENT_LIKES_NUMBER],
-                                                    content[TableColumns.CONTENT_COMMENTS_NUMBER],
+                                                    content[TableColumns.CONTENT_NUMBER_OF_LIKES],
+                                                    content[TableColumns.CONTENT_NUMBER_OF_COMMENTS],
                                                     firstname, lastname)
 
         main_content_widget.ui.showComment_pushButton.setVisible(False)
@@ -41,8 +41,15 @@ class CommentPostView(QDialog):
 
         for comment in self.comments:
             # need to have firstname and lastname in this method.
-            commentWidget = ViewCommentWidget()
-            v_layout.addWidget(comment)
+            # content_id, content, likes_number, comments_number, firstname, lastname
+            comment_widget = ViewCommentWidget(comment[TableColumns.COMMENT_CONTENT_ID],
+                                               comment[TableColumns.COMMENT_CONTENT],
+                                               comment[TableColumns.CONTENT_NUMBER_OF_LIKES],
+                                               comment[TableColumns.CONTENT_NUMBER_OF_COMMENTS],
+                                               comment[TableColumns.CONTENT_OWNER][TableColumns.CONTENT_OWNER_FNAME],
+                                               comment[TableColumns.CONTENT_OWNER][TableColumns.CONTENT_OWNER_LNAME],
+                                               )
+            v_layout.addWidget(comment_widget)
 
         v_widget.setLayout(v_layout)
-        self.ui.scrollArea.setWidget(v_widget)
+        self.ui.comment_scrollArea.setWidget(v_widget)
