@@ -12,7 +12,7 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-import resources.resources_rc
+import resources_rc
 
 class Ui_Mainwindow(object):
     def setupUi(self, Mainwindow):
@@ -133,18 +133,20 @@ class Ui_Mainwindow(object):
 
         self.verticalLayout.addWidget(self.label_5)
 
-        self.widget = QWidget(self.centralwidget)
-        self.widget.setObjectName(u"widget")
-        self.widget.setMinimumSize(QSize(0, 100))
-        self.widget.setMaximumSize(QSize(16777215, 100))
+        self.userNetwork_scrollArea = QScrollArea(self.centralwidget)
+        self.userNetwork_scrollArea.setObjectName(u"userNetwork_scrollArea")
+        self.userNetwork_scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_2 = QWidget()
+        self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 373, 244))
+        self.userNetwork_scrollArea.setWidget(self.scrollAreaWidgetContents_2)
 
-        self.verticalLayout.addWidget(self.widget)
+        self.verticalLayout.addWidget(self.userNetwork_scrollArea)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
-        self.verticalLayout.setStretch(1, 1)
 
         self.verticalLayout_2.addLayout(self.verticalLayout)
 

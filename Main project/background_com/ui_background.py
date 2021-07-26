@@ -12,9 +12,7 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-import resources_rc
-import resources_rc
-import resources_rc
+import resources.resources_rc
 
 class Ui_background(object):
     def setupUi(self, background):
@@ -68,28 +66,34 @@ class Ui_background(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.edit_pushButton = QPushButton(self.centralwidget)
-        self.edit_pushButton.setObjectName(u"edit_pushButton")
-        self.edit_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
-        self.edit_pushButton.setStyleSheet(u"QPushButton:hover\n"
+        self.add_pushButton = QPushButton(self.centralwidget)
+        self.add_pushButton.setObjectName(u"add_pushButton")
+        self.add_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.add_pushButton.setStyleSheet(u"QPushButton:hover\n"
 "{\n"
 "	border:1px solid grey;\n"
 "	border-radius:5px;\n"
 "	background:rgba(214, 239, 255, 231);\n"
 "}")
         icon1 = QIcon()
-        icon1.addFile(u":/images/edit_icon2.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.edit_pushButton.setIcon(icon1)
-        self.edit_pushButton.setIconSize(QSize(35, 35))
-        self.edit_pushButton.setFlat(True)
+        icon1.addFile(u":/images/plus.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.add_pushButton.setIcon(icon1)
+        self.add_pushButton.setIconSize(QSize(35, 35))
+        self.add_pushButton.setFlat(True)
 
-        self.horizontalLayout.addWidget(self.edit_pushButton)
+        self.horizontalLayout.addWidget(self.add_pushButton)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.scrollArea = QScrollArea(self.centralwidget)
         self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setStyleSheet(u"QWidget#backgroundWidget{\n"
+"border:2px solid rgb(48, 162, 249);\n"
+"border-radius:10px;\n"
+"background:rgba(248, 253, 255, 206);\n"
+"color:rgb(1, 31, 54);\n"
+"}")
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
@@ -116,6 +120,6 @@ class Ui_background(object):
         background.setWindowTitle(QCoreApplication.translate("background", u"MainWindow", None))
         self.back_pushButton.setText("")
         self.label_4.setText(QCoreApplication.translate("background", u"Background", None))
-        self.edit_pushButton.setText("")
+        self.add_pushButton.setText("")
     # retranslateUi
 

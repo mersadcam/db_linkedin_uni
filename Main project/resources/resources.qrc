@@ -11,5 +11,6 @@
     <file>like-fill.png</file>
     <file>like-empty.png</file>
     <file>comment.png</file>
+    <file>remove.png</file>
   </qresource>
 </RCC>

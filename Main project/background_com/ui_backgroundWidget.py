@@ -12,38 +12,87 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
+import resources.resources_rc
 
 class Ui_backgroundWidget(object):
     def setupUi(self, backgroundWidget):
         if not backgroundWidget.objectName():
             backgroundWidget.setObjectName(u"backgroundWidget")
-        backgroundWidget.resize(1080, 198)
-        backgroundWidget.setStyleSheet(u"QWidget#backgroundWidget{\n"
-"border:1px solid rgb(48, 162, 249);\n"
+        backgroundWidget.resize(1100, 200)
+        backgroundWidget.setMaximumSize(QSize(16777215, 200))
+        backgroundWidget.setStyleSheet(u"")
+        self.horizontalLayout_4 = QHBoxLayout(backgroundWidget)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.widget = QWidget(backgroundWidget)
+        self.widget.setObjectName(u"widget")
+        self.widget.setStyleSheet(u"QWidget#widget{\n"
+"border:2px solid rgb(48, 162, 249);\n"
 "border-radius:10px;\n"
 "background:rgba(248, 253, 255, 206);\n"
 "color:rgb(1, 31, 54);\n"
 "}")
-        self.verticalLayout = QVBoxLayout(backgroundWidget)
+        self.verticalLayout = QVBoxLayout(self.widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(10, 10, 10, 10)
-        self.title_label = QLabel(backgroundWidget)
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.title_label = QLabel(self.widget)
         self.title_label.setObjectName(u"title_label")
         font = QFont()
         font.setPointSize(18)
         font.setBold(True)
         self.title_label.setFont(font)
 
-        self.verticalLayout.addWidget(self.title_label)
+        self.horizontalLayout_3.addWidget(self.title_label)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
+
+        self.remove_pushButton = QPushButton(self.widget)
+        self.remove_pushButton.setObjectName(u"remove_pushButton")
+        self.remove_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.remove_pushButton.setStyleSheet(u"QPushButton:hover\n"
+"{\n"
+"	border:1px solid grey;\n"
+"	border-radius:5px;\n"
+"	background:rgba(214, 239, 255, 231);\n"
+"}\n"
+"")
+        icon = QIcon()
+        icon.addFile(u":/images/remove.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.remove_pushButton.setIcon(icon)
+        self.remove_pushButton.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.remove_pushButton)
+
+        self.edit_pushButton = QPushButton(self.widget)
+        self.edit_pushButton.setObjectName(u"edit_pushButton")
+        self.edit_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.edit_pushButton.setStyleSheet(u"QPushButton:hover\n"
+"{\n"
+"	border:1px solid grey;\n"
+"	border-radius:5px;\n"
+"	background:rgba(214, 239, 255, 231);\n"
+"}")
+        icon1 = QIcon()
+        icon1.addFile(u":/images/edit_icon2.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.edit_pushButton.setIcon(icon1)
+        self.edit_pushButton.setIconSize(QSize(20, 20))
+        self.edit_pushButton.setFlat(True)
+
+        self.horizontalLayout_3.addWidget(self.edit_pushButton)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label = QLabel(backgroundWidget)
+        self.label = QLabel(self.widget)
         self.label.setObjectName(u"label")
 
         self.horizontalLayout.addWidget(self.label)
 
-        self.compName_label = QLabel(backgroundWidget)
+        self.compName_label = QLabel(self.widget)
         self.compName_label.setObjectName(u"compName_label")
         font1 = QFont()
         font1.setPointSize(12)
@@ -58,12 +107,12 @@ class Ui_backgroundWidget(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_3 = QLabel(backgroundWidget)
+        self.label_3 = QLabel(self.widget)
         self.label_3.setObjectName(u"label_3")
 
         self.horizontalLayout_2.addWidget(self.label_3)
 
-        self.startYear_label = QLabel(backgroundWidget)
+        self.startYear_label = QLabel(self.widget)
         self.startYear_label.setObjectName(u"startYear_label")
         font2 = QFont()
         font2.setPointSize(11)
@@ -73,12 +122,12 @@ class Ui_backgroundWidget(object):
 
         self.horizontalLayout_2.addWidget(self.startYear_label)
 
-        self.label_5 = QLabel(backgroundWidget)
+        self.label_5 = QLabel(self.widget)
         self.label_5.setObjectName(u"label_5")
 
         self.horizontalLayout_2.addWidget(self.label_5)
 
-        self.endYear_label = QLabel(backgroundWidget)
+        self.endYear_label = QLabel(self.widget)
         self.endYear_label.setObjectName(u"endYear_label")
         self.endYear_label.setFont(font2)
         self.endYear_label.setAlignment(Qt.AlignCenter)
@@ -95,10 +144,14 @@ class Ui_backgroundWidget(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
-        self.description_plainTextEdit = QPlainTextEdit(backgroundWidget)
+        self.description_plainTextEdit = QPlainTextEdit(self.widget)
         self.description_plainTextEdit.setObjectName(u"description_plainTextEdit")
+        self.description_plainTextEdit.setMaximumSize(QSize(16777215, 80))
 
         self.verticalLayout.addWidget(self.description_plainTextEdit)
+
+
+        self.horizontalLayout_4.addWidget(self.widget)
 
 
         self.retranslateUi(backgroundWidget)
@@ -109,6 +162,8 @@ class Ui_backgroundWidget(object):
     def retranslateUi(self, backgroundWidget):
         backgroundWidget.setWindowTitle(QCoreApplication.translate("backgroundWidget", u"Form", None))
         self.title_label.setText(QCoreApplication.translate("backgroundWidget", u"TextLabel", None))
+        self.remove_pushButton.setText("")
+        self.edit_pushButton.setText("")
         self.label.setText(QCoreApplication.translate("backgroundWidget", u"In", None))
         self.compName_label.setText(QCoreApplication.translate("backgroundWidget", u"Apple company", None))
         self.label_3.setText(QCoreApplication.translate("backgroundWidget", u"From", None))

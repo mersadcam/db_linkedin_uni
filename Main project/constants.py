@@ -8,10 +8,10 @@ class TableColumns:
     PROFILE_FIRST_NAME = 'profile_first_name'
     PROFILE_LAST_NAME = 'profile_last_name'
     PROFILE_HEADLINE = 'profile_headline'
-    PROFILE_COUNTRY = 'profile_headline'
-    PROFILE_BIRTHDAY = 'profile_headline'
-    PROFILE_ADDRESS = 'profile_headline'
-    PROFILE_ABOUT = 'profile_headline'
+    PROFILE_COUNTRY = 'profile_country'
+    PROFILE_BIRTHDAY = 'profile_birthday'
+    PROFILE_ADDRESS = 'profile_address'
+    PROFILE_ABOUT = 'profile_about'
     PROFILE_LINK = 'profile_link'
     PROFILE_USER_UUID = 'user_uuid'
 
@@ -22,16 +22,20 @@ class TableColumns:
     CONTENT_DATE = 'content_date'
     CONTENT_TIME = 'content_time'
     CONTENT_USER_UUID = 'user_uuid'
+    CONTENT_NUMBER_OF_LIKES = 'content_number_of_likes'
+    CONTENT_NUMBER_OF_COMMENTS = 'content_number_of_comments'
+    CONTENT_OWNER = 'content_owner'
+    CONTENT_OWNER_FNAME = 'content_owner_first_name'
+    CONTENT_OWNER_LNAME = 'content_owner_last_name'
     
     POST_CONTENT = 'post_content'
     POST_IS_FEATURED = 'post_isFeatured'
     POST_CONTENT_ID = 'content_id'
-    CONTENT_LIKES_NUMBER = 'content_likes_number'
-    CONTENT_COMMENTS_NUMBER = 'content_comments_number'
 
     COMMENT_CONTENT = 'comment_content'
     COMMENT_REPLY_ID = 'comment_reply_id'
     COMMENT_CONTENT_ID = 'content_id'
+    
 
     LIKE_CONTENT_ID = 'content_id'
     LIKE_USER_UUID = 'user_uuid'
@@ -39,7 +43,31 @@ class TableColumns:
     SKILL_SKILL_NAME = 'skill_name'
     SKILL_SKILL_ID = 'skill_id'
 
+    ENV_ENV_NAME = 'env_name'
+    ENV_ENV_ID = 'env_id'
 
+    BACKGROUND_ENV = 'bg_env'
+    BACKGROUND_ENV_ID = 'env_id'
+    BACKGROUND_USER_UUID = 'user_uuid'
+    BACKGROUND_DESCRIPTION = 'bg_description'
+    BACKGROUND_TITLE = 'bg_title'
+    BACKGROUND_START_DATE = 'bg_start_date'
+    BACKGROUND_END_DATE = 'bg_end_date'
+    BACKGROUND_BG_ID = 'bg_id'
+
+    RECOM_ID = 'recom_id'
+    RECOM_WRITER_UUID = 'recom_writer_uuid'
+    RECOM_RECIEVER_UUID = 'recom_reciever_uuid'
+    RECOM_TEXT = 'recom_text'
+    RECOM_WRITER = 'recom_writer'
+    RECOM_WRITER_FNAME = 'recom_writer_first_name'
+    RECOM_WRITER_LNAME = 'recom_writer_last_name'
+
+    ACCOMP_ID = 'accomp_id'
+    ACCOMP_TITLE = 'accomp_title'
+    ACCOMP_TEXT = 'accomp_text'
+    ACCOMP_DATE = 'accomp_date'
+    ACCOMP_LINK = 'accomp_link'
 
 DB_NAME = 'LinkeInDB.db'
 
@@ -91,7 +119,7 @@ INSERT_RECORD_PROFILE = """INSERT INTO profile(profile_first_name, profile_last_
 SELECT_RECORD_PROFILE = 'SELECT * FROM profile WHERE user_uuid = (?)'
 DELETE_RECORD_PROFILE = 'DELETE FROM profile WHERE user_uuid = (?)'
 SELECT_RECORD_SEARCH_PROFILE = """SELECT user_uuid, profile_first_name, profile_last_name FROM profile WHERE
-                                 profile_first_name LIKE (?) OR profile.profile_last_name LIKE (?) LIMIT 5"""
+                                 profile_first_name LIKE (?) OR profile.profile_last_name LIKE (?)  LIMIT 5"""
 
 #**************************
 #connection table constants
@@ -107,6 +135,8 @@ SELECT_NOC_CONNECTIONS = 'SELECT COUNT(*) FROM connections WHERE user1_uuid = (?
 
 SELECT_UUID1_CONNECTIONS = 'SELECT user2_uuid FROM connections WHERE user1_uuid = (?)'
 SELECT_UUID2_CONNECTIONS = 'SELECT user1_uuid FROM connections WHERE user2_uuid = (?)'
+INSERT_RECORD_CONNECTIONS = 'INSERT INTO connections(user1_uuid, user2_uuid) VALUES(?, ?)'
+DELETE_RECORD_CONNECTIONS = 'DELETE FROM connections WHERE user1_uuid = (?) AND user2_uuid = (?)'
 
 
 
@@ -154,6 +184,8 @@ SELECT_ALL_USER_CONNECTIONS_POSTS = """SELECT * FROM post WHERE content_id IN
                             (SELECT user2_uuid FROM connections WHERE user1_uuid = (?)) OR
                             user_uuid IN (SELECT user1_uuid FROM connections WHERE user2_uuid = (?)) ORDER BY content_date_time)"""
 
+SELECT_USER_UUID_BY_CONTENT = 'SELECT user_uuid FROM content WHERE content_id = (?)'
+
 DELETE_RECORD_CONTENT = 'DELETE FROM content WHERE content_id = (?)'
 DELETE_RECORD_POST = 'DELETE FROM post WHERE content_id = (?)'
 DELETE_RECORD_COMMENT = 'DELETE FROM comment WHERE content_id = (?)'
@@ -172,6 +204,7 @@ INSERT_RECORD_LIKE = """INSERT INTO like(content_id, user_uuid) VALUES(?, ?)"""
 DELETE_RECORD_LIKE = 'DELETE FROM like WHERE content_id = (?) AND user_uuid = (?)'
 SELECT_NUMBER_OF_LIKES_LIKE = 'SELECT COUNT(*) FROM like WHERE content_id = (?)'
 
+#SKILL
 CREATE_TABLE_SKILL = """CREATE TABLE IF NOT EXISTS skill(
                         skill_name text NOT NULL,
                         skill_id text PRIMARY KEY
@@ -190,20 +223,67 @@ INSERT_USER_SKILL = 'INSERT INTO user_skill(skill_id, user_uuid) VALUES(?, ?)'
 SELECT_ALL_USER_SKILLS = 'SELECT * FROM skill WHERE skill_id IN (SELECT skill_id FROM user_skill WHERE user_uuid = (?))'
 DELETE_USER_SKILL = 'DELETE FROM user_skill WHERE skill_id = (?) AND user_uuid = (?)'
 
-# create_table_profile = """CREATE TABLE IF NOT EXISTS profile(
-#                         profile_id integer PRIMARY KEY,
-#                         FOREIGN KEY (user_id) REFERENCES user (user_id)
-# )"""
+#BACKGROUND
+CREATE_TABLE_ENV = """CREATE TABLE IF NOT EXISTS env(
+                        env_name text,
+                        env_id text PRIMARY KEY                        
+)"""
+SELECT_ALL_ENV = 'SELECT * FROM  env'
+SELECT_ENV = 'SELECT * FROM  env WHERE env_id = (?)'
+INSERT_ENV = 'INSERT INTO env(env_name, env_id) VALUES(?, ?)'
 
-# create_table_connections = """CREATE TABLE IF NOT EXISTS connections(
-#                         connection_id integer PRIMARY KEY,
-#                         FOREIGN KEY (user1_id) REFERENCES user (user_id),
-#                         FOREIGN KEY (user2_id) REFERENCES user (user_id)
-# )"""
 
-# insert_table_name = ''
-# insert_table_fields = ''
-# insert_table_values = ''
-# insert_table = f'INSERT INTO {insert_table_name} ({insert_table_fields}) VALUES({insert_table_values})'
-# insert_table = f'INSERT INTO user ()'
+CREATE_TABLE_BACKGROUND = """CREATE TABLE IF NOT EXISTS background( 
+                              bg_id text PRIMARY KEY,
+                              env_id text NOT NULL,
+                              user_uuid text NOT NULL,
+                              bg_title text,
+                              bg_description text,
+                              bg_start_date text NOT NULL,
+                              bg_end_date text,
+                              FOREIGN KEY (env_id) REFERENCES env (env_id),
+                              FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
+)"""
 
+INSERT_BACKGROUND = 'INSERT INTO background(bg_id, env_id, user_uuid, bg_title, bg_description, bg_start_date, bg_end_date) VALUES(?, ?, ?, ?, ?, ?, ?)'
+SELECT_ALL_BACKGROUND = 'SELECT * FROM  background WHERE user_uuid = (?)'
+DELETE_BACKGROUND = 'DELETE FROM background WHERE bg_id = (?)'
+
+#recommendation
+CREATE_TABLE_RECOM = """CREATE TABLE IF NOT EXISTS recom(
+                              recom_id text PRIMARY KEY,
+                              recom_writer_uuid text NOT NULL,
+                              recom_reciever_uuid text NOT NULL,
+                              recom_text text,
+                              FOREIGN KEY (recom_writer_uuid) REFERENCES user (user_uuid),
+                              FOREIGN KEY (recom_reciever_uuid) REFERENCES user (user_uuid)
+)"""
+INSERT_RECOM = 'INSERT INTO recom(recom_id, recom_writer_uuid, recom_reciever_uuid, recom_text) VALUES(?, ?, ?, ?)'
+DELETE_RECOM = 'DELETE FROM recom WHERE recom_id = (?)'
+SELECT_RECOM = 'SELECT * FROM  recom WHERE recom_id = (?)'
+SELECT_GET_RECOM_ID = 'SELECT * FROM  recom WHERE recom_writer_uuid = (?) AND recom_reciever_uuid = (?)'
+SELECT_RECIEVED_RECOM = 'SELECT * FROM  recom WHERE recom_reciever_uuid = (?)'
+
+#accomplishment
+CREATE_TABLE_ACCOMP = """CREATE TABLE IF NOT EXISTS accomp( 
+                              accomp_id text PRIMARY KEY,
+                              accomp_title text,
+                              accomp_text text,
+                              accomp_date text,
+                              accomp_link text
+)"""
+
+INSERT_ACCOMP = 'INSERT INTO accomp(accomp_id, accomp_title, accomp_text, accomp_date, accomp_link) VALUES(?, ?, ?, ?, ?)'
+DELETE_ACCOMP = 'DELETE FROM accomp WHERE accomp_id = (?)'
+SELECT_ACCOMP = 'SELECT * FROM accomp WHERE accomp_id = (?)'
+
+
+CREATE_TABLE_USER_ACCOMP = """CREATE TABLE IF NOT EXISTS user_accomp( 
+                              accomp_id text NOT NULL,
+                              user_uuid text NOT NULL,
+                              FOREIGN KEY (accomp_id) REFERENCES accomp (accomp_id),
+                              FOREIGN KEY (user_uuid) REFERENCES user (user_uuid)
+)"""
+
+INSERT_USER_ACCOMP = 'INSERT INTO user_accomp(accomp_id, user_uuid) VALUES(?, ?)'
+DELETE_USER_ACCOMP = 'DELETE FROM user_accomp WHERE accomp_id = (?) AND user_uuid = (?)'

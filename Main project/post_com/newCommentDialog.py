@@ -1,4 +1,4 @@
-from post_comp.ui_newCommentDialog import Ui_newComment
+from post_com.ui_newCommentDialog import Ui_newComment
 from PySide6.QtWidgets import QDialog
 from PySide6.QtCore import Signal, Slot
 

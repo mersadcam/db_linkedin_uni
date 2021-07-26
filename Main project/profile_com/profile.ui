@@ -145,43 +145,46 @@ color:rgb(1, 31, 54);\n</string>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="2">
-           <widget class="QLabel" name="lastName_label">
+          <item row="5" column="0" colspan="3">
+           <widget class="QPushButton" name="connectTo_pushButton">
             <property name="font">
              <font>
-              <family>Nimbus Roman</family>
-              <pointsize>14</pointsize>
               <weight>75</weight>
-              <italic>true</italic>
               <bold>true</bold>
              </font>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="styleSheet">
-             <string notr="true"/>
+             <string notr="true">color:rgb(3, 62, 106);
+border: 1px solid rgb(162, 215, 255);
+padding:10px;
+border-radius:5px;
+background:rgba(221, 242, 255, 231)
+
+</string>
             </property>
             <property name="text">
-             <string>Khalafi</string>
+             <string>Connect</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="firstName_label">
-            <property name="font">
-             <font>
-              <family>Nimbus Roman</family>
-              <pointsize>14</pointsize>
-              <weight>75</weight>
-              <italic>true</italic>
-              <bold>true</bold>
-             </font>
+          <item row="2" column="3">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="styleSheet">
-             <string notr="true"/>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
             </property>
-            <property name="text">
-             <string>Mersad</string>
-            </property>
-           </widget>
+           </spacer>
           </item>
           <item row="0" column="3" rowspan="2">
            <spacer name="horizontalSpacer">
@@ -196,18 +199,58 @@ color:rgb(1, 31, 54);\n</string>
             </property>
            </spacer>
           </item>
-          <item row="2" column="3">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="3" column="0">
+           <widget class="QLabel" name="country_label">
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
-            <property name="sizeHint" stdset="0">
+            <property name="text">
+             <string>Country</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QPushButton" name="editInfo_pushButton">
+            <property name="minimumSize">
              <size>
-              <width>40</width>
-              <height>20</height>
+              <width>35</width>
+              <height>35</height>
              </size>
             </property>
-           </spacer>
+            <property name="maximumSize">
+             <size>
+              <width>35</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>BusyCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton:hover
+{
+	border:1px solid grey;
+	border-radius:5px;
+	background:rgba(214, 239, 255, 231);
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources/resources.qrc">
+              <normaloff>:/images/edit_icon2.png</normaloff>:/images/edit_icon2.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
           </item>
           <item row="3" column="2">
            <widget class="QPushButton" name="contactInfo_pushButton">
@@ -271,6 +314,44 @@ background:rgba(221, 242, 255, 231)
             </property>
            </widget>
           </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="lastName_label">
+            <property name="font">
+             <font>
+              <family>Nimbus Roman</family>
+              <pointsize>14</pointsize>
+              <weight>75</weight>
+              <italic>true</italic>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>Khalafi</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="firstName_label">
+            <property name="font">
+             <font>
+              <family>Nimbus Roman</family>
+              <pointsize>14</pointsize>
+              <weight>75</weight>
+              <italic>true</italic>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>Mersad</string>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0" colspan="3">
            <widget class="QPushButton" name="connections_pushButton">
             <property name="font">
@@ -293,59 +374,6 @@ background:rgba(221, 242, 255, 231)
             </property>
             <property name="text">
              <string>Connections</string>
-            </property>
-            <property name="flat">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="country_label">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string>Country</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="4">
-           <widget class="QPushButton" name="editInfo_pushButton">
-            <property name="minimumSize">
-             <size>
-              <width>35</width>
-              <height>35</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>35</width>
-              <height>35</height>
-             </size>
-            </property>
-            <property name="cursor">
-             <cursorShape>BusyCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QPushButton:hover
-{
-	border:1px solid grey;
-	border-radius:5px;
-	background:rgba(214, 239, 255, 231);
-}</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="../resources/resources.qrc">
-              <normaloff>:/images/edit_icon2.png</normaloff>:/images/edit_icon2.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -607,7 +635,7 @@ padding-left: 10px
              <x>0</x>
              <y>0</y>
              <width>197</width>
-             <height>500</height>
+             <height>503</height>
             </rect>
            </property>
           </widget>

@@ -7,14 +7,15 @@ from PySide6 import QtGui
 from login_com.login import Login
 from login_com.signup import Signup
 from skill_com.skills import Skills
-from post_comp.postWidget import PostWidget
-from post_comp.newCommentDialog import NewComment
-from post_comp.newPostDialog import NewPost
+from post_com.postWidget import PostWidget
+from post_com.newCommentDialog import NewComment
+from post_com.newPostDialog import NewPost
 from profile_com.profile import Profile
 from db import DB
 from consts import Messages, DB_NAME, debug, Columns
 import datetime
 from constants import TableColumns
+from background_com.background import Background
 
 
 class Mainwindow(QMainWindow):
@@ -29,6 +30,7 @@ class Mainwindow(QMainWindow):
         self.signup = Signup()
         self.profile = Profile()
         self.skills = Skills()
+        self.background = Background()
 
         # Attr:
         self.own_uuid = None
@@ -36,6 +38,8 @@ class Mainwindow(QMainWindow):
         self.own_profile_data = None
         self.other_profile_data = None
         self.other_user_data = None
+        self.new_comment = None
+        self.new_post = None
 
         # Setup DB:
         self.db = DB(DB_NAME)
@@ -46,6 +50,7 @@ class Mainwindow(QMainWindow):
         self.profile_widget = self.profile.centralWidget()
         self.home_widget = self.centralWidget()
         self.skills_widget = self.skills.centralWidget()
+        self.bg_widget = self.background.centralWidget()
 
         self.central_widget = QStackedWidget()
         self.central_widget.addWidget(self.login_widget)
@@ -53,11 +58,13 @@ class Mainwindow(QMainWindow):
         self.central_widget.addWidget(self.profile_widget)
         self.central_widget.addWidget(self.home_widget)
         self.central_widget.addWidget(self.skills_widget)
+        self.central_widget.addWidget(self.bg_widget)
 
         self.setCentralWidget(self.central_widget)
         self.central_widget.setCurrentWidget(self.login_widget)
 
         # Connections:
+        self.ui.newPost_pushButton.clicked.connect(self.newPost_pushButton_onClicked)
         self.login.on_login.connect(self.on_login)
         self.login.switch_to_signup.connect(self.switch_to_signup)
         self.signup.switch_to_login.connect(self.switch_to_login)
@@ -67,8 +74,13 @@ class Mainwindow(QMainWindow):
         self.profile.editInfo.connect(self.editUserProfile)
         self.profile.change_about.connect(self.editAbout)
         self.skills.switch_to_profile.connect(self.switch_to_profile)
+        self.profile.switch_to_bg.connect(self.switch_to_bg)
         self.profile.switch_to_skills.connect(self.switch_to_skills)
         self.skills.skill_edited.connect(self.save_skill_changes)
+        self.background.remove_background.connect(self.remove_background)
+        self.background.new_background.connect(self.new_background)
+        self.background.save_background_change.connect(self.edit_background)
+        self.background.switch_to_profile.connect(self.switch_to_profile)
         # self.ui.profile_widget.
 
     # Public slots:
@@ -86,8 +98,9 @@ class Mainwindow(QMainWindow):
         self.own_user_data = self.db.user.user_select(self.own_uuid)
         self.own_profile_data = self.db.user.profile_select(self.own_uuid)
 
-        self.update_post_area()
+        network_users = self.db.user.connection_get_user_network_info(self.own_uuid)
 
+        self.update_post_area()
         self.switch_to_home()
 
     @Slot(str, str, str, str)
@@ -203,17 +216,19 @@ class Mainwindow(QMainWindow):
 
     @Slot(str)
     def new_comment(self, content_id):
-        new_comment = NewComment(content_id)
-        new_comment.new_comment.connect(self.save_new_comment)
+        self.new_comment = NewComment(content_id)
+        self.new_comment.new_comment.connect(self.save_new_comment)
+        self.new_comment.show()
 
     @Slot(str, str)
     def save_new_comment(self, content_id, content):
         self.db.content.comment_add(content, content_id, self.own_uuid)
 
     def newPost_pushButton_onClicked(self):
-        new_post = NewPost(self.own_profile_data[TableColumns.PROFILE_FIRST_NAME],
-                           self.own_profile_data[TableColumns.PROFILE_LAST_NAME])
-        new_post.new_post.connect(self.save_new_post)
+        self.new_post = NewPost(self.own_profile_data[TableColumns.PROFILE_FIRST_NAME],
+                                self.own_profile_data[TableColumns.PROFILE_LAST_NAME])
+        self.new_post.new_post.connect(self.save_new_post)
+        self.new_post.show()
 
     @Slot(str)
     def save_new_post(self, content):
@@ -228,7 +243,10 @@ class Mainwindow(QMainWindow):
 
         for post in posts:
             post = PostWidget(post[TableColumns.CONTENT_ID], post[TableColumns.POST_CONTENT],
-                              post[TableColumns.CONTENT_LIKES_NUMBER], post[TableColumns.CONTENT_COMMENTS_NUMBER])
+                              post[TableColumns.CONTENT_NUMBER_OF_LIKES],
+                              post[TableColumns.CONTENT_NUMBER_OF_COMMENTS],
+                              post[TableColumns.CONTENT_OWNER][TableColumns.CONTENT_OWNER_FNAME],
+                              post[TableColumns.CONTENT_OWNER_LNAME])
             # need firstname and lastname in this constructor
             post.post_liked.connect(self.like_post)
             post.new_comment.connect(self.new_comment)
@@ -246,6 +264,31 @@ class Mainwindow(QMainWindow):
     def view_comments(self, content_id):
         pass
 
+    @Slot(str)
+    def switch_to_bg(self, user_id):
+        bgs = self.db.user.background_get_all(user_id)
+        all_envs = self.db.user.env_get_all_envs()
+        self.background.setup(user_id, user_id == self.own_uuid, bgs, all_envs)
+        self.central_widget.setCurrentWidget(self.bg_widget)
+
+    @Slot(str)
+    def remove_background(self, bg_id):
+        self.db.user.background_delete(bg_id)
+        bgs = self.db.user.background_get_all(self.own_uuid)
+        self.background.update_base_on_changes(bgs)
+
+    @Slot(str, str, str, str, str)
+    def new_background(self, title, env, start, end, description):
+        self.db.user.background_insert(self.own_uuid, env, start, end, description, title)
+        bgs = self.db.user.background_get_all(self.own_uuid)
+        self.background.update_base_on_changes(bgs)
+
+    @Slot(str, str, str, str, str, str)
+    def edit_background(self, bg_id, title, env_id, start_time, end_time, description):
+        res = self.db.user.background_update(bg_id, env_id, start_time, end_time, description, title)
+        print(f'Result: {res}')
+        bgs = self.db.user.background_get_all(self.own_uuid)
+        self.background.update_base_on_changes(bgs)
 
 
 if __name__ == "__main__":

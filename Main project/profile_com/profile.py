@@ -21,6 +21,7 @@ class Profile(QMainWindow):
     change_about = Signal(str)
     switch_to_home = Signal()
     switch_to_skills = Signal(str)
+    switch_to_bg = Signal(str)
 
     def __init__(self):
         super(Profile, self).__init__()
@@ -42,6 +43,7 @@ class Profile(QMainWindow):
         self.ui.contactInfo_pushButton.clicked.connect(self.contactInfo_pushButton_onClicked)
         self.ui.editAbout_pushButton.clicked.connect(self.editAbout_pushButton_onClicked)
         self.ui.skills_pushButton.clicked.connect(self.skills_pushButton_onClicked)
+        self.ui.background_pushButton.clicked.connect(self.background_pushButton_onClicked)
         self.editInfo_dialog.edit_saved.connect(self.info_edited)
         self.editAbout_dialog.about_changed.connect(self.about_changed)
         self.ui.back_pushButton.clicked.connect(self.back_pushButton_onClicked)
@@ -124,7 +126,7 @@ class Profile(QMainWindow):
 
     @Slot()
     def background_pushButton_onClicked(self):
-        pass
+        self.switch_to_bg.emit(self.user_id)
 
     @Slot()
     def accomp_pushButton_onClicked(self):
