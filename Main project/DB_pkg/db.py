@@ -64,8 +64,7 @@ class Content:
         if not check_id:
             return False
 
-        post_id = str(uuid.uuid4().hex)
-        values_tuple = (post_id, post_content, post_isFeatured, content_id)
+        values_tuple = (post_content, post_isFeatured, content_id)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_POST, values_tuple)
             self.db_connection.commit()
@@ -159,10 +158,9 @@ class Content:
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
                 dict_post_list.append({
-                    TableColumns.POST_ID:post[0],
-                    TableColumns.POST_CONTENT: post[1],
-                    TableColumns.POST_IS_FEATURED: post[2],
-                    TableColumns.POST_CONTENT_ID: post[3],
+                    TableColumns.POST_CONTENT: post[0],
+                    TableColumns.POST_IS_FEATURED: post[1],
+                    TableColumns.POST_CONTENT_ID: post[2],
                     TableColumns.CONTENT_OWNER: {
                         TableColumns.CONTENT_USER_UUID: user_uuid,
                         TableColumns.CONTENT_OWNER_FNAME: user_first_name,
@@ -254,10 +252,9 @@ class Content:
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
                 dict_post_list.append({
-                    TableColumns.POST_ID:post[0],
-                    TableColumns.POST_CONTENT: post[1],
-                    TableColumns.POST_IS_FEATURED: post[2],
-                    TableColumns.POST_CONTENT_ID: post[3],
+                    TableColumns.POST_CONTENT: post[0],
+                    TableColumns.POST_IS_FEATURED: post[1],
+                    TableColumns.POST_CONTENT_ID: post[2],
                     TableColumns.CONTENT_OWNER: {
                         TableColumns.CONTENT_USER_UUID: user_uuid,
                         TableColumns.CONTENT_OWNER_FNAME: user_first_name,
@@ -906,9 +903,9 @@ if __name__ == '__main__':
         # a = user.profile_select('0')
 
         # a = content.post_add('first', '0')
-        a = content.post_select_userPosts('0')
+        # a = content.post_select_userPosts('0')
 
-        print(a)
+        # print(a)
 
 
         db_connection.close()
