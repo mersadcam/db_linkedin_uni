@@ -159,9 +159,10 @@ class Content:
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
                 dict_post_list.append({
-                    TableColumns.POST_CONTENT: post[0],
-                    TableColumns.POST_IS_FEATURED: post[1],
-                    TableColumns.POST_CONTENT_ID: post[2],
+                    TableColumns.POST_ID:post[0],
+                    TableColumns.POST_CONTENT: post[1],
+                    TableColumns.POST_IS_FEATURED: post[2],
+                    TableColumns.POST_CONTENT_ID: post[3],
                     TableColumns.CONTENT_OWNER: {
                         TableColumns.CONTENT_USER_UUID: user_uuid,
                         TableColumns.CONTENT_OWNER_FNAME: user_first_name,
@@ -253,9 +254,10 @@ class Content:
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
                 dict_post_list.append({
-                    TableColumns.POST_CONTENT: post[0],
-                    TableColumns.POST_IS_FEATURED: post[1],
-                    TableColumns.POST_CONTENT_ID: post[2],
+                    TableColumns.POST_ID:post[0],
+                    TableColumns.POST_CONTENT: post[1],
+                    TableColumns.POST_IS_FEATURED: post[2],
+                    TableColumns.POST_CONTENT_ID: post[3],
                     TableColumns.CONTENT_OWNER: {
                         TableColumns.CONTENT_USER_UUID: user_uuid,
                         TableColumns.CONTENT_OWNER_FNAME: user_first_name,
@@ -794,7 +796,7 @@ class DB:
         try:
             self.db_connection = sqlite3.connect(db_name)
             self.user = User(self.db_connection)
-            self.content = Content(self.db_connection, user)
+            self.content = Content(self.db_connection, self.user)
 
         except Error as e:
             print(e)
