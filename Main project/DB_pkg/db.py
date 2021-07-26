@@ -35,8 +35,17 @@ class Message:
         self.db_cursor.execute(constants.INSERT_MESSAGE, values)
         self.db_connection.commit()
     
-    def msg_select_two_user_msges(self, user1_uuid, user2uuid):
-        pass
+    def msg_select_two_user_msges(self, user1_uuid, user2_uuid):
+        values = (user1_uuid, user2_uuid)
+        msges = self.db_cursor.execute(constants.SELECT_MESSAGE, values)
+        msges = msges.fetchall()
+        return msges
+    
+    def msg_search(self, user_uuid, search_str):
+        search_phrase = f'%{search_str}%'
+        msges = self.db_cursor.execute(constants.SELECT_SEARCH_MESSAGE, (search_phrase, user_uuid, user_uuid))
+        msges = msges.fetchall()
+        return msges
 
 class Content:
     def __init__(self, db_connection, user):
