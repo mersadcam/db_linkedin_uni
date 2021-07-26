@@ -11,6 +11,16 @@ import secrets
 import re
 import datetime
 
+class Message:
+    def __init__(self, db_connection, user):
+        try:
+            self.user = user
+            self.db_connection = db_connection
+            self.db_cursor = self.db_connection.cursor()
+            self.initialise_Content()
+        except Error as e:
+            print(e)
+
 
 class Content:
     def __init__(self, db_connection, user):
