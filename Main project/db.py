@@ -13,8 +13,9 @@ import datetime
 
 
 class Content:
-    def __init__(self, db_connection):
+    def __init__(self, db_connection, user):
         try:
+            self.user = user
             self.db_connection = db_connection
             self.db_cursor = self.db_connection.cursor()
             self.initialise_Content()
@@ -64,7 +65,8 @@ class Content:
         if not check_id:
             return False
 
-        values_tuple = (post_content, post_isFeatured, content_id)
+        post_id = str(uuid.uuid4().hex)
+        values_tuple = (post_id, post_content, post_isFeatured, content_id)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_POST, values_tuple)
             self.db_connection.commit()
@@ -149,8 +151,8 @@ class Content:
             dict_post_list = []
 
             for post in posts:
-                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
-                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
+                user_first_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(post[2])
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
@@ -185,8 +187,8 @@ class Content:
             dict_comment_list = []
             for comment in comments:
                 user_uuid = self.content_get_user_uuid_by_content(comment[2])
-                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
-                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
+                user_first_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(comment[2])
                 content_number_of_comments = self.comment_numberOfComments(comment[2])
 
@@ -241,8 +243,8 @@ class Content:
             dict_post_list = []
             for post in posts:
                 user_uuid = self.content_get_user_uuid_by_content(post[2])
-                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
-                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
+                user_first_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(post[2])
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
@@ -440,19 +442,25 @@ class User:
     def profile_select(self, user_uuid):
         profile = self.db_cursor.execute(constants.SELECT_RECORD_PROFILE, (user_uuid,))
         profile = profile.fetchall()
-        profile_birthday_date_format = datetime.datetime.strptime(profile[0][4], '%Y-%m-%d').date()
-        # print(profile_birthday_date_format)
-        profile_dict = {
-            TableColumns.PROFILE_FIRST_NAME: profile[0][0],
-            TableColumns.PROFILE_LAST_NAME: profile[0][1],
-            TableColumns.PROFILE_HEADLINE: profile[0][2],
-            TableColumns.PROFILE_COUNTRY: profile[0][3],
-            TableColumns.PROFILE_BIRTHDAY: profile_birthday_date_format,
-            TableColumns.PROFILE_ADDRESS: profile[0][5],
-            TableColumns.PROFILE_ABOUT: profile[0][6],
-            TableColumns.PROFILE_LINK: profile[0][7]
-        }
-        return profile_dict
+        if len(profile) == 0:
+            print('no such profile exists.')
+            return
+        try:
+            # print(profile_birthday_date_format)
+            profile_dict = {
+                TableColumns.PROFILE_FIRST_NAME: profile[0][0],
+                TableColumns.PROFILE_LAST_NAME: profile[0][1],
+                TableColumns.PROFILE_HEADLINE: profile[0][2],
+                TableColumns.PROFILE_COUNTRY: profile[0][3],
+                TableColumns.PROFILE_BIRTHDAY: datetime.datetime.strptime(profile[0][4], '%Y-%m-%d').date(),
+                TableColumns.PROFILE_ADDRESS: profile[0][5],
+                TableColumns.PROFILE_ABOUT: profile[0][6],
+                TableColumns.PROFILE_LINK: profile[0][7]
+            }
+            return profile_dict
+        except Error as e:
+            print(e)
+            return None
 
     def profile_update(self, user_uuid, profile_first_name=None, profile_last_name=None, profile_headline=None,
                        profile_country=None, profile_birthday=None, profile_address=None, profile_about=None,
@@ -527,8 +535,35 @@ class User:
             print(e)
             return None
 
-    def connection_get_user_network_info(self, user_uuid):  # the one who are not in user connection
-        uuid_list = self.connection_get_user_connections_uuid(user_uuid)
+    def connection_get_user_network_info(self, user_uuid):
+        uuid_list = self.connection_get_user_network_uuid(user_uuid)
+        con_list = []
+        for u in uuid_list:
+            u_profile = self.profile_select(u)
+            con_list.append({
+                TableColumns.PROFILE_USER_UUID: u,
+                TableColumns.PROFILE_FIRST_NAME: u_profile[TableColumns.PROFILE_FIRST_NAME],
+                TableColumns.PROFILE_LAST_NAME: u_profile[TableColumns.PROFILE_LAST_NAME],
+                TableColumns.PROFILE_HEADLINE: u_profile[TableColumns.PROFILE_HEADLINE]
+            })
+        return con_list
+
+    def connection_get_user_network_uuid(self, user_uuid):  # the one who are not in user connection
+        connection_list = self.connection_get_user_connections_uuid(user_uuid)
+
+        # print(connection_list)
+        net_uuid_list = []
+        tmp_list = []
+        for u in connection_list:
+            tmp_list.clear()
+            tmp_list = self.connection_get_user_connections_uuid(u)
+            for cc in tmp_list:
+                net_uuid_list.append(cc)
+        net_uuid_list = list(set(net_uuid_list))
+        net_uuid_list.remove(user_uuid)
+        net_uuid_list = list(set(net_uuid_list) - set(connection_list))
+
+        return net_uuid_list
 
     def connection_get_user_connections_info(self, user_uuid):
         uuid_list = self.connection_get_user_connections_uuid(user_uuid)
@@ -643,9 +678,9 @@ class User:
         if bg_end_date != None:
             updated_values_with_fileds = updated_values_with_fileds + f'bg_end_date = \'{bg_end_date}\','
         if bg_description != None:
-            updated_values_with_fileds = updated_values_with_fileds + f'profile_country = \'{bg_description}\','
+            updated_values_with_fileds = updated_values_with_fileds + f'bg_description = \'{bg_description}\','
         if bg_title != None:
-            updated_values_with_fileds = updated_values_with_fileds + f'profile_birthday = \'{bg_title}\','
+            updated_values_with_fileds = updated_values_with_fileds + f'bg_title = \'{bg_title}\','
 
         # to remoev the last probbable ','
         u_len = len(updated_values_with_fileds)
@@ -657,7 +692,7 @@ class User:
             self.db_connection.commit()
             return (True)
         except Error as e:
-            return (False)
+            print(e)
 
     # RECOM
     def recom_insert(self, recom_writer_uuid, recom_reciever_uuid, recom_text):
@@ -752,7 +787,7 @@ class DB:
         try:
             self.db_connection = sqlite3.connect(db_name)
             self.user = User(self.db_connection)
-            self.content = Content(self.db_connection)
+            self.content = Content(self.db_connection, user)
 
         except Error as e:
             print(e)
@@ -765,7 +800,7 @@ if __name__ == '__main__':
     try:
         db_connection = sqlite3.connect(constants.DB_NAME)
         user = User(db_connection)
-        content = Content(db_connection)
+        content = Content(db_connection, user)
         # a = user.user_signUp('moouod', 'sh',"moouodd@mail.com", "123")
         # a = user.user_login("mad@mail", "123")
         # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
@@ -848,12 +883,22 @@ if __name__ == '__main__':
 
         # a = user.recom_select_recieved_recoms('0')
         # user.accomp_insert('article', 'i did it', '2020')
-        # user.background_update(bg_id='67f85ef548184b41a91c9ba1a401f209', env_id='020')
-        user.userAcc_insert('15', '0')
-        user.userAcc_delete('15', '0')
-
+        # user.background_update(bg_id='67f85ef548184b41a91c9ba1a401f209', env_id='001', bg_start_date='2015', bg_end_date='2018', bg_description='this', bg_title='that')
+        # user.userAcc_insert('15', '0')
+        # user.userAcc_delete('15', '0')
         # a = user.recom_select('0')
-        # print(a)
+        # a = user.connection_get_user_network_uuid('0')
+        # a = user.connection_get_user_connections_info('0')
+        # a = user.connection_get_user_network_info('0')
+
+        # user.user_signUp('2', '2', '2@0.com', '2')
+        # a = user.user_select('0')
+        # a = user.profile_select('0')
+
+        # a = content.post_add('first', '0')
+        a = content.post_select_userPosts('0')
+
+        print(a)
 
         db_connection.close()
     except Error as e:

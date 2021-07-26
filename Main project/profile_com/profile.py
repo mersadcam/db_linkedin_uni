@@ -15,10 +15,20 @@ data = {
     '''
 }
 
+style_sheet_connected_button = '''
+QPushButton{
+color:white;
+background:rgb(186, 189, 182);
+border:1px solid white;
+border-radius:5px;
+padding:5px;
+}
+'''
 
 class Profile(QMainWindow):
     editInfo = Signal(str, str, str, int, str, datetime.datetime, str, str)
     change_about = Signal(str)
+    connect_to = Signal(str)
     switch_to_home = Signal()
     switch_to_skills = Signal(str)
     switch_to_bg = Signal(str)
@@ -47,12 +57,14 @@ class Profile(QMainWindow):
         self.editInfo_dialog.edit_saved.connect(self.info_edited)
         self.editAbout_dialog.about_changed.connect(self.about_changed)
         self.ui.back_pushButton.clicked.connect(self.back_pushButton_onClicked)
+        self.ui.connectTo_pushButton.clicked.connect(self.connectTo_pushButton_onClicked)
 
 
     def setup(self, user_id, is_owner):
         self.user_id = user_id
         self.ui.editInfo_pushButton.setVisible(is_owner)
         self.ui.editAbout_pushButton.setVisible(is_owner)
+        self.ui.connectTo_pushButton.setVisible(not is_owner)
 
     # public method
     def set_contact_info(self, email, addr, birthday, link):
@@ -151,6 +163,10 @@ class Profile(QMainWindow):
     @Slot()
     def connections_pushButton_onClicked(self):
         pass
+
+    def connectTo_pushButton_onClicked(self):
+        self.ui.connectTo_pushButton.setStyleSheet(style_sheet_connected_button)
+        self.connect_to.emit(self.user_id)
 
 
 if __name__ == "__main__":

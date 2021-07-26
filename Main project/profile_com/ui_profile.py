@@ -83,32 +83,55 @@ class Ui_Profile(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.lastName_label = QLabel(self.centralwidget)
-        self.lastName_label.setObjectName(u"lastName_label")
+        self.connectTo_pushButton = QPushButton(self.centralwidget)
+        self.connectTo_pushButton.setObjectName(u"connectTo_pushButton")
         font2 = QFont()
-        font2.setFamilies([u"Nimbus Roman"])
-        font2.setPointSize(14)
         font2.setBold(True)
-        font2.setItalic(True)
-        self.lastName_label.setFont(font2)
-        self.lastName_label.setStyleSheet(u"")
+        self.connectTo_pushButton.setFont(font2)
+        self.connectTo_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
+        self.connectTo_pushButton.setStyleSheet(u"color:rgb(3, 62, 106);\n"
+"border: 1px solid rgb(162, 215, 255);\n"
+"padding:10px;\n"
+"border-radius:5px;\n"
+"background:rgba(221, 242, 255, 231)\n"
+"\n"
+"")
+        self.connectTo_pushButton.setFlat(True)
 
-        self.gridLayout.addWidget(self.lastName_label, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.connectTo_pushButton, 5, 0, 1, 3)
 
-        self.firstName_label = QLabel(self.centralwidget)
-        self.firstName_label.setObjectName(u"firstName_label")
-        self.firstName_label.setFont(font2)
-        self.firstName_label.setStyleSheet(u"")
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.gridLayout.addWidget(self.firstName_label, 0, 0, 1, 1)
+        self.gridLayout.addItem(self.horizontalSpacer_2, 2, 3, 1, 1)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.gridLayout.addItem(self.horizontalSpacer, 0, 3, 2, 1)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.country_label = QLabel(self.centralwidget)
+        self.country_label.setObjectName(u"country_label")
+        self.country_label.setStyleSheet(u"")
 
-        self.gridLayout.addItem(self.horizontalSpacer_2, 2, 3, 1, 1)
+        self.gridLayout.addWidget(self.country_label, 3, 0, 1, 1)
+
+        self.editInfo_pushButton = QPushButton(self.centralwidget)
+        self.editInfo_pushButton.setObjectName(u"editInfo_pushButton")
+        self.editInfo_pushButton.setMinimumSize(QSize(35, 35))
+        self.editInfo_pushButton.setMaximumSize(QSize(35, 35))
+        self.editInfo_pushButton.setCursor(QCursor(Qt.BusyCursor))
+        self.editInfo_pushButton.setStyleSheet(u"QPushButton:hover\n"
+"{\n"
+"	border:1px solid grey;\n"
+"	border-radius:5px;\n"
+"	background:rgba(214, 239, 255, 231);\n"
+"}")
+        icon1 = QIcon()
+        icon1.addFile(u":/images/edit_icon2.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.editInfo_pushButton.setIcon(icon1)
+        self.editInfo_pushButton.setIconSize(QSize(25, 25))
+        self.editInfo_pushButton.setFlat(True)
+
+        self.gridLayout.addWidget(self.editInfo_pushButton, 2, 4, 1, 1)
 
         self.contactInfo_pushButton = QPushButton(self.centralwidget)
         self.contactInfo_pushButton.setObjectName(u"contactInfo_pushButton")
@@ -148,11 +171,28 @@ class Ui_Profile(object):
 
         self.gridLayout.addWidget(self.label_6, 3, 1, 1, 1)
 
+        self.lastName_label = QLabel(self.centralwidget)
+        self.lastName_label.setObjectName(u"lastName_label")
+        font6 = QFont()
+        font6.setFamilies([u"Nimbus Roman"])
+        font6.setPointSize(14)
+        font6.setBold(True)
+        font6.setItalic(True)
+        self.lastName_label.setFont(font6)
+        self.lastName_label.setStyleSheet(u"")
+
+        self.gridLayout.addWidget(self.lastName_label, 0, 2, 1, 1)
+
+        self.firstName_label = QLabel(self.centralwidget)
+        self.firstName_label.setObjectName(u"firstName_label")
+        self.firstName_label.setFont(font6)
+        self.firstName_label.setStyleSheet(u"")
+
+        self.gridLayout.addWidget(self.firstName_label, 0, 0, 1, 1)
+
         self.connections_pushButton = QPushButton(self.centralwidget)
         self.connections_pushButton.setObjectName(u"connections_pushButton")
-        font6 = QFont()
-        font6.setBold(True)
-        self.connections_pushButton.setFont(font6)
+        self.connections_pushButton.setFont(font2)
         self.connections_pushButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.connections_pushButton.setStyleSheet(u"color:rgb(3, 62, 106);\n"
 "border: 1px solid rgb(162, 215, 255);\n"
@@ -164,31 +204,6 @@ class Ui_Profile(object):
         self.connections_pushButton.setFlat(True)
 
         self.gridLayout.addWidget(self.connections_pushButton, 4, 0, 1, 3)
-
-        self.country_label = QLabel(self.centralwidget)
-        self.country_label.setObjectName(u"country_label")
-        self.country_label.setStyleSheet(u"")
-
-        self.gridLayout.addWidget(self.country_label, 3, 0, 1, 1)
-
-        self.editInfo_pushButton = QPushButton(self.centralwidget)
-        self.editInfo_pushButton.setObjectName(u"editInfo_pushButton")
-        self.editInfo_pushButton.setMinimumSize(QSize(35, 35))
-        self.editInfo_pushButton.setMaximumSize(QSize(35, 35))
-        self.editInfo_pushButton.setCursor(QCursor(Qt.BusyCursor))
-        self.editInfo_pushButton.setStyleSheet(u"QPushButton:hover\n"
-"{\n"
-"	border:1px solid grey;\n"
-"	border-radius:5px;\n"
-"	background:rgba(214, 239, 255, 231);\n"
-"}")
-        icon1 = QIcon()
-        icon1.addFile(u":/images/edit_icon2.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.editInfo_pushButton.setIcon(icon1)
-        self.editInfo_pushButton.setIconSize(QSize(25, 25))
-        self.editInfo_pushButton.setFlat(True)
-
-        self.gridLayout.addWidget(self.editInfo_pushButton, 2, 4, 1, 1)
 
 
         self.verticalLayout_3.addLayout(self.gridLayout)
@@ -331,7 +346,7 @@ class Ui_Profile(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 197, 500))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 197, 503))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout_2.addWidget(self.scrollArea)
@@ -362,14 +377,15 @@ class Ui_Profile(object):
         self.back_pushButton.setText("")
         self.label_4.setText(QCoreApplication.translate("Profile", u"Profile", None))
         self.label_3.setText("")
-        self.lastName_label.setText(QCoreApplication.translate("Profile", u"Khalafi", None))
-        self.firstName_label.setText(QCoreApplication.translate("Profile", u"Mersad", None))
+        self.connectTo_pushButton.setText(QCoreApplication.translate("Profile", u"Connect", None))
+        self.country_label.setText(QCoreApplication.translate("Profile", u"Country", None))
+        self.editInfo_pushButton.setText("")
         self.contactInfo_pushButton.setText(QCoreApplication.translate("Profile", u"Contact info", None))
         self.headline_label.setText(QCoreApplication.translate("Profile", u"Headline", None))
         self.label_6.setText(QCoreApplication.translate("Profile", u"-", None))
+        self.lastName_label.setText(QCoreApplication.translate("Profile", u"Khalafi", None))
+        self.firstName_label.setText(QCoreApplication.translate("Profile", u"Mersad", None))
         self.connections_pushButton.setText(QCoreApplication.translate("Profile", u"Connections", None))
-        self.country_label.setText(QCoreApplication.translate("Profile", u"Country", None))
-        self.editInfo_pushButton.setText("")
         self.label_7.setText(QCoreApplication.translate("Profile", u"About", None))
         self.editAbout_pushButton.setText("")
         self.aboutContent_label.setText(QCoreApplication.translate("Profile", u"TextLabel", None))

@@ -11,6 +11,7 @@ from post_com.postWidget import PostWidget
 from post_com.newCommentDialog import NewComment
 from post_com.newPostDialog import NewPost
 from profile_com.profile import Profile
+from userView import UserView
 from db import DB
 from consts import Messages, DB_NAME, debug, Columns
 import datetime
@@ -76,6 +77,7 @@ class Mainwindow(QMainWindow):
         self.skills.switch_to_profile.connect(self.switch_to_profile)
         self.profile.switch_to_bg.connect(self.switch_to_bg)
         self.profile.switch_to_skills.connect(self.switch_to_skills)
+        self.profile.connect_to.connect()
         self.skills.skill_edited.connect(self.save_skill_changes)
         self.background.remove_background.connect(self.remove_background)
         self.background.new_background.connect(self.new_background)
@@ -98,10 +100,29 @@ class Mainwindow(QMainWindow):
         self.own_user_data = self.db.user.user_select(self.own_uuid)
         self.own_profile_data = self.db.user.profile_select(self.own_uuid)
 
-        network_users = self.db.user.connection_get_user_network_info(self.own_uuid)
 
+        self.update_network_area()
         self.update_post_area()
         self.switch_to_home()
+
+    def update_network_area(self):
+
+        network_users = self.db.user.connection_get_user_network_info(self.own_uuid)
+
+        v_widget = QWidget()
+        v_layout = QVBoxLayout()
+        v_layout.setAlignment(Qt.AlignTop)
+
+        for user in network_users:
+            user_view_widget = UserView(user[TableColumns.PROFILE_USER_UUID],
+                                        user[TableColumns.PROFILE_FIRST_NAME],
+                                        user[TableColumns.PROFILE_LAST_NAME],
+                                        user[TableColumns.PROFILE_HEADLINE])
+            v_layout.addWidget(user_view_widget)
+
+        v_widget.setLayout(v_layout)
+        self.ui.userNetwork_scrollArea.setWidget(v_widget)
+
 
     @Slot(str, str, str, str)
     def on_signup(self, firstname, lastname, email, password):
@@ -213,6 +234,10 @@ class Mainwindow(QMainWindow):
         if about is not None:
             self.db.user.profile_update(self.own_uuid, profile_about=about)
             self.own_profile_data[Columns.ABOUT] = about
+
+    @Slot(str)
+    def connect_users(self, other_id):
+        self.db.user.connection_add(self.own_uuid, other_id)
 
     @Slot(str)
     def new_comment(self, content_id):

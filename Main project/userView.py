@@ -3,11 +3,11 @@ from PySide6.QtCore import Signal, Slot
 from PySide6.QtWidgets import QWidget
 
 
-class userView(QWidget):
+class UserView(QWidget):
     on_clicked = Signal(str)
 
     def __init__(self, user_id, firstname, lastname, headline):
-        super(userView, self).__init__()
+        super(UserView, self).__init__()
         self.ui = Ui_userView()
         self.ui.setupUi(self)
 

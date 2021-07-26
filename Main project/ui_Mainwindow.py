@@ -12,7 +12,7 @@ from PySide6.QtCore import *  # type: ignore
 from PySide6.QtGui import *  # type: ignore
 from PySide6.QtWidgets import *  # type: ignore
 
-import resources_rc
+import resources.resources_rc
 
 class Ui_Mainwindow(object):
     def setupUi(self, Mainwindow):
@@ -138,14 +138,10 @@ class Ui_Mainwindow(object):
         self.userNetwork_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 373, 244))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 373, 496))
         self.userNetwork_scrollArea.setWidget(self.scrollAreaWidgetContents_2)
 
         self.verticalLayout.addWidget(self.userNetwork_scrollArea)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout.addItem(self.verticalSpacer)
 
 
         self.verticalLayout_2.addLayout(self.verticalLayout)

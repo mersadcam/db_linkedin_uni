@@ -209,7 +209,7 @@ margin-left:10px;
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
         <property name="topMargin">
          <number>20</number>
         </property>
@@ -242,24 +242,11 @@ margin-left:10px;
              <x>0</x>
              <y>0</y>
              <width>373</width>
-             <height>244</height>
+             <height>496</height>
             </rect>
            </property>
           </widget>
          </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>
