@@ -578,7 +578,7 @@ class User:
             for cc in tmp_list:
                 net_uuid_list.append(cc)
         net_uuid_list = list(set(net_uuid_list))
-        net_uuid_list.remove(user_uuid)
+        if user_uuid in net_uuid_list: net_uuid_list.remove(user_uuid)
         net_uuid_list = list(set(net_uuid_list) - set(connection_list))
         
         return net_uuid_list
