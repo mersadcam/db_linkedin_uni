@@ -295,8 +295,8 @@ DELETE_USER_ACCOMP = 'DELETE FROM user_accomp WHERE accomp_id = (?) AND user_uui
 #******************************
 #******************************
 #no time for ui
-SELECT_LIKED_POSTS_BY_USER_CONNECTIONS = 'SELECT content_id FROM like WHERE user_uuid IN (SELECT user_uuid FROM ) AND content_id IN (SELECT content_id FROM post)'
-SELECT_LIKED_CONTENTS_BY_USER_CONNECTIONS = f'SELECT content_id FROM like WHERE user_uuid IN ({SELECT_UUID1_CONNECTIONS}) OR user_uuid IN ({SELECT_UUID2_CONNECTIONS})'
+SELECT_LIKED_POSTS_BY_USER_CONNECTIONS = f'SELECT content_id FROM like WHERE (user_uuid IN ({SELECT_UUID1_CONNECTIONS}) OR user_uuid IN ({SELECT_UUID2_CONNECTIONS})) AND content_id IN (SELECT content_id FROM post)'
+# SELECT_LIKED_CONTENTS_BY_USER_CONNECTIONS = f'SELECT content_id FROM like WHERE user_uuid IN ({SELECT_UUID1_CONNECTIONS}) OR user_uuid IN ({SELECT_UUID2_CONNECTIONS})'
 SELECT_COMMENTED_CONTENTS_BY_USER_CONNECTIONS = f'SELECT comment_reply_id FROM comment WHERE content_id IN (SELECT content_id FROM content WHERE user_uuid IN ({SELECT_UUID1_CONNECTIONS}) OR user_uuid IN ({SELECT_UUID2_CONNECTIONS}))'
 
 CREATE_TABLE_MESSAGE = """CREATE TABLE IF NOT EXISTS message( 
@@ -310,4 +310,4 @@ CREATE_TABLE_MESSAGE = """CREATE TABLE IF NOT EXISTS message(
 INSERT_MESSAGE = 'INSERT INTO message(msg_id, msg_txt, msg_date_time, sender_uuid, reciever_uuid) VALUES(?, ?, ?, ?, ?)'
 DELETE_MESSAGE = 'DELETE FROM message WHERE msg_id = (?)'
 SELECT_MESSAGE = 'SELECT * FROM message WHERE sender_uuid = (?) AND reciever_uuid = (?)'
-SELECT_SEARCH_MESSAGE = 'SELECT * FROM message WHERE msg_txt (?)'
+SELECT_SEARCH_MESSAGE = 'SELECT * FROM message WHERE msg_txt IS LIKE(?)'

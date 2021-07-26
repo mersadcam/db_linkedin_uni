@@ -20,7 +20,23 @@ class Message:
             self.initialise_Content()
         except Error as e:
             print(e)
+    
+    def initialise_Content(self):
+        try:
+            self.db_cursor.execute(constants.CREATE_TABLE_MESSAGE)            
+            self.db_connection.commit()
+        except Error as e:
+            print(e)
 
+    def msg_send(self, msg_text, sender_uuid, reciever_uuid):
+        msg_id = str(uuid.uuid4().hex)
+        msg_time_date = datetime.datetime.now()
+        values = (msg_id, msg_time_date,msg_text, sender_uuid, reciever_uuid)
+        self.db_cursor.execute(constants.INSERT_MESSAGE, values)
+        self.db_connection.commit()
+    
+    def msg_select_two_user_msges(self, user1_uuid, user2uuid):
+        pass
 
 class Content:
     def __init__(self, db_connection, user):
@@ -153,6 +169,28 @@ class Content:
         except Error as e:
             print(e)
             return False
+
+    def post_select_one(self, content_id):
+        post = self.db_cursor.execute(constants.SELECT_RECORD_POST, (content_id, ))
+        post = post.fetchone()
+        user_uuid = self.content_get_user_uuid_by_content(content_id)
+        user_first_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+        user_last_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
+        content_number_of_likes = self.like_numberOfLikes(post[2])
+        content_number_of_comments = self.comment_numberOfComments(post[2])
+
+        return {
+            TableColumns.POST_CONTENT: post[0],
+            TableColumns.POST_IS_FEATURED: post[1],
+            TableColumns.POST_CONTENT_ID: post[2],
+            TableColumns.CONTENT_OWNER: {
+                TableColumns.CONTENT_USER_UUID: user_uuid,
+                TableColumns.CONTENT_OWNER_FNAME: user_first_name,
+                TableColumns.CONTENT_OWNER_LNAME:user_last_name
+            },
+            TableColumns.CONTENT_NUMBER_OF_LIKES: content_number_of_likes,
+            TableColumns.CONTENT_NUMBER_OF_COMMENTS: content_number_of_comments
+        }
 
     #returns all users posts
     def post_select_userPosts(self, user_uuid):
@@ -914,8 +952,8 @@ if __name__ == '__main__':
 
         # a = content.post_add('first', '0')
         # a = content.post_select_userPosts('0')
-
-        # print(a)
+        a = content.post_select_one('20e37c61ca434a1db880f6608d881c32')
+        print(a)
 
 
         db_connection.close()
