@@ -13,8 +13,9 @@ import datetime
 
 
 class Content:
-    def __init__(self, db_connection):
+    def __init__(self, db_connection, user):
         try:
+            self.user = user
             self.db_connection = db_connection
             self.db_cursor = self.db_connection.cursor()
             self.initialise_Content()
@@ -63,7 +64,8 @@ class Content:
         if not check_id:
             return False
 
-        values_tuple = (post_content, post_isFeatured, content_id)
+        post_id = str(uuid.uuid4().hex)
+        values_tuple = (post_id, post_content, post_isFeatured, content_id)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_POST, values_tuple)
             self.db_connection.commit()
@@ -151,8 +153,8 @@ class Content:
             dict_post_list = []
             
             for post in posts:                
-                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
-                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
+                user_first_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(post[2])
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
@@ -189,8 +191,8 @@ class Content:
             dict_comment_list = []
             for comment in comments:
                 user_uuid = self.content_get_user_uuid_by_content(comment[2])
-                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
-                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
+                user_first_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(comment[2])
                 content_number_of_comments = self.comment_numberOfComments(comment[2])
 
@@ -245,8 +247,8 @@ class Content:
             dict_post_list = []
             for post in posts:                    
                 user_uuid = self.content_get_user_uuid_by_content(post[2])
-                user_first_name = user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
-                user_last_name = user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
+                user_first_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_FIRST_NAME]
+                user_last_name = self.user.profile_select(user_uuid)[TableColumns.PROFILE_LAST_NAME]
                 content_number_of_likes = self.like_numberOfLikes(post[2])
                 content_number_of_comments = self.comment_numberOfComments(post[2])
 
@@ -792,7 +794,7 @@ class DB:
         try:
             self.db_connection = sqlite3.connect(db_name)
             self.user = User(self.db_connection)
-            self.content = Content(self.db_connection)
+            self.content = Content(self.db_connection, user)
 
         except Error as e:
             print(e)
@@ -805,7 +807,7 @@ if __name__ == '__main__':
     try:
         db_connection = sqlite3.connect(constants.DB_NAME)
         user = User(db_connection)
-        content = Content(db_connection)
+        content = Content(db_connection, user)
         # a = user.user_signUp('moouod', 'sh',"moouodd@mail.com", "123")
         # a = user.user_login("mad@mail", "123")
         # a = user.user_select("0e6b6077-0928-4439-b61a-393616bbd2e6", "123456")
@@ -895,10 +897,14 @@ if __name__ == '__main__':
         # a = user.recom_select('0')
         # a = user.connection_get_user_network_uuid('0')
         # a = user.connection_get_user_connections_info('0')
-        a = user.connection_get_user_network_info('0')
+        # a = user.connection_get_user_network_info('0')
+
         # user.user_signUp('2', '2', '2@0.com', '2')
         # a = user.user_select('0')
         # a = user.profile_select('0')
+
+        # a = content.post_add('first', '0')
+        a = content.post_select_userPosts('0')
 
         print(a)
 

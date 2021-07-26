@@ -155,6 +155,7 @@ CREATE_TABLE_CONTENT = """CREATE TABLE IF NOT EXISTS content(
 )"""
 
 CREATE_TABLE_POST = """CREATE TABLE IF NOT EXISTS post(
+                        post_id text PRIMARY KEY,
                         post_content text NOT NULL,
                         post_isFeatured integer NOT NULL,                    
                         content_id text NOT NULL UNIQUE,
@@ -173,7 +174,7 @@ CREATE_TABLE_COMMENT = """CREATE TABLE IF NOT EXISTS comment(
 
 INSERT_RECORD_CONTENT = """INSERT INTO content (content_id, content_date_time, user_uuid) Values(?, ?, ?)"""
 
-INSERT_RECORD_POST = """INSERT INTO post(post_content, post_isFeatured, content_id) VALUES(?, ?, ?)"""
+INSERT_RECORD_POST = """INSERT INTO post(post_id, post_content, post_isFeatured, content_id) VALUES(?, ?, ?, ?)"""
 INSERT_RECORD_COMMENT = """INSERT INTO comment(comment_content, comment_reply_id, content_id) VALUES(?, ?, ?)"""
 
 SELECT_RECORD_CONTENT = """SELECT * FROM content WHERE content_id = (?)"""
@@ -296,4 +297,14 @@ DELETE_USER_ACCOMP = 'DELETE FROM user_accomp WHERE accomp_id = (?) AND user_uui
 #******************************
 #no time for ui
 
-SELECT_LIKED_POSTS_BY_USER_CONNECTIONS = 'SELECT content_id FROM like WHERE user_uuid IN (SELECT user_uuid FROM )'
+SELECT_LIKED_CONTENTS_BY_USER_CONNECTIONS = f'SELECT content_id FROM like WHERE user_uuid IN ({SELECT_UUID1_CONNECTIONS}) OR user_uuid IN ({SELECT_UUID2_CONNECTIONS})'
+SELECT_COMMENTED_CONTENTS_BY_USER_CONNECTIONS = f'SELECT comment_reply_id FROM comment WHERE content_id IN (SELECT content_id FROM content WHERE user_uuid IN ({SELECT_UUID1_CONNECTIONS}) OR user_uuid IN ({SELECT_UUID2_CONNECTIONS}))'
+
+CREATE_TABLE_MESSAGE = """CREATE TABLE IF NOT EXISTS message( 
+                              msg_id text PRIMARY KEY,
+                              msg_txt text NOT NULL,
+                              msg_date_time text NOT
+                              sender_uuid text NOT NULL,
+                              reciever_uuid text NOT NULL,                              
+                              FOREIGN KEY (reciever_uuid) REFERENCES user (user_uuid),
+                              FOREIGN KEY (sender_uuid) REFERENCES user (user_uuid)"""
