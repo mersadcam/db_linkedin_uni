@@ -310,4 +310,4 @@ CREATE_TABLE_MESSAGE = """CREATE TABLE IF NOT EXISTS message(
 INSERT_MESSAGE = 'INSERT INTO message(msg_id, msg_txt, msg_date_time, sender_uuid, reciever_uuid) VALUES(?, ?, ?, ?, ?)'
 DELETE_MESSAGE = 'DELETE FROM message WHERE msg_id = (?)'
 SELECT_MESSAGE = 'SELECT * FROM message WHERE sender_uuid = (?) AND reciever_uuid = (?)'
-SELECT_SEARCH_MESSAGE = 'SELECT * FROM message WHERE msg_txt IS LIKE(?)'
+SELECT_SEARCH_MESSAGE = 'SELECT * FROM message WHERE msg_txt IS LIKE(?) AND (sender_uuid = (?) OR reciever_uuid = (?))'
