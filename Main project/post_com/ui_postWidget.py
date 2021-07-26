@@ -19,19 +19,29 @@ class Ui_postWidget(object):
         if not postWidget.objectName():
             postWidget.setObjectName(u"postWidget")
         postWidget.resize(526, 528)
-        postWidget.setStyleSheet(u"background:rgb(246, 250, 252);\n"
-"color:rgb(1, 31, 54);\\n")
-        self.verticalLayout = QVBoxLayout(postWidget)
+        postWidget.setStyleSheet(u"background:rgba(248, 253, 255, 206);\n"
+"color:rgb(1, 31, 54);\n"
+"")
+        self.verticalLayout_2 = QVBoxLayout(postWidget)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.widget = QWidget(postWidget)
+        self.widget.setObjectName(u"widget")
+        self.widget.setStyleSheet(u"QWidget#widget{\n"
+"border:5px solid rgba(68, 170, 248, 35);\n"
+"border-radius:10px;\n"
+"color:rgb(1, 31, 54);\n"
+"}")
+        self.verticalLayout = QVBoxLayout(self.widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.firstname_label = QLabel(postWidget)
+        self.firstname_label = QLabel(self.widget)
         self.firstname_label.setObjectName(u"firstname_label")
         self.firstname_label.setStyleSheet(u"font-size:15pt")
 
         self.horizontalLayout_3.addWidget(self.firstname_label)
 
-        self.lastname_label = QLabel(postWidget)
+        self.lastname_label = QLabel(self.widget)
         self.lastname_label.setObjectName(u"lastname_label")
         self.lastname_label.setStyleSheet(u"font-size:15pt")
 
@@ -40,14 +50,14 @@ class Ui_postWidget(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
-        self.line = QFrame(postWidget)
+        self.line = QFrame(self.widget)
         self.line.setObjectName(u"line")
         self.line.setFrameShape(QFrame.HLine)
         self.line.setFrameShadow(QFrame.Sunken)
 
         self.verticalLayout.addWidget(self.line)
 
-        self.content_plainTextEdit = QPlainTextEdit(postWidget)
+        self.content_plainTextEdit = QPlainTextEdit(self.widget)
         self.content_plainTextEdit.setObjectName(u"content_plainTextEdit")
         self.content_plainTextEdit.setReadOnly(True)
 
@@ -56,14 +66,14 @@ class Ui_postWidget(object):
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(10, -1, 10, -1)
-        self.likes_label = QLabel(postWidget)
+        self.likes_label = QLabel(self.widget)
         self.likes_label.setObjectName(u"likes_label")
         self.likes_label.setStyleSheet(u"color:rgb(32, 74, 135)\n"
 "")
 
         self.horizontalLayout_2.addWidget(self.likes_label)
 
-        self.comments_label = QLabel(postWidget)
+        self.comments_label = QLabel(self.widget)
         self.comments_label.setObjectName(u"comments_label")
         self.comments_label.setStyleSheet(u"color:rgb(32, 74, 135);\n"
 "")
@@ -79,7 +89,7 @@ class Ui_postWidget(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.like_pushButton = QPushButton(postWidget)
+        self.like_pushButton = QPushButton(self.widget)
         self.like_pushButton.setObjectName(u"like_pushButton")
         icon = QIcon()
         icon.addFile(u":/images/like-empty.png", QSize(), QIcon.Normal, QIcon.Off)
@@ -89,7 +99,7 @@ class Ui_postWidget(object):
 
         self.horizontalLayout.addWidget(self.like_pushButton)
 
-        self.comment_pushButton = QPushButton(postWidget)
+        self.comment_pushButton = QPushButton(self.widget)
         self.comment_pushButton.setObjectName(u"comment_pushButton")
         icon1 = QIcon()
         icon1.addFile(u":/images/comment.png", QSize(), QIcon.Normal, QIcon.Off)
@@ -99,7 +109,7 @@ class Ui_postWidget(object):
 
         self.horizontalLayout.addWidget(self.comment_pushButton)
 
-        self.showComment_pushButton = QPushButton(postWidget)
+        self.showComment_pushButton = QPushButton(self.widget)
         self.showComment_pushButton.setObjectName(u"showComment_pushButton")
         self.showComment_pushButton.setStyleSheet(u"")
         icon2 = QIcon()
@@ -116,6 +126,9 @@ class Ui_postWidget(object):
 
 
         self.verticalLayout.addLayout(self.horizontalLayout)
+
+
+        self.verticalLayout_2.addWidget(self.widget)
 
 
         self.retranslateUi(postWidget)

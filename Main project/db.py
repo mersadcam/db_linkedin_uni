@@ -12,6 +12,17 @@ import re
 import datetime
 
 
+class Message:
+    def __init__(self, db_connection, user):
+        try:
+            self.user = user
+            self.db_connection = db_connection
+            self.db_cursor = self.db_connection.cursor()
+            self.initialise_Content()
+        except Error as e:
+            print(e)
+
+
 class Content:
     def __init__(self, db_connection, user):
         try:
@@ -65,8 +76,7 @@ class Content:
         if not check_id:
             return False
 
-        post_id = str(uuid.uuid4().hex)
-        values_tuple = (post_id, post_content, post_isFeatured, content_id)
+        values_tuple = (post_content, post_isFeatured, content_id)
         try:
             self.db_cursor.execute(constants.INSERT_RECORD_POST, values_tuple)
             self.db_connection.commit()
@@ -560,7 +570,7 @@ class User:
             for cc in tmp_list:
                 net_uuid_list.append(cc)
         net_uuid_list = list(set(net_uuid_list))
-        net_uuid_list.remove(user_uuid)
+        if user_uuid in net_uuid_list: net_uuid_list.remove(user_uuid)
         net_uuid_list = list(set(net_uuid_list) - set(connection_list))
 
         return net_uuid_list
@@ -787,7 +797,7 @@ class DB:
         try:
             self.db_connection = sqlite3.connect(db_name)
             self.user = User(self.db_connection)
-            self.content = Content(self.db_connection, user)
+            self.content = Content(self.db_connection, self.user)
 
         except Error as e:
             print(e)
@@ -896,9 +906,9 @@ if __name__ == '__main__':
         # a = user.profile_select('0')
 
         # a = content.post_add('first', '0')
-        a = content.post_select_userPosts('0')
+        # a = content.post_select_userPosts('0')
 
-        print(a)
+        # print(a)
 
         db_connection.close()
     except Error as e:

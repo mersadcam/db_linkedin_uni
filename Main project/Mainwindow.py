@@ -10,6 +10,7 @@ from skill_com.skills import Skills
 from post_com.postWidget import PostWidget
 from post_com.newCommentDialog import NewComment
 from post_com.newPostDialog import NewPost
+from post_com.commentPostView import CommentPostView
 from profile_com.profile import Profile
 from userView import UserView
 from db import DB
@@ -41,6 +42,7 @@ class Mainwindow(QMainWindow):
         self.other_user_data = None
         self.new_comment = None
         self.new_post = None
+        self.comment_post_view = None
 
         # Setup DB:
         self.db = DB(DB_NAME)
@@ -77,7 +79,7 @@ class Mainwindow(QMainWindow):
         self.skills.switch_to_profile.connect(self.switch_to_profile)
         self.profile.switch_to_bg.connect(self.switch_to_bg)
         self.profile.switch_to_skills.connect(self.switch_to_skills)
-        self.profile.connect_to.connect()
+        self.profile.connect_to.connect(self.connect_users)
         self.skills.skill_edited.connect(self.save_skill_changes)
         self.background.remove_background.connect(self.remove_background)
         self.background.new_background.connect(self.new_background)
@@ -271,7 +273,7 @@ class Mainwindow(QMainWindow):
                               post[TableColumns.CONTENT_NUMBER_OF_LIKES],
                               post[TableColumns.CONTENT_NUMBER_OF_COMMENTS],
                               post[TableColumns.CONTENT_OWNER][TableColumns.CONTENT_OWNER_FNAME],
-                              post[TableColumns.CONTENT_OWNER_LNAME])
+                              post[TableColumns.CONTENT_OWNER][TableColumns.CONTENT_OWNER_LNAME])
             # need firstname and lastname in this constructor
             post.post_liked.connect(self.like_post)
             post.new_comment.connect(self.new_comment)
@@ -287,7 +289,19 @@ class Mainwindow(QMainWindow):
 
     @Slot(str)
     def view_comments(self, content_id):
-        pass
+        # content, comments, content_is_post, is_liked, firstname, lastname
+        content = {}
+        comments = self.db.content.content_select_content_comments(content_id)
+        user_uuid = self.db.content.content_get_user_uuid_by_content(content_id)
+        profile = self.db.user.profile_select(user_uuid)
+        content_is_post = True
+        is_liked = True
+
+        self.comment_post_view = CommentPostView(content, comments,
+                                                 content_is_post, is_liked,
+                                                 profile[TableColumns.PROFILE_FIRST_NAME],
+                                                 profile[TableColumns.PROFILE_LAST_NAME])
+        self.show()
 
     @Slot(str)
     def switch_to_bg(self, user_id):

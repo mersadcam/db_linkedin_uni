@@ -8,8 +8,8 @@ from constants import TableColumns
 
 
 class CommentPostView(QDialog):
-    def __int__(self, content, comments, content_is_post, is_liked, firstname, lastname):
-        super(CommentPostView, self).__int__()
+    def __init__(self, content, comments, content_is_post, is_liked, firstname, lastname):
+        super(CommentPostView, self).__init__()
         self.ui = Ui_commentPostView()
         self.ui.setupUi(self)
 
